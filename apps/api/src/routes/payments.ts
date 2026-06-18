@@ -4,7 +4,7 @@ import { prisma } from '../lib/prisma';
 import { authenticate, requireInvestor, AuthRequest } from '../middleware/authenticate';
 import { createError } from '../middleware/errorHandler';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: '2025-02-24.acacia' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy_key_to_prevent_startup_crash', { apiVersion: '2025-02-24.acacia' });
 
 const router = Router();
 
