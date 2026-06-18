@@ -1,0 +1,627 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ─────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────
+// USERS
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String?
+  role             String
+  status           String    @default("PENDING")
+  emailVerified    Boolean   @default(false)
+  phoneVerified    Boolean   @default(false)
+  twoFactorEnabled Boolean   @default(false)
+  twoFactorSecret  String?
+  googleId         String?   @unique
+  linkedinId       String?   @unique
+  refreshToken     String?
+  lastLoginAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  founder       Founder?
+  investor      Investor?
+  notifications Notification[]
+  auditLogs     AuditLog[]
+  referralsMade Referral[]     @relation("ReferrerUser")
+  referredBy    Referral?      @relation("ReferredUser")
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────
+// FOUNDERS
+// ─────────────────────────────────────────────────────────────
+
+model Founder {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+  phone           String?
+  avatar          String?
+  bio             String?
+  linkedinUrl     String?
+  twitterUrl      String?
+  location        String?
+  country         String?
+  trustScore      Float    @default(0)
+  profileComplete Int      @default(0) // percentage 0-100
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  startup            Startup?
+  chatsInitiated     Chat[]              @relation("FounderChats")
+  badges             FounderBadge[]
+  ndaRequests        NDA[]               @relation("FounderNDAs")
+  eventRegistrations EventRegistration[]
+
+  @@index([userId])
+  @@index([trustScore])
+}
+
+// ─────────────────────────────────────────────────────────────
+// STARTUPS
+// ─────────────────────────────────────────────────────────────
+
+model Startup {
+  id                String   @id @default(cuid())
+  founderId         String   @unique
+  founder           Founder  @relation(fields: [founderId], references: [id], onDelete: Cascade)
+  name              String
+  tagline           String?
+  description       String
+  sector            String
+  stage             String
+  fundingRequired   Float // in USD
+  fundingRaised     Float    @default(0)
+  teamSize          Int      @default(1)
+  website           String?
+  location          String?
+  country           String?
+  pitchDeckUrl      String?
+  logoUrl           String?
+  coverImageUrl     String?
+  videoUrl          String?
+  revenueModel      String?
+  mrr               Float? // Monthly Recurring Revenue
+  arr               Float? // Annual Recurring Revenue
+  valuation         Float?
+  fundingReadyScore Int      @default(0) // 0-100
+  isApproved        Boolean  @default(false)
+  isSponsored       Boolean  @default(false)
+  viewCount         Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  documents      StartupDocument[]
+  matches        Match[]           @relation("StartupMatches")
+  watchlistItems WatchlistItem[]
+  analytics      Analytics[]
+  adPlacements   Advertisement[]   @relation("SponsoredStartup")
+
+  @@index([sector])
+  @@index([stage])
+  @@index([fundingRequired])
+  @@index([country])
+  @@index([isApproved])
+}
+
+model StartupDocument {
+  id         String   @id @default(cuid())
+  startupId  String
+  startup    Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  name       String
+  url        String
+  size       Int
+  type       String
+  uploadedAt DateTime @default(now())
+
+  @@index([startupId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// INVESTORS
+// ─────────────────────────────────────────────────────────────
+
+model Investor {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                  String
+  phone                 String?
+  avatar                String?
+  bio                   String?
+  company               String?
+  designation           String?
+  linkedinUrl           String?
+  twitterUrl            String?
+  location              String?
+  country               String?
+  investmentCapacityMin Float // in USD
+  investmentCapacityMax Float
+  preferredSectors      String
+  preferredLocations    String
+  preferredStages       String
+  riskAppetite          String   @default("MODERATE")
+  investmentCount       Int      @default(0)
+  totalInvested         Float    @default(0)
+  trustScore            Float    @default(0)
+  profileComplete       Int      @default(0)
+  isVerified            Boolean  @default(false)
+  isSponsored           Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  subscription       Subscription?
+  matches            Match[]             @relation("InvestorMatches")
+  watchlist          WatchlistItem[]
+  chats              Chat[]              @relation("InvestorChats")
+  badges             InvestorBadge[]
+  ndas               NDA[]               @relation("InvestorNDAs")
+  eventRegistrations EventRegistration[]
+  adPlacements       Advertisement[]     @relation("SponsoredInvestor")
+
+  @@index([userId])
+  @@index([preferredSectors])
+  @@index([riskAppetite])
+  @@index([trustScore])
+}
+
+// ─────────────────────────────────────────────────────────────
+// MATCHES
+// ─────────────────────────────────────────────────────────────
+
+model Match {
+  id                String   @id @default(cuid())
+  startupId         String
+  startup           Startup  @relation("StartupMatches", fields: [startupId], references: [id], onDelete: Cascade)
+  investorId        String
+  investor          Investor @relation("InvestorMatches", fields: [investorId], references: [id], onDelete: Cascade)
+  score             Float // 0-100 match score
+  sectorScore       Float    @default(0)
+  fundingScore      Float    @default(0)
+  stageScore        Float    @default(0)
+  locationScore     Float    @default(0)
+  riskScore         Float    @default(0)
+  behaviorScore     Float    @default(0)
+  matchReasons      String
+  suggestedStarters String
+  status            String   @default("PENDING")
+  viewedByInvestor  Boolean  @default(false)
+  viewedByFounder   Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  chat Chat?
+
+  @@unique([startupId, investorId])
+  @@index([investorId])
+  @@index([startupId])
+  @@index([score])
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────
+// CHATS & MESSAGES
+// ─────────────────────────────────────────────────────────────
+
+model Chat {
+  id         String   @id @default(cuid())
+  matchId    String   @unique
+  match      Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  founderId  String
+  founder    Founder  @relation("FounderChats", fields: [founderId], references: [id])
+  investorId String
+  investor   Investor @relation("InvestorChats", fields: [investorId], references: [id])
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  messages Message[]
+
+  @@index([founderId])
+  @@index([investorId])
+}
+
+model Message {
+  id          String    @id @default(cuid())
+  chatId      String
+  chat        Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  senderId    String // userId
+  content     String // encrypted
+  messageType String    @default("text") // text | file | voice | meeting_request
+  fileUrl     String?
+  fileName    String?
+  fileSize    Int?
+  isRead      Boolean   @default(false)
+  readAt      DateTime?
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([chatId])
+  @@index([senderId])
+  @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────
+// EVENTS
+// ─────────────────────────────────────────────────────────────
+
+model Event {
+  id                   String   @id @default(cuid())
+  title                String
+  description          String
+  eventType            String   @default("PITCH_COMPETITION")
+  status               String   @default("UPCOMING")
+  coverImageUrl        String?
+  streamUrl            String?
+  location             String?
+  isVirtual            Boolean  @default(true)
+  startDate            DateTime
+  endDate              DateTime
+  registrationDeadline DateTime
+  founderFee           Float    @default(0)
+  investorFee          Float    @default(0)
+  maxParticipants      Int?
+  currentParticipants  Int      @default(0)
+  prizePool            Float    @default(0)
+  sponsorLogos         String
+  isSponsored          Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  registrations EventRegistration[]
+  judges        Judge[]
+  votes         Vote[]
+  leaderboard   Leaderboard[]
+  adPlacements  Advertisement[]     @relation("EventAds")
+
+  @@index([status])
+  @@index([startDate])
+}
+
+model EventRegistration {
+  id             String    @id @default(cuid())
+  eventId        String
+  event          Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  founderId      String?
+  founder        Founder?  @relation(fields: [founderId], references: [id])
+  investorId     String?
+  investor       Investor? @relation(fields: [investorId], references: [id])
+  role           String // founder | investor | judge
+  paymentId      String?
+  payment        Payment?  @relation(fields: [paymentId], references: [id])
+  isApproved     Boolean   @default(false)
+  certificateUrl String?
+  registeredAt   DateTime  @default(now())
+
+  @@unique([eventId, founderId])
+  @@unique([eventId, investorId])
+  @@index([eventId])
+}
+
+model Judge {
+  id        String  @id @default(cuid())
+  eventId   String
+  event     Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name      String
+  company   String?
+  avatarUrl String?
+  bio       String?
+
+  @@index([eventId])
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  voterId   String
+  startupId String
+  score     Int // 1-10
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, voterId, startupId])
+  @@index([eventId])
+}
+
+model Leaderboard {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  startupId String
+  rank      Int
+  score     Float
+  prize     Float    @default(0)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, startupId])
+  @@index([eventId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// PAYMENTS & SUBSCRIPTIONS
+// ─────────────────────────────────────────────────────────────
+
+model Payment {
+  id               String   @id @default(cuid())
+  userId           String
+  amount           Float
+  currency         String   @default("USD")
+  gateway          String
+  gatewayPaymentId String?
+  status           String   @default("PENDING")
+  metadata         Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  subscription       Subscription?
+  eventRegistrations EventRegistration[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Subscription {
+  id            String   @id @default(cuid())
+  investorId    String   @unique
+  investor      Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+  paymentId     String   @unique
+  payment       Payment  @relation(fields: [paymentId], references: [id])
+  plan          String
+  status        String   @default("ACTIVE")
+  startDate     DateTime
+  endDate       DateTime
+  autoRenew     Boolean  @default(true)
+  stripeSubId   String?
+  razorpaySubId String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([investorId])
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────
+// ADVERTISEMENTS
+// ─────────────────────────────────────────────────────────────
+
+model Advertisement {
+  id              String   @id @default(cuid())
+  title           String
+  description     String?
+  imageUrl        String
+  linkUrl         String
+  adType          String
+  status          String   @default("DRAFT")
+  startDate       DateTime
+  endDate         DateTime
+  budget          Float?
+  cpm             Float? // cost per thousand impressions
+  impressions     Int      @default(0)
+  clicks          Int      @default(0)
+  revenue         Float    @default(0)
+  targetSectors   String
+  targetCountries String
+
+  // Optional relation to sponsored content
+  sponsoredStartupId  String?
+  sponsoredStartup    Startup?  @relation("SponsoredStartup", fields: [sponsoredStartupId], references: [id])
+  sponsoredInvestorId String?
+  sponsoredInvestor   Investor? @relation("SponsoredInvestor", fields: [sponsoredInvestorId], references: [id])
+  sponsoredEventId    String?
+  sponsoredEvent      Event?    @relation("EventAds", fields: [sponsoredEventId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([adType])
+  @@index([startDate, endDate])
+}
+
+// ─────────────────────────────────────────────────────────────
+// NOTIFICATIONS
+// ─────────────────────────────────────────────────────────────
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  title     String
+  body      String
+  data      Json?
+  isRead    Boolean   @default(false)
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────
+// TRUST SCORES
+// ─────────────────────────────────────────────────────────────
+
+model TrustScore {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  overallScore      Float    @default(0)
+  verificationScore Float    @default(0)
+  completenessScore Float    @default(0)
+  activityScore     Float    @default(0)
+  reputationScore   Float    @default(0)
+  lastCalculated    DateTime @default(now())
+
+  @@index([userId])
+  @@index([overallScore])
+}
+
+// ─────────────────────────────────────────────────────────────
+// AUDIT LOGS
+// ─────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String
+  resource   String
+  resourceId String?
+  ipAddress  String?
+  userAgent  String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────
+// ANALYTICS
+// ─────────────────────────────────────────────────────────────
+
+model Analytics {
+  id            String   @id @default(cuid())
+  startupId     String
+  startup       Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  date          DateTime @default(now())
+  profileViews  Int      @default(0)
+  matchCount    Int      @default(0)
+  interestCount Int      @default(0)
+  pitchViews    Int      @default(0)
+
+  @@index([startupId])
+  @@index([date])
+}
+
+// ─────────────────────────────────────────────────────────────
+// REFERRALS
+// ─────────────────────────────────────────────────────────────
+
+model Referral {
+  id           String   @id @default(cuid())
+  referrerId   String
+  referrer     User     @relation("ReferrerUser", fields: [referrerId], references: [id])
+  referredId   String   @unique
+  referred     User     @relation("ReferredUser", fields: [referredId], references: [id])
+  code         String   @unique
+  rewardAmount Float    @default(0)
+  isPaid       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([referrerId])
+  @@index([code])
+}
+
+// ─────────────────────────────────────────────────────────────
+// NDAs
+// ─────────────────────────────────────────────────────────────
+
+model NDA {
+  id          String    @id @default(cuid())
+  founderId   String
+  founder     Founder   @relation("FounderNDAs", fields: [founderId], references: [id])
+  investorId  String
+  investor    Investor  @relation("InvestorNDAs", fields: [investorId], references: [id])
+  status      String    @default("REQUESTED")
+  documentUrl String?
+  signedAt    DateTime?
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@unique([founderId, investorId])
+  @@index([founderId])
+  @@index([investorId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// WATCHLIST
+// ─────────────────────────────────────────────────────────────
+
+model WatchlistItem {
+  id         String   @id @default(cuid())
+  investorId String
+  investor   Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+  startupId  String
+  startup    Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  notes      String?
+  createdAt  DateTime @default(now())
+
+  @@unique([investorId, startupId])
+  @@index([investorId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// BADGES / GAMIFICATION
+// ─────────────────────────────────────────────────────────────
+
+model FounderBadge {
+  id        String   @id @default(cuid())
+  founderId String
+  founder   Founder  @relation(fields: [founderId], references: [id], onDelete: Cascade)
+  badgeType String
+  earnedAt  DateTime @default(now())
+
+  @@unique([founderId, badgeType])
+  @@index([founderId])
+}
+
+model InvestorBadge {
+  id         String   @id @default(cuid())
+  investorId String
+  investor   Investor @relation(fields: [investorId], references: [id], onDelete: Cascade)
+  badgeType  String
+  earnedAt   DateTime @default(now())
+
+  @@unique([investorId, badgeType])
+  @@index([investorId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// PLATFORM CONFIG (admin-controlled key-value store)
+// ─────────────────────────────────────────────────────────────
+
+model PlatformConfig {
+  key       String   @id
+  value     String
+  label     String?
+  updatedAt DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────
+// CONTACT / AD REQUESTS (incoming from public)
+// ─────────────────────────────────────────────────────────────
+
+model ContactRequest {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  type      String   @default("GENERAL") // GENERAL | AD_REQUEST | PARTNERSHIP
+  status    String   @default("UNREAD") // UNREAD | READ | REPLIED | CLOSED
+  createdAt DateTime @default(now())
+
+  @@index([status])
+  @@index([type])
+}

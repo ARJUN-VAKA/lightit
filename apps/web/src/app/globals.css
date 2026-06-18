@@ -1,0 +1,463 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────
+   CSS Custom Properties — LightIt Design System
+───────────────────────────────────────────────────────────── */
+:root {
+  /* LIGHT MODE (Default for light theme) */
+  --color-deep-black: #f8fafc;
+  --color-midnight: #ffffff;
+  --color-card-bg: #ffffff;
+  --color-electric-blue: #0ea5e9;
+  --color-neon-blue: #3b82f6;
+  --color-neon-purple: #8b5cf6;
+  --color-neon-cyan: #06b6d4;
+  --color-neon-pink: #ec4899;
+
+  --color-white: #0f172a;
+  --color-gray-400: #64748b;
+  --color-gray-500: #475569;
+
+  --gradient-neon: linear-gradient(135deg, #0ea5e9, #8b5cf6, #06b6d4);
+  --gradient-hero: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%);
+  --gradient-card: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(139,92,246,0.08) 100%);
+
+  --glow-blue: 0 0 20px rgba(59,130,246,0.2), 0 0 40px rgba(59,130,246,0.1);
+  --glow-purple: 0 0 20px rgba(139,92,246,0.2), 0 0 40px rgba(139,92,246,0.1);
+  --glow-cyan: 0 0 20px rgba(6,182,212,0.2), 0 0 40px rgba(6,182,212,0.1);
+
+  --glass-bg: rgba(255,255,255,0.7);
+  --glass-border: rgba(0,0,0,0.1);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.5);
+  --glass-card-bg: linear-gradient(135deg, rgba(59,130,246,0.05) 0%, rgba(139,92,246,0.05) 100%);
+  --glass-card-border: rgba(0,0,0,0.05);
+
+  --text-primary: #0f172a;
+  --text-muted: #64748b;
+  --input-bg: rgba(0,0,0,0.02);
+  --input-border: rgba(0,0,0,0.1);
+  --input-placeholder: rgba(0,0,0,0.4);
+  --input-focus-bg: #ffffff;
+  
+  --sidebar-hover-bg: rgba(59,130,246,0.08);
+  --sidebar-active-bg: linear-gradient(135deg, rgba(14,165,233,0.1), rgba(139,92,246,0.1));
+  --sidebar-active-text: #0ea5e9;
+  --sidebar-hover-text: #0f172a;
+
+  --btn-ghost-color: #64748b;
+  --btn-ghost-hover-color: #0f172a;
+  --btn-ghost-hover-bg: rgba(0,0,0,0.05);
+
+  --badge-text-blue: #0284c7;
+  --badge-text-purple: #7c3aed;
+  --badge-text-cyan: #0891b2;
+  --badge-text-green: #16a34a;
+  --badge-text-gold: #d97706;
+}
+
+.dark {
+  /* DARK MODE */
+  --color-deep-black: #050505;
+  --color-midnight: #0a0a1a;
+  --color-card-bg: #0d0d1f;
+  --color-electric-blue: #0ea5e9;
+  --color-neon-blue: #3b82f6;
+  --color-neon-purple: #8b5cf6;
+  --color-neon-cyan: #06b6d4;
+  --color-neon-pink: #ec4899;
+
+  --color-white: #ffffff;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+
+  --gradient-neon: linear-gradient(135deg, #0ea5e9, #8b5cf6, #06b6d4);
+  --gradient-hero: linear-gradient(135deg, #050505 0%, #0a0a2e 50%, #050505 100%);
+  --gradient-card: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(139,92,246,0.08) 100%);
+
+  --glow-blue: 0 0 20px rgba(59,130,246,0.5), 0 0 40px rgba(59,130,246,0.2);
+  --glow-purple: 0 0 20px rgba(139,92,246,0.5), 0 0 40px rgba(139,92,246,0.2);
+  --glow-cyan: 0 0 20px rgba(6,182,212,0.5), 0 0 40px rgba(6,182,212,0.2);
+
+  --glass-bg: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+  --glass-card-bg: linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(139,92,246,0.06) 100%);
+  --glass-card-border: rgba(255,255,255,0.08);
+
+  --text-primary: #ffffff;
+  --text-muted: rgba(255,255,255,0.55);
+
+  --input-bg: rgba(255,255,255,0.04);
+  --input-border: rgba(255,255,255,0.08);
+  --input-placeholder: rgba(255,255,255,0.3);
+  --input-focus-bg: rgba(255,255,255,0.06);
+
+  --sidebar-hover-bg: rgba(59,130,246,0.1);
+  --sidebar-active-bg: linear-gradient(135deg, rgba(14,165,233,0.2), rgba(139,92,246,0.2));
+  --sidebar-active-text: #ffffff;
+  --sidebar-hover-text: rgba(255,255,255,0.9);
+
+  --btn-ghost-color: rgba(255,255,255,0.7);
+  --btn-ghost-hover-color: #ffffff;
+  --btn-ghost-hover-bg: rgba(255,255,255,0.05);
+
+  --badge-text-blue: #60a5fa;
+  --badge-text-purple: #a78bfa;
+  --badge-text-cyan: #22d3ee;
+  --badge-text-green: #4ade80;
+  --badge-text-gold: #fbbf24;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Base Styles (outside @layer so they always apply)
+───────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59,130,246,0.4) rgba(10,10,26,0.5);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(10,10,26,0.5); }
+::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(59,130,246,0.7); }
+
+body {
+  background-color: var(--color-deep-black);
+  color: var(--color-white);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(59,130,246,0.3);
+  color: white;
+}
+
+option {
+  background-color: var(--color-deep-black);
+  color: #e2e8f0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ALL COMPONENT CLASSES — inside @layer components so that
+   Tailwind utility classes (pl-11, pr-4, etc.) always win.
+───────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* ── Typography ─────────────────────────────────────────── */
+  .font-display { font-family: var(--font-space), var(--font-inter), sans-serif; }
+
+  .gradient-text {
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-gold {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24, #fcd34d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Glassmorphism ──────────────────────────────────────── */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-card {
+    background: var(--glass-card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-card-border);
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(59,130,246,0.3);
+    box-shadow: var(--glow-blue);
+    transform: translateY(-2px);
+  }
+
+  .glass-card-purple:hover {
+    border-color: rgba(139,92,246,0.3);
+    box-shadow: var(--glow-purple);
+  }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-semibold overflow-hidden;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+  }
+
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, #38bdf8, #a78bfa);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glow-blue);
+  }
+
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary span { @apply relative z-10; }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-semibold;
+    background: transparent;
+    border: 1px solid rgba(59,130,246,0.4);
+    color: #0ea5e9;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(59,130,246,0.1);
+    border-color: rgba(59,130,246,0.8);
+    box-shadow: var(--glow-blue);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium;
+    color: var(--btn-ghost-color);
+    transition: all 0.2s ease;
+  }
+
+  .btn-ghost:hover { color: var(--btn-ghost-hover-color); background: var(--btn-ghost-hover-bg); }
+
+  .btn-magnetic { transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1); }
+
+  /* ── Neon Borders & Glows ───────────────────────────────── */
+  .neon-border-blue {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--color-card-bg), var(--color-card-bg)) padding-box,
+                linear-gradient(135deg, #0ea5e9, #8b5cf6) border-box;
+  }
+
+  .neon-glow-blue  { box-shadow: var(--glow-blue); }
+  .neon-glow-purple { box-shadow: var(--glow-purple); }
+  .neon-glow-cyan  { box-shadow: var(--glow-cyan); }
+
+  /* ── Section Backgrounds ────────────────────────────────── */
+  .section-bg-1 { background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 70%); }
+  .section-bg-2 { background: radial-gradient(ellipse at 100% 50%, rgba(139,92,246,0.1) 0%, transparent 70%); }
+  .section-bg-3 { background: radial-gradient(ellipse at 0% 50%, rgba(6,182,212,0.08) 0%, transparent 70%); }
+
+  /* ── Match Score Ring ───────────────────────────────────── */
+  .score-ring {
+    background: conic-gradient(
+      from 0deg,
+      #0ea5e9 0%,
+      #8b5cf6 var(--score-pct, 75%),
+      rgba(255,255,255,0.08) var(--score-pct, 75%) 100%
+    );
+  }
+
+  /* ── Navigation ─────────────────────────────────────────── */
+  .nav-link {
+    @apply relative text-sm font-medium transition-colors duration-200;
+    color: var(--text-muted);
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300;
+    background: var(--gradient-neon);
+  }
+
+  .nav-link:hover { color: var(--text-primary); }
+  .nav-link:hover::after { width: 100%; }
+  .nav-link.active { color: var(--text-primary); }
+  .nav-link.active::after { width: 100%; }
+
+  /* ── Form Inputs ────────────────────────────────────────── */
+  /*
+     IMPORTANT: Only py-3 and pr-4 are set here.
+     Left padding (pl-*) is set per-input in JSX so icons never overlap text.
+     For inputs WITHOUT an icon, add pl-4 manually in the component.
+  */
+  .input-field {
+    @apply w-full py-3 pr-4 pl-4 rounded-xl outline-none transition-all duration-200;
+    color: var(--text-primary);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+  }
+
+  .input-field:focus {
+    border-color: rgba(59,130,246,0.6);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+    background: var(--input-focus-bg);
+  }
+
+  .input-field::placeholder { color: var(--input-placeholder); }
+
+  /* ── Dashboard Sidebar ──────────────────────────────────── */
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer;
+    color: var(--text-muted);
+  }
+
+  .sidebar-item:hover {
+    background: var(--sidebar-hover-bg);
+    color: var(--sidebar-hover-text);
+  }
+
+  .sidebar-item.active {
+    background: var(--sidebar-active-bg);
+    border: 1px solid rgba(59,130,246,0.2);
+    color: var(--sidebar-active-text);
+  }
+
+  /* ── Stats Cards ────────────────────────────────────────── */
+  .stat-card {
+    @apply glass-card p-6 flex flex-col gap-2;
+  }
+
+  .stat-number {
+    @apply text-3xl font-bold font-display;
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Badges ─────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-blue   { background: rgba(59,130,246,0.15);  color: var(--badge-text-blue); border: 1px solid rgba(59,130,246,0.3); }
+  .badge-purple { background: rgba(139,92,246,0.15);  color: var(--badge-text-purple); border: 1px solid rgba(139,92,246,0.3); }
+  .badge-cyan   { background: rgba(6,182,212,0.15);   color: var(--badge-text-cyan); border: 1px solid rgba(6,182,212,0.3); }
+  .badge-green  { background: rgba(34,197,94,0.15);   color: var(--badge-text-green); border: 1px solid rgba(34,197,94,0.3); }
+  .badge-gold   { background: rgba(245,158,11,0.15);  color: var(--badge-text-gold); border: 1px solid rgba(245,158,11,0.3); }
+
+  /* ── Shimmer Loading ────────────────────────────────────── */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.03) 25%,
+      rgba(255,255,255,0.08) 50%,
+      rgba(255,255,255,0.03) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* ── Progress Bar ───────────────────────────────────────── */
+  .progress-bar {
+    @apply h-2 rounded-full overflow-hidden;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .progress-bar-fill {
+    @apply h-full rounded-full transition-all duration-700;
+    background: var(--gradient-neon);
+  }
+
+  /* ── Dividers ───────────────────────────────────────────── */
+  .divider-gradient {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.4), rgba(139,92,246,0.4), transparent);
+  }
+
+  /* ── Particle ───────────────────────────────────────────── */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float-particle linear infinite;
+  }
+
+  /* ── Fade Up ────────────────────────────────────────────── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger children */
+  .stagger > *:nth-child(1) { transition-delay: 0ms; }
+  .stagger > *:nth-child(2) { transition-delay: 100ms; }
+  .stagger > *:nth-child(3) { transition-delay: 200ms; }
+  .stagger > *:nth-child(4) { transition-delay: 300ms; }
+  .stagger > *:nth-child(5) { transition-delay: 400ms; }
+  .stagger > *:nth-child(6) { transition-delay: 500ms; }
+
+  /* ── Animations ─────────────────────────────────────────── */
+  .animate-float      { animation: float 6s ease-in-out infinite; }
+  .animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+
+  /* ── Hero Canvas ────────────────────────────────────────── */
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── Responsive overrides ───────────────────────────────── */
+  @media (max-width: 640px) {
+    .btn-primary, .btn-secondary { @apply px-6 py-3 text-sm; }
+    .stat-number { @apply text-2xl; }
+  }
+
+} /* end @layer components */
+
+/* ─────────────────────────────────────────────────────────────
+   Keyframes — outside @layer so they're always available
+───────────────────────────────────────────────────────────── */
+@keyframes float-particle {
+  0%   { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-100px) translateX(var(--drift, 50px)) scale(1.5); opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-15px) rotate(1deg); }
+  66%       { transform: translateY(-8px) rotate(-1deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(59,130,246,0.3), 0 0 10px rgba(59,130,246,0.2); }
+  50%       { box-shadow: 0 0 20px rgba(59,130,246,0.7), 0 0 40px rgba(59,130,246,0.4); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-canvas { display: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
