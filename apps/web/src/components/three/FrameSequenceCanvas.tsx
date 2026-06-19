@@ -2,44 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-// ─── Constants ──────────────────────────────────────────────────────────────
-const TOTAL_FILES   = 1503;  // actual PNG files on disk
-const FRAME_STEP    = 3;     // use every Nth frame to save network bandwidth (501 frames)
-const EFF_FRAMES    = Math.ceil(TOTAL_FILES / FRAME_STEP); // 501
-const FILES_PER_SEQ = 501;
-
-const CACHE_AHEAD  = 80;   // decode this many frames ahead of playhead
-const CACHE_BEHIND = 25;   // keep this many frames behind
-
-// ─── URL builder ───────────────────────────────────────────────────────────
-function getFrameUrl(effectiveIndex: number): string {
-  const actualIndex = effectiveIndex * FRAME_STEP;
-  let seq: number, frame: number;
-  if (actualIndex < FILES_PER_SEQ) {
-    seq = 0; frame = actualIndex + 1;
-  } else if (actualIndex < FILES_PER_SEQ * 2) {
-    seq = 1; frame = (actualIndex - FILES_PER_SEQ) + 1;
-  } else {
-    seq = 2; frame = (actualIndex - FILES_PER_SEQ * 2) + 1;
-  }
-  return `/frames0${seq}/frame_${String(frame).padStart(5, '0')}.png`;
-}
-
-// ─── Cover-crop helper ──────────────────────────────────────────────────────
-function drawCover(
-  ctx: CanvasRenderingContext2D,
-  img: ImageBitmap | HTMLImageElement,
-  cw: number, ch: number
-) {
-  const iw = img instanceof ImageBitmap ? img.width  : img.naturalWidth;
-  const ih = img instanceof ImageBitmap ? img.height : img.naturalHeight;
-  const ir = iw / ih;
-  const cr = cw / ch;
-  let sx = 0, sy = 0, sw = iw, sh = ih;
-  if (ir > cr) { sw = ih * cr; sx = (iw - sw) / 2; }
-  else         { sh = iw / cr; sy = (ih - sh) / 2; }
-  ctx.drawImage(img as CanvasImageSource, sx, sy, sw, sh, 0, 0, cw, ch);
-}
+// ─── No image helpers needed for video ─────────────────────────────────────
 
 // ─── Props ──────────────────────────────────────────────────────────────────
 interface CinematicCanvasProps {
@@ -49,75 +12,32 @@ interface CinematicCanvasProps {
 
 // ─── Component ──────────────────────────────────────────────────────────────
 export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: false });
-    if (!ctx) return;
+    const video = videoRef.current;
+    if (!video) return;
 
     let cancelled = false;
+    let objectUrl: string | null = null;
 
-    // ── Frame cache: Map<effectiveIndex, ImageBitmap> ─────────────────────
-    const cache   = new Map<number, ImageBitmap>();
-    const loading = new Set<number>();
-
-    async function loadFrame(idx: number) {
-      if (idx < 0 || idx >= EFF_FRAMES) return;
-      if (cache.has(idx) || loading.has(idx)) return;
-      loading.add(idx);
+    // Load video as a Blob to prevent HTTP Range Request stuttering on Vercel
+    async function loadVideoBlob() {
       try {
-        const resp = await fetch(getFrameUrl(idx));
-        if (!resp.ok || cancelled) { loading.delete(idx); return; }
-        const blob   = await resp.blob();
-        const bitmap = await createImageBitmap(blob);
-        if (!cancelled) cache.set(idx, bitmap);
-      } catch { /* ignore failed frames */ }
-      loading.delete(idx);
-    }
-
-    function evict(pivot: number) {
-      for (const key of cache.keys()) {
-        if (key < pivot - CACHE_BEHIND || key > pivot + CACHE_AHEAD) {
-          cache.get(key)?.close();   // free GPU memory
-          cache.delete(key);
-        }
+        const resp = await fetch('/hero-sequence.mp4');
+        if (!resp.ok) throw new Error('Network response was not ok');
+        const blob = await resp.blob();
+        if (cancelled) return;
+        objectUrl = URL.createObjectURL(blob);
+        video!.src = objectUrl;
+        video!.load();
+      } catch (err) {
+        console.error('Failed to load video blob:', err);
       }
     }
+    loadVideoBlob();
 
-    let lastPreload = -999;
-    function preloadAround(idx: number) {
-      if (Math.abs(idx - lastPreload) < 5) return;
-      lastPreload = idx;
-      evict(idx);
-      for (let i = idx; i <= Math.min(idx + CACHE_AHEAD, EFF_FRAMES - 1); i++) loadFrame(i);
-      for (let i = idx - 1; i >= Math.max(idx - CACHE_BEHIND, 0); i--)        loadFrame(i);
-    }
-
-    // ── Preload first chunk immediately ───────────────────────────────────
-    for (let i = 0; i < Math.min(CACHE_AHEAD, EFF_FRAMES); i++) loadFrame(i);
-
-    // ── Canvas sizing ─────────────────────────────────────────────────────
-    const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
-    let cw = 0, ch = 0;
-    let lastDrawn = -1;
-
-    function resize() {
-      cw = window.innerWidth;
-      ch = window.innerHeight;
-      canvas!.width  = cw * DPR;
-      canvas!.height = ch * DPR;
-      canvas!.style.width  = `${cw}px`;
-      canvas!.style.height = `${ch}px`;
-      ctx!.setTransform(DPR, 0, 0, DPR, 0, 0);
-      lastDrawn = -1;
-    }
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
-
-    // ── Scroll state: update via passive listener, read in RAF ────────────
-    // This avoids getBoundingClientRect() in the RAF loop (no layout thrash)
+    // ── Scroll state ────────────────────────────────────────────────────────
     let scrollY       = window.scrollY;
     let containerTop  = 0;
     let containerH    = 0;
@@ -125,7 +45,6 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
     function updateContainerMetrics() {
       const el = containerRef.current;
       if (!el) return;
-      // getBoundingClientRect + scrollY = absolute top
       containerTop = el.getBoundingClientRect().top + window.scrollY;
       containerH   = el.offsetHeight;
     }
@@ -134,14 +53,10 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
     function onScroll() { scrollY = window.scrollY; }
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Recalculate container position on resize (layout may shift)
-    function onResize() {
-      resize();
-      updateContainerMetrics();
-    }
+    function onResize() { updateContainerMetrics(); }
     window.addEventListener('resize', onResize, { passive: true });
 
-    // ── RAF loop: only reads refs, no layout APIs ─────────────────────────
+    // ── RAF loop ────────────────────────────────────────────────────────────
     let rafId = 0;
     let currentProgress = 0;
     let targetProgress = 0;
@@ -150,46 +65,25 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
       if (cancelled) return;
 
       const totalScrollable = containerH - window.innerHeight;
-      let frameIdx = 0;
 
       if (totalScrollable > 0) {
         const scrolled = scrollY - containerTop;
         targetProgress = Math.max(0, Math.min(1, scrolled / totalScrollable));
       }
 
-      // Smooth interpolation (LERP) for buttery smooth frame playback
+      // Smooth interpolation (LERP) for buttery smooth scrubbing
       currentProgress += (targetProgress - currentProgress) * 0.08;
       
-      // Stop interpolating if we are incredibly close to target to save CPU
       if (Math.abs(targetProgress - currentProgress) < 0.0001) {
         currentProgress = targetProgress;
       }
 
-      frameIdx = Math.min(Math.floor(currentProgress * (EFF_FRAMES - 1)), EFF_FRAMES - 1);
-
-      preloadAround(frameIdx);
-
-      if (frameIdx !== lastDrawn) {
-        let bmp = cache.get(frameIdx);
-
-        // Nearest-neighbour fallback
-        if (!bmp) {
-          for (let i = 1; i <= CACHE_BEHIND; i++) {
-            if (cache.has(frameIdx - i)) { bmp = cache.get(frameIdx - i); break; }
-            if (cache.has(frameIdx + i)) { bmp = cache.get(frameIdx + i); break; }
-          }
-        }
-
-        if (bmp) {
-          ctx!.fillStyle = '#000';
-          ctx!.fillRect(0, 0, cw, ch);
-          drawCover(ctx!, bmp, cw, ch);
-          lastDrawn = frameIdx;
-        }
-
-        onProgress?.(currentProgress);
+      // Scrub the video
+      if (video!.duration && !isNaN(video!.duration)) {
+        video!.currentTime = currentProgress * video!.duration;
       }
 
+      onProgress?.(currentProgress);
       rafId = requestAnimationFrame(tick);
     }
 
@@ -200,17 +94,30 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
       cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
-      // Free all GPU bitmaps
-      for (const bmp of cache.values()) bmp.close();
-      cache.clear();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [containerRef, onProgress]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ position: 'absolute', inset: 0, display: 'block', pointerEvents: 'none' }}
-      aria-hidden="true"
-    />
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        preload="auto"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          minWidth: '100%',
+          minHeight: '100%',
+          width: 'auto',
+          height: 'auto',
+          objectFit: 'cover',
+          pointerEvents: 'none'
+        }}
+      />
+    </div>
   );
 }
