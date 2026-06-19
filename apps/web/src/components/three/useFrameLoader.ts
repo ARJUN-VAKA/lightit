@@ -9,10 +9,10 @@ export interface FrameLoaderState {
   isReady: boolean; // true once first batch is loaded
 }
 
-const TOTAL_FRAMES = 363;
-const FRAMES_PER_SEQ = 121;
+const TOTAL_FRAMES = 1503;
+const FRAMES_PER_SEQ = 501;
 const CRITICAL_BATCH = 40; // load synchronously before painting
-const IDLE_BATCH_SIZE = 20;
+const IDLE_BATCH_SIZE = 30;
 
 function getFrameUrl(index: number): string {
   // index 0-362

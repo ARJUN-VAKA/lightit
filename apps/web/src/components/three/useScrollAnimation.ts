@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const TOTAL_FRAMES = 363;
+const TOTAL_FRAMES = 1503;
 
 interface UseScrollAnimationOptions {
   containerRef: React.RefObject<HTMLDivElement | null>;
