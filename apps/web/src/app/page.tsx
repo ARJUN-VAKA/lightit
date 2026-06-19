@@ -3,7 +3,8 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import {
   Zap, TrendingUp, Shield,
   Star, ArrowRight, Check, Brain, Globe, Award, MessageSquare,
@@ -693,8 +694,14 @@ function Footer() {
 
 // ─── Main Page ────────────────────────────────────────────────
 export default function HomePage() {
+  const { setTheme } = useTheme();
+
+  useEffect(() => {
+    setTheme('dark');
+  }, [setTheme]);
+
   return (
-    <main>
+    <main className="dark bg-[#050505] text-white min-h-screen">
       <Navbar />
       <ScrollAnimationHero />
       <FeaturesSection />
