@@ -258,7 +258,7 @@ export function ScrollAnimationHero() {
   if (prefersReducedMotion) return <StaticFallbackHero />;
 
   return (
-    <div ref={containerRef} className="relative" style={{ height: '500vh' }}>
+    <div ref={containerRef} className="relative" style={{ height: '400vh' }}>
       {/* Sticky viewport */}
       <div className="sticky top-0 w-full overflow-hidden" style={{ height: '100vh' }}>
 
