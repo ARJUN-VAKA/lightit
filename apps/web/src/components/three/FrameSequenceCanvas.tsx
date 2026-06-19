@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 const TOTAL_FILES   = 1503;  // actual PNG files on disk
-const FRAME_STEP    = 1;     // use every frame for maximum smoothness
-const EFF_FRAMES    = Math.ceil(TOTAL_FILES / FRAME_STEP); // 1503
+const FRAME_STEP    = 3;     // use every Nth frame to save network bandwidth (501 frames)
+const EFF_FRAMES    = Math.ceil(TOTAL_FILES / FRAME_STEP); // 501
 const FILES_PER_SEQ = 501;
 
 const CACHE_AHEAD  = 80;   // decode this many frames ahead of playhead
@@ -101,6 +101,7 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
     // ── Canvas sizing ─────────────────────────────────────────────────────
     const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
     let cw = 0, ch = 0;
+    let lastDrawn = -1;
 
     function resize() {
       cw = window.innerWidth;
@@ -141,21 +142,30 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
     window.addEventListener('resize', onResize, { passive: true });
 
     // ── RAF loop: only reads refs, no layout APIs ─────────────────────────
-    let lastDrawn = -1;
     let rafId = 0;
+    let currentProgress = 0;
+    let targetProgress = 0;
 
     function tick() {
       if (cancelled) return;
 
       const totalScrollable = containerH - window.innerHeight;
-      let progress = 0;
       let frameIdx = 0;
 
       if (totalScrollable > 0) {
         const scrolled = scrollY - containerTop;
-        progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
-        frameIdx = Math.min(Math.floor(progress * (EFF_FRAMES - 1)), EFF_FRAMES - 1);
+        targetProgress = Math.max(0, Math.min(1, scrolled / totalScrollable));
       }
+
+      // Smooth interpolation (LERP) for buttery smooth frame playback
+      currentProgress += (targetProgress - currentProgress) * 0.08;
+      
+      // Stop interpolating if we are incredibly close to target to save CPU
+      if (Math.abs(targetProgress - currentProgress) < 0.0001) {
+        currentProgress = targetProgress;
+      }
+
+      frameIdx = Math.min(Math.floor(currentProgress * (EFF_FRAMES - 1)), EFF_FRAMES - 1);
 
       preloadAround(frameIdx);
 
@@ -177,7 +187,7 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
           lastDrawn = frameIdx;
         }
 
-        onProgress?.(progress);
+        onProgress?.(currentProgress);
       }
 
       rafId = requestAnimationFrame(tick);
