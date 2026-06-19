@@ -105,6 +105,7 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
         muted
         playsInline
         preload="auto"
+        poster="/hero-poster.jpg"
         style={{
           position: 'absolute',
           top: '50%',
