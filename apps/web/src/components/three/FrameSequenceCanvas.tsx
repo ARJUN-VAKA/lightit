@@ -3,9 +3,14 @@
 import { useEffect, useRef } from 'react';
 
 const TOTAL_FRAMES = 1503;
+const FRAMES_PER_SEQ = 501;
+
+// Window cache: only keep this many frames loaded at once around current position
+const CACHE_WINDOW = 60;   // keep 60 frames total (30 ahead, 30 behind)
+const PRELOAD_AHEAD = 30;  // preload 30 frames ahead
+const PRELOAD_BEHIND = 30; // keep 30 frames behind
 
 function getFrameUrl(index: number): string {
-  const FRAMES_PER_SEQ = 501;
   let seq: number;
   let frame: number;
   if (index < FRAMES_PER_SEQ) {
@@ -22,9 +27,6 @@ function getFrameUrl(index: number): string {
   return `/frames0${seq}/frame_${padded}.png`;
 }
 
-/**
- * Draw an image covering the canvas (object-fit: cover behaviour)
- */
 function drawImageCover(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -34,7 +36,6 @@ function drawImageCover(
   const imgAspect = img.naturalWidth / img.naturalHeight;
   const canvasAspect = canvasW / canvasH;
   let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
-
   if (imgAspect > canvasAspect) {
     sw = img.naturalHeight * canvasAspect;
     sx = (img.naturalWidth - sw) / 2;
@@ -48,115 +49,99 @@ function drawImageCover(
 interface CinematicCanvasProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
   onProgress?: (progress: number) => void;
-  onFrame?: (frame: number) => void;
 }
 
-/**
- * CinematicCanvas
- * 
- * This component owns its own RAF loop and draws frames imperatively,
- * bypassing React's render cycle completely for maximum smoothness.
- * It reads scroll position itself every animation frame.
- */
-export function CinematicCanvas({ containerRef, onProgress, onFrame }: CinematicCanvasProps) {
+export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
-    // ── Frame cache ──────────────────────────────────────────────
-    const frames: (HTMLImageElement | null)[] = Array(TOTAL_FRAMES).fill(null);
-    let loadedCount = 0;
-    const CRITICAL = 40;
-    const BATCH = 30;
+    // ── Windowed cache: Map<index, HTMLImageElement> ──────────────
+    const cache = new Map<number, HTMLImageElement>();
+    const loading = new Set<number>(); // prevent duplicate loads
     let cancelled = false;
 
-    function loadImage(index: number): Promise<void> {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => {
-          if (!cancelled) {
-            frames[index] = img;
-            loadedCount++;
-          }
-          resolve();
-        };
-        img.onerror = () => resolve(); // skip failed frames silently
-        img.src = getFrameUrl(index);
-      });
-    }
-
-    // Load first 40 frames immediately (critical path)
-    const criticalPromises = Array.from({ length: CRITICAL }, (_, i) => loadImage(i));
-
-    // Load rest in idle batches
-    function loadRemainingIdle() {
-      let next = CRITICAL;
-      function doBatch() {
-        if (cancelled) return;
-        const end = Math.min(next + BATCH, TOTAL_FRAMES);
-        const batch: Promise<void>[] = [];
-        for (let i = next; i < end; i++) batch.push(loadImage(i));
-        next = end;
-        Promise.allSettled(batch).then(() => {
-          if (!cancelled && next < TOTAL_FRAMES) {
-            if (typeof requestIdleCallback !== 'undefined') {
-              requestIdleCallback(doBatch, { timeout: 2000 });
-            } else {
-              setTimeout(doBatch, 50);
-            }
-          }
-        });
-      }
-      if (typeof requestIdleCallback !== 'undefined') {
-        requestIdleCallback(doBatch, { timeout: 2000 });
-      } else {
-        setTimeout(doBatch, 100);
+    function evictCache(currentIndex: number) {
+      // Remove frames far from the current position
+      for (const [key] of cache) {
+        if (key < currentIndex - PRELOAD_BEHIND || key > currentIndex + PRELOAD_AHEAD) {
+          cache.delete(key);
+        }
       }
     }
 
-    // ── Canvas sizing ────────────────────────────────────────────
+    function loadFrame(index: number): void {
+      if (index < 0 || index >= TOTAL_FRAMES) return;
+      if (cache.has(index) || loading.has(index)) return;
+      loading.add(index);
+      const img = new Image();
+      img.onload = () => {
+        if (!cancelled) {
+          cache.set(index, img);
+        }
+        loading.delete(index);
+      };
+      img.onerror = () => loading.delete(index);
+      img.src = getFrameUrl(index);
+    }
+
+    function preloadAround(index: number) {
+      // Evict old frames first to free memory
+      evictCache(index);
+      // Load window around current frame
+      for (let i = index; i <= Math.min(index + PRELOAD_AHEAD, TOTAL_FRAMES - 1); i++) {
+        loadFrame(i);
+      }
+      for (let i = index - 1; i >= Math.max(index - PRELOAD_BEHIND, 0); i--) {
+        loadFrame(i);
+      }
+    }
+
+    // ── Canvas sizing ─────────────────────────────────────────────
     let canvasW = 0;
     let canvasH = 0;
+    let lastDrawn = -1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
     function resize() {
       if (!canvas) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // cap at 1.5x for perf
       canvasW = window.innerWidth;
       canvasH = window.innerHeight;
       canvas.width = canvasW * dpr;
       canvas.height = canvasH * dpr;
       canvas.style.width = `${canvasW}px`;
       canvas.style.height = `${canvasH}px`;
-      ctx!.setTransform(1, 0, 0, 1, 0, 0);
-      ctx!.scale(dpr, dpr);
-      lastDrawn = -1; // force redraw
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lastDrawn = -1;
     }
 
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
-    // ── RAF draw loop ────────────────────────────────────────────
-    let lastDrawn = -1;
+    // ── Preload first 30 frames immediately ───────────────────────
+    for (let i = 0; i < Math.min(PRELOAD_AHEAD, TOTAL_FRAMES); i++) {
+      loadFrame(i);
+    }
+
+    // ── RAF draw loop ─────────────────────────────────────────────
     let rafId = 0;
+    let lastPreloadIndex = -1;
 
     function tick() {
       if (cancelled) return;
 
-      // Read scroll directly — no event listener needed
       const el = containerRef.current;
       let frameIndex = 0;
       let progress = 0;
 
       if (el) {
-        const rect = el.getBoundingClientRect();
+        const scrolled = -el.getBoundingClientRect().top;
         const totalScrollable = el.offsetHeight - window.innerHeight;
         if (totalScrollable > 0) {
-          const scrolled = -rect.top;
           progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
           frameIndex = Math.min(
             Math.floor(progress * (TOTAL_FRAMES - 1)),
@@ -165,52 +150,46 @@ export function CinematicCanvas({ containerRef, onProgress, onFrame }: Cinematic
         }
       }
 
-      // Only redraw when frame actually changes
-      if (frameIndex !== lastDrawn) {
-        let img = frames[frameIndex];
+      // Only preload when we move significantly (every 5 frames)
+      if (Math.abs(frameIndex - lastPreloadIndex) >= 5) {
+        preloadAround(frameIndex);
+        lastPreloadIndex = frameIndex;
+      }
 
-        // Fallback: find nearest loaded frame
+      if (frameIndex !== lastDrawn) {
+        let img = cache.get(frameIndex);
+
+        // Nearest loaded fallback
         if (!img) {
-          for (let i = 1; i <= 30; i++) {
-            if (frameIndex - i >= 0 && frames[frameIndex - i]) {
-              img = frames[frameIndex - i];
-              break;
-            }
-            if (frameIndex + i < TOTAL_FRAMES && frames[frameIndex + i]) {
-              img = frames[frameIndex + i];
-              break;
-            }
+          for (let i = 1; i <= PRELOAD_BEHIND; i++) {
+            if (cache.has(frameIndex - i)) { img = cache.get(frameIndex - i); break; }
+            if (cache.has(frameIndex + i)) { img = cache.get(frameIndex + i); break; }
           }
         }
 
         if (img) {
-          ctx!.fillStyle = '#000000';
+          ctx!.fillStyle = '#000';
           ctx!.fillRect(0, 0, canvasW, canvasH);
           drawImageCover(ctx!, img, canvasW, canvasH);
           lastDrawn = frameIndex;
         }
 
-        onFrame?.(frameIndex);
         onProgress?.(progress);
       }
 
       rafId = requestAnimationFrame(tick);
     }
 
-    // Start RAF loop after critical frames load
-    Promise.allSettled(criticalPromises).then(() => {
-      if (!cancelled) {
-        tick();
-        loadRemainingIdle();
-      }
-    });
+    rafId = requestAnimationFrame(tick);
 
     return () => {
       cancelled = true;
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resize);
+      cache.clear();
+      loading.clear();
     };
-  }, [containerRef, onProgress, onFrame]);
+  }, [containerRef, onProgress]);
 
   return (
     <canvas
