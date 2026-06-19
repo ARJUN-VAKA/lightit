@@ -11,9 +11,11 @@ interface UseScrollAnimationOptions {
 export function useScrollAnimation({ containerRef }: UseScrollAnimationOptions) {
   const [frameIndex, setFrameIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Keep refs for the RAF loop so we never close over stale values
+  const progressRef = useRef(0);
+  const frameIndexRef = useRef(0);
   const rafRef = useRef<number | null>(null);
-  const currentFrameRef = useRef(0);
-  const targetFrameRef = useRef(0);
 
   useEffect(() => {
     function computeProgress() {
@@ -24,39 +26,28 @@ export function useScrollAnimation({ containerRef }: UseScrollAnimationOptions) 
       const totalScrollable = el.offsetHeight - window.innerHeight;
       if (totalScrollable <= 0) return;
 
-      // How far the container top is above viewport top
       const scrolled = -rect.top;
       const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
-      const target = Math.floor(progress * (TOTAL_FRAMES - 1));
-
-      setScrollProgress(progress);
-      targetFrameRef.current = target;
+      progressRef.current = progress;
     }
 
-    function onScroll() {
-      computeProgress();
-    }
-
-    // Smooth lerp loop for buttery-smooth frame transitions
     function tick() {
-      const current = currentFrameRef.current;
-      const target = targetFrameRef.current;
+      computeProgress();
 
-      if (current !== target) {
-        // Snap directly for responsive feel (no lag)
-        currentFrameRef.current = target;
+      const target = Math.floor(progressRef.current * (TOTAL_FRAMES - 1));
+      if (target !== frameIndexRef.current) {
+        frameIndexRef.current = target;
         setFrameIndex(target);
+        setScrollProgress(progressRef.current);
       }
 
       rafRef.current = requestAnimationFrame(tick);
     }
 
-    computeProgress(); // Initial computation
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // Kick off the RAF loop — it runs every frame regardless of scroll
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener('scroll', onScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [containerRef]);
