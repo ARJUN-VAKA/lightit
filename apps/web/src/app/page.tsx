@@ -2,19 +2,27 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 import {
-  Zap, TrendingUp, Shield, Users, Target, ChevronRight,
+  Zap, TrendingUp, Shield,
   Star, ArrowRight, Check, Brain, Globe, Award, MessageSquare,
-  BarChart2, Lock, Rocket, Building2, ChevronDown, Play
+  BarChart2, Rocket, Building2, ChevronDown
 } from 'lucide-react';
 
-// Dynamic import for Three.js (no SSR)
-const HeroCanvas = dynamic(() => import('@/components/three/HeroCanvas').then(m => m.HeroCanvas), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0 bg-gradient-radial from-blue-950/20 to-transparent" />,
-});
+// Dynamic import for Cinematic Hero (no SSR — uses canvas + window)
+const ScrollAnimationHero = dynamic(
+  () => import('@/components/three/ScrollAnimationHero').then(m => m.ScrollAnimationHero),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="min-h-screen"
+        style={{ background: 'linear-gradient(135deg, #050505 0%, #0a0a2e 50%, #050505 100%)' }}
+      />
+    ),
+  }
+);
 
 // ─── Reusable Components ──────────────────────────────────────
 
@@ -115,115 +123,10 @@ function Navbar() {
   );
 }
 
-// ─── Hero Section ─────────────────────────────────────────────
-function HeroSection() {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-deep-black">
-      {/* 3D Canvas */}
-      <HeroCanvas />
-
-      {/* Background gradients */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20" style={{ background: 'radial-gradient(circle, #0ea5e9, transparent)' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-15" style={{ background: 'radial-gradient(circle, #8b5cf6, transparent)' }} />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-32">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-6"
-        >
-          <span className="badge badge-blue text-xs uppercase tracking-widest">
-            <Zap className="w-3 h-3" />
-            AI-Powered Matchmaking Platform
-          </span>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="font-display font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-6 leading-none tracking-tight"
-        >
-          Where{' '}
-          <span className="gradient-text">Startups</span>
-          <br />
-          Meet{' '}
-          <span className="gradient-text">Investors</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
-        >
-          LightIt uses advanced AI to connect high-potential founders with the right investors —
-          intelligently, instantly, and securely.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Link href="/auth/founder/register" className="btn-primary text-base px-8 py-4 w-full sm:w-auto">
-            <span className="flex items-center gap-2">
-              <Rocket className="w-5 h-5" />
-              I'm a Founder
-              <ArrowRight className="w-4 h-4" />
-            </span>
-          </Link>
-          <Link href="/auth/investor/register" className="btn-secondary text-base px-8 py-4 w-full sm:w-auto">
-            <TrendingUp className="w-5 h-5" />
-            I'm an Investor
-          </Link>
-        </motion.div>
-
-        {/* Stats row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-8 mt-16 pt-10 border-t border-white/5"
-        >
-          {[
-            { value: '10,000+', label: 'Founders' },
-            { value: '2,500+', label: 'Investors' },
-            { value: '$2.4B+', label: 'Funding Matched' },
-            { value: '94%', label: 'Match Accuracy' },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold font-display gradient-text">{stat.value}</div>
-              <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-            className="flex flex-col items-center gap-2 text-gray-600 cursor-pointer"
-          >
-            <span className="text-xs uppercase tracking-widest">Explore</span>
-            <ChevronDown className="w-5 h-5" />
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
+// ─── Hero Section — Cinematic scroll animation ────────────────
+// The ScrollAnimationHero creates a 500vh scroll zone with a sticky
+// canvas that plays 363 frames as the user scrolls. All other sections
+// appear below it as normal page content.
 
 // ─── Features Section ─────────────────────────────────────────
 const FEATURES = [
@@ -793,7 +696,7 @@ export default function HomePage() {
   return (
     <main>
       <Navbar />
-      <HeroSection />
+      <ScrollAnimationHero />
       <FeaturesSection />
       <HowItWorksSection />
       <TestimonialsSection />
