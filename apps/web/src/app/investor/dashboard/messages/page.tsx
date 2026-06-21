@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { InvestorLayout } from '@/components/dashboard/InvestorLayout';
-import { Send, Search, Circle } from 'lucide-react';
+import { Send, Search, Circle, ArrowLeft } from 'lucide-react';
 
 const CONVERSATIONS = [
   { id: 1, name: 'NeuroSync AI', role: 'Founder — Sarah Chen', avatar: 'NS', color: '#8b5cf6', online: true,
@@ -22,16 +22,16 @@ const CONVERSATIONS = [
 ];
 
 export default function InvestorMessagesPage() {
-  const [activeId, setActiveId] = useState(1);
+  const [activeId, setActiveId] = useState<number | null>(null);
   const [convos, setConvos] = useState(CONVERSATIONS);
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
   const endRef = useRef<HTMLDivElement>(null);
-  const active = convos.find(c => c.id === activeId)!;
+  const active = activeId ? convos.find(c => c.id === activeId)! : null;
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [activeId, convos]);
 
   const send = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !activeId) return;
     const msg = input.trim();
     setConvos(prev => prev.map(c => c.id === activeId ? { ...c, messages: [...c.messages, { from: 'me', text: msg, time: 'Now' }] } : c));
     setInput('');
@@ -44,7 +44,7 @@ export default function InvestorMessagesPage() {
   return (
     <InvestorLayout title="Messages" subtitle="Encrypted founder conversations">
       <div className="flex gap-0 rounded-2xl overflow-hidden glass-card" style={{ height: 'calc(100vh - 180px)' }}>
-        <div className="w-72 flex-shrink-0 flex flex-col border-r" style={{ borderColor: 'var(--border)' }}>
+        <div className={`w-full md:w-72 flex-shrink-0 flex-col border-r ${active ? 'hidden md:flex' : 'flex'}`} style={{ borderColor: 'var(--border)' }}>
           <div className="p-4 border-b" style={{ borderColor: 'var(--border)' }}>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -68,37 +68,48 @@ export default function InvestorMessagesPage() {
             ))}
           </div>
         </div>
-        <div className="flex-1 flex flex-col">
-          <div className="flex items-center gap-3 px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold text-white" style={{ background: active.color }}>{active.avatar}</div>
-            <div>
-              <p className="text-foreground font-semibold text-sm">{active.name}</p>
-              <p className="text-muted-foreground text-xs flex items-center gap-1">
-                {active.online && <Circle className="w-2 h-2 fill-emerald-400 text-emerald-400" />}
-                {active.online ? 'Online' : 'Offline'} · {active.role}
-              </p>
-            </div>
-          </div>
-          <div className="flex-1 overflow-y-auto p-5 space-y-4">
-            {active.messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.from === 'me' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs lg:max-w-md px-4 py-2.5 rounded-2xl text-sm ${msg.from === 'me' ? 'text-white rounded-br-sm' : 'text-foreground rounded-bl-sm'}`}
-                  style={msg.from === 'me' ? { background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' } : { background: 'var(--card-bg)', border: '1px solid var(--border)' }}>
-                  {msg.text}<p className="text-xs mt-1 opacity-60">{msg.time}</p>
+        <div className={`flex-1 flex-col ${active ? 'flex' : 'hidden md:flex'}`}>
+          {active ? (
+            <>
+              <div className="flex items-center gap-3 px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
+                <button onClick={() => setActiveId(null)} className="md:hidden mr-2 p-2 -ml-2 text-muted-foreground hover:text-foreground">
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold text-white" style={{ background: active.color }}>{active.avatar}</div>
+                <div>
+                  <p className="text-foreground font-semibold text-sm">{active.name}</p>
+                  <p className="text-muted-foreground text-xs flex items-center gap-1">
+                    {active.online && <Circle className="w-2 h-2 fill-emerald-400 text-emerald-400" />}
+                    {active.online ? 'Online' : 'Offline'} · {active.role}
+                  </p>
                 </div>
               </div>
-            ))}
-            <div ref={endRef} />
-          </div>
-          <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}>
-            <div className="flex gap-3">
-              <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Type a message…" className="input-field flex-1 py-3" />
-              <button onClick={send} className="w-12 h-12 rounded-xl flex items-center justify-center transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
-                <Send className="w-4 h-4 text-white" />
-              </button>
+              <div className="flex-1 overflow-y-auto p-5 space-y-4">
+                {active.messages.map((msg, i) => (
+                  <div key={i} className={`flex ${msg.from === 'me' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-xs lg:max-w-md px-4 py-2.5 rounded-2xl text-sm ${msg.from === 'me' ? 'text-white rounded-br-sm' : 'text-foreground rounded-bl-sm'}`}
+                      style={msg.from === 'me' ? { background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' } : { background: 'var(--card-bg)', border: '1px solid var(--border)' }}>
+                      {msg.text}<p className="text-xs mt-1 opacity-60">{msg.time}</p>
+                    </div>
+                  </div>
+                ))}
+                <div ref={endRef} />
+              </div>
+              <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}>
+                <div className="flex gap-3">
+                  <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Type a message…" className="input-field flex-1 py-3" />
+                  <button onClick={send} className="w-12 h-12 rounded-xl flex items-center justify-center transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+                    <Send className="w-4 h-4 text-white" />
+                  </button>
+                </div>
+                <p className="text-muted-foreground text-xs mt-2 text-center">🔒 End-to-end encrypted</p>
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-muted-foreground h-full">
+              Select a conversation to start chatting
             </div>
-            <p className="text-muted-foreground text-xs mt-2 text-center">🔒 End-to-end encrypted</p>
-          </div>
+          )}
         </div>
       </div>
     </InvestorLayout>
