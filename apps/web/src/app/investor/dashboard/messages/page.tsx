@@ -68,10 +68,10 @@ export default function InvestorMessagesPage() {
             ))}
           </div>
         </div>
-        <div className={`flex-1 flex-col ${active ? 'flex' : 'hidden md:flex'}`}>
+        <div className={`flex-1 flex-col overflow-hidden ${active ? 'flex' : 'hidden md:flex'}`}>
           {active ? (
             <>
-              <div className="flex items-center gap-3 px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
+              <div className="flex-shrink-0 flex items-center gap-3 px-5 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
                 <button onClick={() => setActiveId(null)} className="md:hidden mr-2 p-2 -ml-2 text-muted-foreground hover:text-foreground">
                   <ArrowLeft className="w-5 h-5" />
                 </button>
@@ -95,7 +95,7 @@ export default function InvestorMessagesPage() {
                 ))}
                 <div ref={endRef} />
               </div>
-              <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}>
+              <div className="flex-shrink-0 p-4 border-t" style={{ borderColor: 'var(--border)' }}>
                 <div className="flex gap-3">
                   <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Type a message…" className="input-field flex-1 py-3" />
                   <button onClick={send} className="w-12 h-12 rounded-xl flex items-center justify-center transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
