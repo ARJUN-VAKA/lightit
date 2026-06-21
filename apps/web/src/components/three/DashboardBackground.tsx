@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useMemo, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 
 export function DashboardBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -13,56 +13,80 @@ export function DashboardBackground() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    let w = 0, h = 0;
+
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
     };
     resize();
     window.addEventListener('resize', resize);
+
     const onMouse = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight };
+      mouseRef.current = { x: e.clientX / w, y: e.clientY / h };
     };
     window.addEventListener('mousemove', onMouse, { passive: true });
 
-    const particleCount = Math.min(120, Math.floor((window.innerWidth * window.innerHeight) / 15000));
-    const particles: { x: number; y: number; vx: number; vy: number; size: number; alpha: number; hue: number }[] = [];
+    const density = Math.min(1, w / 1920);
+    const count = Math.floor((60 + Math.random() * 20) * density);
+    const particles: {
+      x: number; y: number; vx: number; vy: number;
+      size: number; baseSize: number; alpha: number; targetAlpha: number;
+      hue: number; sat: number; light: number;
+      phase: number;
+    }[] = [];
 
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < count; i++) {
+      const isBright = Math.random() > 0.6;
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        size: 1 + Math.random() * 2,
-        alpha: 0.2 + Math.random() * 0.3,
-        hue: 200 + Math.random() * 60,
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        size: 0,
+        baseSize: isBright ? 2.5 + Math.random() * 3 : 1.5 + Math.random() * 2,
+        alpha: 0,
+        targetAlpha: isBright ? 0.7 + Math.random() * 0.3 : 0.3 + Math.random() * 0.3,
+        hue: isBright ? 190 + Math.random() * 50 : 210 + Math.random() * 60,
+        sat: isBright ? 80 + Math.random() * 20 : 50 + Math.random() * 30,
+        light: isBright ? 65 + Math.random() * 15 : 50 + Math.random() * 15,
+        phase: Math.random() * Math.PI * 2,
       });
     }
 
     let time = 0;
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      time += 0.003;
+      ctx.clearRect(0, 0, w, h);
+      time += 0.008;
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        p.x += p.vx + Math.sin(time + i) * 0.2;
-        p.y += p.vy + Math.cos(time + i * 0.5) * 0.2;
-        p.vx += (mx - 0.5) * 0.002;
-        p.vy += (my - 0.5) * 0.002;
-        p.vx *= 0.99;
-        p.vy *= 0.99;
+        p.alpha += (p.targetAlpha - p.alpha) * 0.02;
+        p.size += (p.baseSize + Math.sin(time * 2 + p.phase) * 0.5 - p.size) * 0.05;
+        p.vx += (mx - 0.5) * 0.004 + Math.sin(time + p.phase) * 0.0008;
+        p.vy += (my - 0.5) * 0.004 + Math.cos(time * 0.7 + p.phase) * 0.0008;
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+        p.x += p.vx;
+        p.y += p.vy;
 
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
+        if (p.x < -20) p.x = w + 20;
+        if (p.x > w + 20) p.x = -20;
+        if (p.y < -20) p.y = h + 20;
+        if (p.y > h + 20) p.y = -20;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${p.hue}, 70%, 60%, ${p.alpha})`;
+
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2.5);
+        grad.addColorStop(0, `hsla(${p.hue}, ${p.sat}%, ${p.light}%, ${p.alpha})`);
+        grad.addColorStop(0.4, `hsla(${p.hue}, ${p.sat}%, ${p.light}%, ${p.alpha * 0.3})`);
+        grad.addColorStop(1, `hsla(${p.hue}, ${p.sat}%, ${p.light}%, 0)`);
+        ctx.fillStyle = grad;
         ctx.fill();
       }
 
@@ -71,12 +95,14 @@ export function DashboardBackground() {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
+          const maxDist = 180 * density + 40;
+          if (dist < maxDist) {
+            const strength = 1 - dist / maxDist;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `hsla(210, 70%, 60%, ${0.08 * (1 - dist / 150)})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `hsla(210, 70%, 65%, ${0.15 * strength * strength})`;
+            ctx.lineWidth = 0.8 * strength + 0.2;
             ctx.stroke();
           }
         }
@@ -97,7 +123,6 @@ export function DashboardBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-0 pointer-events-none"
-      style={{ opacity: 0.6 }}
     />
   );
 }
