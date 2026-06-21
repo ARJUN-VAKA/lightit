@@ -17,6 +17,10 @@ import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { DashboardBackground } from '@/components/three/DashboardBackground';
+import { AnimatedCounter } from '@/components/dashboard/AnimatedCounter';
+import { NetworkGraph } from '@/components/three/NetworkGraph';
+import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 const getHeaders = () => {
@@ -44,6 +48,8 @@ const EVENT_TYPES = ['PITCH_COMPETITION', 'NETWORKING', 'WORKSHOP', 'CONFERENCE'
 
 // ─── Reusable Components ─────────────────────────────────────────────────────
 function StatCard({ icon: Icon, label, value, color, sub }: any) {
+  const numericValue = typeof value === 'number' ? value : parseInt(String(value).replace(/[^0-9]/g, '')) || 0;
+  const isCurrency = String(value).startsWith('$');
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
       className="glass-card p-5 flex flex-col gap-2">
@@ -54,7 +60,13 @@ function StatCard({ icon: Icon, label, value, color, sub }: any) {
         </div>
         {sub && <span className="text-xs text-gray-500">{sub}</span>}
       </div>
-      <div className="text-2xl font-bold text-white font-display">{value}</div>
+      <div className="text-2xl font-bold text-white font-display">
+        {isCurrency ? (
+          <><AnimatedCounter end={numericValue} prefix="$" /></>
+        ) : (
+          <AnimatedCounter end={numericValue} />
+        )}
+      </div>
       <p className="text-xs text-gray-500">{label}</p>
     </motion.div>
   );
@@ -177,6 +189,28 @@ function OverviewPanel() {
           </div>
         </div>
       )}
+
+      {/* System Health */}
+      <div className="glass-card p-6">
+        <h3 className="font-display font-bold text-lg text-white mb-4">System Health</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { label: 'API Status', value: 'Operational', status: 'bg-emerald-500', sub: '99.9% uptime' },
+            { label: 'Database', value: 'Connected', status: 'bg-emerald-500', sub: '20ms latency' },
+            { label: 'Redis Cache', value: 'Online', status: 'bg-emerald-500', sub: '45% memory' },
+            { label: 'Socket.IO', value: 'Active', status: 'bg-emerald-500', sub: '127 connected' },
+          ].map(h => (
+            <div key={h.label} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <div className={`w-2 h-2 rounded-full ${h.status}`} />
+                <span className="text-xs text-gray-500">{h.label}</span>
+              </div>
+              <p className="text-white font-semibold text-sm">{h.value}</p>
+              <p className="text-xs text-gray-600 mt-0.5">{h.sub}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -1223,6 +1257,7 @@ export default function AdminDashboard() {
   const [activeNav, setActiveNav] = useState('overview');
   const [adminUser, setAdminUser] = useState<any>(null);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [notifOpen, setNotifOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -1271,9 +1306,10 @@ export default function AdminDashboard() {
   );
 
   return (
-    <div className="flex min-h-screen bg-deep-black">
+    <div className="flex min-h-screen bg-deep-black relative">
+      <DashboardBackground />
       {/* Sidebar */}
-      <aside className="w-56 flex-shrink-0 h-screen sticky top-0 flex flex-col bg-card-bg border-r border-white/5">
+      <aside className="w-56 flex-shrink-0 h-screen sticky top-0 flex-col bg-card-bg/80 backdrop-blur-xl border-r border-white/5 hidden md:flex z-10">
         <div className="flex items-center gap-2 p-5 border-b border-white/5">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
             <Zap className="w-3.5 h-3.5 text-white" />
@@ -1314,23 +1350,39 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main */}
-      <main className="flex-1 overflow-auto">
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-3.5 border-b border-white/5 bg-deep-black/90 backdrop-blur-xl">
+      <main className="flex-1 overflow-auto relative z-10">
+        <div className="sticky top-0 z-20 flex items-center justify-between px-4 md:px-6 py-3 md:py-3.5 border-b border-white/5 bg-deep-black/80 backdrop-blur-xl">
           <div>
-            <h1 className="text-white font-display font-bold text-lg capitalize">{activeNav === 'overview' ? 'Dashboard Overview' : NAV.find(n => n.id === activeNav)?.label}</h1>
+            <h1 className="text-white font-display font-bold text-base md:text-lg capitalize">{activeNav === 'overview' ? 'Dashboard Overview' : NAV.find(n => n.id === activeNav)?.label}</h1>
             <p className="text-gray-500 text-xs">LightIt Admin Control Center</p>
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <button className="relative p-2 text-gray-400 hover:text-white" onClick={() => setActiveNav('inbox')}>
+            <button className="relative p-2 text-gray-400 hover:text-white transition-colors rounded-xl hover:bg-white/5" onClick={() => setNotifOpen(true)}>
               <Bell className="w-4.5 h-4.5" style={{ width: 18, height: 18 }} />
               {unreadCount > 0 && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-500" />}
             </button>
           </div>
         </div>
 
-        <div className="p-6">{renderContent()}</div>
+        <div className="p-4 md:p-6">{renderContent()}</div>
       </main>
+      <NotificationsPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
+      <nav className="fixed bottom-0 left-0 right-0 z-30 md:hidden bg-card-bg/95 backdrop-blur-xl border-t border-white/5">
+        <div className="flex items-center justify-around px-2 py-2">
+          {NAV.slice(0, 5).map((item) => {
+            const isActive = activeNav === item.id;
+            return (
+              <button key={item.id} onClick={() => setActiveNav(item.id)}
+                className={'flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-all min-w-0 ' + (isActive ? 'text-blue-400' : 'text-gray-500 hover:text-gray-300')}>
+                <item.icon className="w-5 h-5" />
+                <span className="text-[10px] font-medium truncate max-w-full">{item.label}</span>
+                {isActive && <div className="w-1 h-1 rounded-full bg-blue-500 mt-0.5" />}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 }

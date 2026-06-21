@@ -5,10 +5,13 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import {
   LayoutDashboard, Search, Bookmark, Brain, MessageSquare,
-  Calendar, CreditCard, BarChart2, Settings, LogOut, Zap, Bell,
+  Calendar, CreditCard, BarChart2, Settings, LogOut, Zap, Bell, Menu, X,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { DashboardBackground } from '@/components/three/DashboardBackground';
+import { NotificationsPanel } from '@/components/dashboard/NotificationsPanel';
+import { MobileNav } from '@/components/dashboard/MobileNav';
 
 const NAV_ITEMS = [
   { icon: LayoutDashboard, label: 'Overview',      href: '/investor/dashboard' },
@@ -26,8 +29,8 @@ function Sidebar({ user, onLogout }: { user: any; onLogout: () => void }) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 flex-shrink-0 h-screen sticky top-0 flex flex-col bg-card-bg border-r border-white/5">
-      <div className="flex items-center gap-2 p-5 border-b border-white/5">
+    <aside className="w-64 flex-shrink-0 h-screen sticky top-0 flex-col bg-card-bg/80 backdrop-blur-xl border-r border-white/5 hidden md:flex">
+      <div className="flex items-center gap-2 p-5 border-b border-white/5 h-16">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
             <Zap className="w-3.5 h-3.5 text-white" />
@@ -85,7 +88,10 @@ interface InvestorLayoutProps {
 
 export function InvestorLayout({ children, title = 'Dashboard', subtitle }: InvestorLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -97,6 +103,8 @@ export function InvestorLayout({ children, title = 'Dashboard', subtitle }: Inve
       setUser(parsed);
     } catch { router.replace('/auth/investor'); }
   }, [router]);
+
+  useEffect(() => { setMobileMenu(false); }, [pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
@@ -113,18 +121,26 @@ export function InvestorLayout({ children, title = 'Dashboard', subtitle }: Inve
   );
 
   return (
-    <div className="flex min-h-screen bg-deep-black">
+    <div className="flex min-h-screen bg-deep-black relative">
+      <DashboardBackground />
       <Sidebar user={user} onLogout={handleLogout} />
-      <main className="flex-1 overflow-auto">
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-white/5 bg-deep-black/90 backdrop-blur-xl">
-          <div>
-            <h1 className="font-display font-bold text-xl text-white">{title}</h1>
-            {subtitle && <p className="text-gray-500 text-xs">{subtitle}</p>}
-            {!subtitle && <p className="text-gray-500 text-xs">Welcome back, {user.name}</p>}
-          </div>
+      <main className="flex-1 flex flex-col relative z-10">
+        <div className="sticky top-0 z-20 flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b border-white/5 bg-deep-black/80 backdrop-blur-xl">
           <div className="flex items-center gap-3">
+            <button className="md:hidden text-gray-400 hover:text-white" onClick={() => setMobileMenu(!mobileMenu)}>
+              {mobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+            <div>
+              <h1 className="font-display font-bold text-lg md:text-xl text-white">{title}</h1>
+              {subtitle && <p className="text-gray-500 text-xs hidden sm:block">{subtitle}</p>}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 md:gap-3">
             <ThemeToggle />
-            <button className="relative p-2 text-gray-400 hover:text-white transition-colors rounded-xl hover:bg-white/5">
+            <button
+              onClick={() => setNotifOpen(true)}
+              className="relative p-2 text-gray-400 hover:text-white transition-colors rounded-xl hover:bg-white/5"
+            >
               <Bell className="w-5 h-5" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-500" />
             </button>
@@ -134,8 +150,45 @@ export function InvestorLayout({ children, title = 'Dashboard', subtitle }: Inve
             </div>
           </div>
         </div>
-        <div className="p-6">{children}</div>
+
+        {/* Mobile menu */}
+        {mobileMenu && (
+          <div className="md:hidden bg-card-bg/95 backdrop-blur-xl border-b border-white/5 px-4 py-3">
+            <div className="flex items-center gap-3 mb-4 pb-3 border-b border-white/5">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold text-white"
+                style={{ background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' }}>
+                {user?.name?.charAt(0)?.toUpperCase() || 'I'}
+              </div>
+              <div>
+                <p className="text-white text-sm font-semibold">{user?.name || 'Investor'}</p>
+                <p className="text-gray-500 text-xs">{user?.email || ''}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {NAV_ITEMS.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link key={item.href} href={item.href}
+                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                      isActive ? 'bg-blue-500/15 text-blue-400 border border-blue-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    }`}>
+                    <item.icon className="w-4 h-4" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+              <button onClick={handleLogout}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10">
+                <LogOut className="w-4 h-4" /> Sign out
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="flex-1 p-4 md:p-6 pb-20 md:pb-6">{children}</div>
       </main>
+      <NotificationsPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
+      <MobileNav role="INVESTOR" />
     </div>
   );
 }
