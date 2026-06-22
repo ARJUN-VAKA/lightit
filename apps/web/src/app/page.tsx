@@ -2,9 +2,10 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
+import { HeroLoader } from '@/components/three/HeroLoader';
 import {
   Zap, TrendingUp, Shield,
   Star, ArrowRight, Check, Brain, Globe, Award, MessageSquare,
@@ -695,15 +696,32 @@ function Footer() {
 // ─── Main Page ────────────────────────────────────────────────
 export default function HomePage() {
   const { setTheme } = useTheme();
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   useEffect(() => {
     setTheme('dark');
   }, [setTheme]);
 
+  // Lock scrolling while the initial loading screen is visible
+  useEffect(() => {
+    if (!isVideoLoaded) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isVideoLoaded]);
+
   return (
     <main className="dark bg-[#050505] text-white min-h-screen">
+      <AnimatePresence>
+        {!isVideoLoaded && <HeroLoader />}
+      </AnimatePresence>
       <Navbar />
-      <ScrollAnimationHero />
+      <ScrollAnimationHero onVideoLoaded={() => setIsVideoLoaded(true)} />
       <FeaturesSection />
       <HowItWorksSection />
       <TestimonialsSection />

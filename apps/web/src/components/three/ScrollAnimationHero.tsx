@@ -231,7 +231,7 @@ function SceneOverlay({ progress }: { progress: number }) {
 }
 
 // ─── Main Component ───────────────────────────────────────────
-export function ScrollAnimationHero() {
+export function ScrollAnimationHero({ onVideoLoaded }: { onVideoLoaded?: () => void }) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -272,6 +272,7 @@ export function ScrollAnimationHero() {
         <CinematicCanvas
           containerRef={containerRef}
           onProgress={handleProgress}
+          onLoaded={onVideoLoaded}
         />
 
         {/* Vignette */}

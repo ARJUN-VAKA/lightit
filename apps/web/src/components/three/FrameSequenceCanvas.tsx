@@ -8,10 +8,11 @@ import { useEffect, useRef } from 'react';
 interface CinematicCanvasProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
   onProgress?: (p: number) => void;
+  onLoaded?: () => void;
 }
 
 // ─── Component ──────────────────────────────────────────────────────────────
-export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasProps) {
+export function CinematicCanvas({ containerRef, onProgress, onLoaded }: CinematicCanvasProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -31,6 +32,10 @@ export function CinematicCanvas({ containerRef, onProgress }: CinematicCanvasPro
         objectUrl = URL.createObjectURL(blob);
         video!.src = objectUrl;
         video!.load();
+        
+        video!.onloadeddata = () => {
+          if (!cancelled) onLoaded?.();
+        };
       } catch (err) {
         console.error('Failed to load video blob:', err);
       }

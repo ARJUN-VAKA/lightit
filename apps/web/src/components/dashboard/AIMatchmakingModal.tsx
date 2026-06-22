@@ -10,6 +10,126 @@ import {
 import toast from 'react-hot-toast';
 import api from '@/lib/axios';
 
+const loaderStyles = `
+.loader {
+  --color-one: #ffbf48;
+  --color-two: #be4a1d;
+  --color-three: #ffbf4780;
+  --color-four: #bf4a1d80;
+  --color-five: #ffbf4740;
+  --time-animation: 2s;
+  --size: 1;
+  position: relative;
+  border-radius: 50%;
+  transform: scale(var(--size));
+  box-shadow:
+    0 0 25px 0 var(--color-three),
+    0 20px 50px 0 var(--color-four);
+  animation: colorize calc(var(--time-animation) * 3) ease-in-out infinite;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border-top: solid 1px var(--color-one);
+  border-bottom: solid 1px var(--color-two);
+  background: linear-gradient(180deg, var(--color-five), var(--color-four));
+  box-shadow:
+    inset 0 10px 10px 0 var(--color-three),
+    inset 0 -10px 10px 0 var(--color-four);
+}
+
+.loader .box {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(
+    180deg,
+    var(--color-one) 30%,
+    var(--color-two) 70%
+  );
+  mask: url(#clipping);
+  -webkit-mask: url(#clipping);
+}
+
+.loader svg {
+  position: absolute;
+}
+
+.loader svg #clipping {
+  filter: contrast(15);
+  animation: roundness calc(var(--time-animation) / 2) linear infinite;
+}
+
+.loader svg #clipping polygon {
+  filter: blur(7px);
+}
+
+.loader svg #clipping polygon:nth-child(1) {
+  transform-origin: 75% 25%;
+  transform: rotate(90deg);
+}
+
+.loader svg #clipping polygon:nth-child(2) {
+  transform-origin: 50% 50%;
+  animation: rotation var(--time-animation) linear infinite reverse;
+}
+
+.loader svg #clipping polygon:nth-child(3) {
+  transform-origin: 50% 60%;
+  animation: rotation var(--time-animation) linear infinite;
+  animation-delay: calc(var(--time-animation) / -3);
+}
+
+.loader svg #clipping polygon:nth-child(4) {
+  transform-origin: 40% 40%;
+  animation: rotation var(--time-animation) linear infinite reverse;
+}
+
+.loader svg #clipping polygon:nth-child(5) {
+  transform-origin: 40% 40%;
+  animation: rotation var(--time-animation) linear infinite reverse;
+  animation-delay: calc(var(--time-animation) / -2);
+}
+
+.loader svg #clipping polygon:nth-child(6) {
+  transform-origin: 60% 40%;
+  animation: rotation var(--time-animation) linear infinite;
+}
+
+.loader svg #clipping polygon:nth-child(7) {
+  transform-origin: 60% 40%;
+  animation: rotation var(--time-animation) linear infinite;
+  animation-delay: calc(var(--time-animation) / -1.5);
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes roundness {
+  0% { filter: contrast(15); }
+  20% { filter: contrast(3); }
+  40% { filter: contrast(3); }
+  60% { filter: contrast(15); }
+  100% { filter: contrast(15); }
+}
+
+@keyframes colorize {
+  0% { filter: hue-rotate(0deg); }
+  20% { filter: hue-rotate(-30deg); }
+  40% { filter: hue-rotate(-60deg); }
+  60% { filter: hue-rotate(-90deg); }
+  80% { filter: hue-rotate(-45deg); }
+  100% { filter: hue-rotate(0deg); }
+}
+`;
+
 interface AnalysisData {
   role: 'FOUNDER' | 'INVESTOR';
   totalMatches: number;
@@ -138,7 +258,9 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
+    <>
+      <style>{loaderStyles}</style>
+      <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <motion.div
@@ -185,27 +307,24 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
               {loading && !data ? (
                 /* Loading State */
                 <div className="flex flex-col items-center justify-center py-20">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
-                    style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.2), rgba(14,165,233,0.2))', border: '1px solid rgba(139,92,246,0.3)' }}
-                  >
-                    <Brain className="w-8 h-8 text-purple-400" />
-                  </motion.div>
-                  <p className="text-white font-semibold text-lg">AI is Analyzing Your Matches</p>
-                  <p className="text-gray-500 text-sm mt-2">Evaluating sector alignment, traction, founder quality, and more...</p>
-                  <div className="flex gap-1.5 mt-6">
-                    {[0, 1, 2].map((i) => (
-                      <motion.div
-                        key={i}
-                        animate={{ y: [0, -8, 0] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
-                        className="w-2 h-2 rounded-full"
-                        style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}
-                      />
-                    ))}
+                  <div className="loader">
+                    <svg width="100" height="100" viewBox="0 0 100 100">
+                      <defs>
+                        <mask id="clipping">
+                          <polygon points="0,0 100,0 100,100 0,100" fill="black"></polygon>
+                          <polygon points="25,25 75,25 50,75" fill="white"></polygon>
+                          <polygon points="50,25 75,75 25,75" fill="white"></polygon>
+                          <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+                          <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+                          <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+                          <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+                        </mask>
+                      </defs>
+                    </svg>
+                    <div className="box"></div>
                   </div>
+                  <p className="text-white font-semibold text-lg mt-8">AI is Analyzing Your Matches</p>
+                  <p className="text-gray-500 text-sm mt-2">Evaluating sector alignment, traction, founder quality, and more...</p>
                 </div>
               ) : error ? (
                 /* Error State */
@@ -463,5 +582,6 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
         </div>
       )}
     </AnimatePresence>
+    </>
   );
 }
