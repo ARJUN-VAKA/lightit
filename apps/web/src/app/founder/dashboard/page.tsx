@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import {
   Target, FileText, BarChart2, Bell, Rocket, ChevronRight,
   TrendingUp, Eye, Users, Star, Upload, Plus, MessageSquare,
-  AlertCircle, Lightbulb, Award, ArrowUpRight, Zap,
+  AlertCircle, Lightbulb, Award, ArrowUpRight, Zap, Brain,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from '@/lib/axios';
@@ -15,6 +15,7 @@ import { FounderLayout } from '@/components/dashboard/FounderLayout';
 import { AnimatedCounter } from '@/components/dashboard/AnimatedCounter';
 import { ActivityTimeline } from '@/components/dashboard/ActivityTimeline';
 import { NetworkGraph } from '@/components/three/NetworkGraph';
+import AIMatchmakingModal from '@/components/dashboard/AIMatchmakingModal';
 
 function StatsGrid({ statsData }: { statsData: any }) {
   const stats = [
@@ -113,13 +114,13 @@ function RecentMatches({ matches }: { matches: any[] }) {
   );
 }
 
-function QuickActions() {
+function QuickActions({ onOpenAI }: { onOpenAI?: () => void }) {
   const router = useRouter();
   const actions = [
     { icon: Upload, label: 'Update Pitch Deck', desc: 'Keep your deck fresh', color: '#8b5cf6', path: '/founder/dashboard/pitch' },
+    { icon: Brain, label: 'AI Matchmaking', desc: 'Deep analysis & insights', color: '#06b6d4', action: onOpenAI },
     { icon: Plus, label: 'Register for Event', desc: '3 upcoming events', color: '#0ea5e9', path: '/founder/dashboard/events' },
     { icon: Star, label: 'View Trust Score', desc: 'Score: 78/100', color: '#f59e0b', action: () => toast('Trust score coming soon!') },
-    { icon: Users, label: 'Referral Program', desc: 'Earn rewards', color: '#10b981', action: () => toast('Referral program coming soon!') },
   ];
 
   return (
@@ -207,6 +208,7 @@ export default function FounderDashboard() {
   const [user, setUser] = useState<any>(null);
   const [analytics, setAnalytics] = useState<any>(null);
   const [matches, setMatches] = useState<any[]>([]);
+  const [showAIModal, setShowAIModal] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -284,12 +286,14 @@ export default function FounderDashboard() {
           </div>
 
           <div className="space-y-6">
-            <QuickActions />
+            <QuickActions onOpenAI={() => setShowAIModal(true)} />
             <SmartInsights />
             <MatchQualityWidget />
           </div>
         </div>
       </div>
+
+      <AIMatchmakingModal isOpen={showAIModal} onClose={() => setShowAIModal(false)} />
     </FounderLayout>
   );
 }

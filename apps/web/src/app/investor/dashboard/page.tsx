@@ -9,7 +9,7 @@ import {
   Calendar, CreditCard, BarChart2, Settings, LogOut, Building2,
   ChevronRight, Bell, TrendingUp, Users, Target, Zap, Filter,
   Star, Eye, MapPin, Check, ArrowUpRight, Lightbulb, DollarSign,
-  Activity, PieChart,
+  Activity, PieChart, Sparkles,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from '@/lib/axios';
@@ -17,6 +17,7 @@ import { InvestorLayout } from '@/components/dashboard/InvestorLayout';
 import { AnimatedCounter } from '@/components/dashboard/AnimatedCounter';
 import { ActivityTimeline } from '@/components/dashboard/ActivityTimeline';
 import { NetworkGraph } from '@/components/three/NetworkGraph';
+import AIMatchmakingModal from '@/components/dashboard/AIMatchmakingModal';
 
 const SECTORS = ['All', 'AI/ML', 'SaaS', 'FinTech', 'HealthTech', 'CleanTech', 'EdTech', 'DeepTech'];
 const STAGES = ['All', 'Idea', 'Pre-Seed', 'Seed', 'Series A', 'Series B'];
@@ -204,6 +205,7 @@ export default function InvestorDashboard() {
   const [activeSector, setActiveSector] = useState('All');
   const [activeStage, setActiveStage] = useState('All');
   const [startups, setStartups] = useState<any[]>([]);
+  const [showAIModal, setShowAIModal] = useState(false);
 
   const fetchStartups = async () => {
     try {
@@ -275,9 +277,14 @@ export default function InvestorDashboard() {
             <p className="text-white font-semibold text-sm">3 new high-confidence matches found today</p>
             <p className="text-gray-400 text-xs">NeuroSync AI (96%), DataFusion (91%), ClimaTech (88%) match your investment criteria</p>
           </div>
-          <Link href="/investor/dashboard/recommendations" className="btn-primary text-xs py-2 px-4 flex-shrink-0 w-full sm:w-auto">
-            <span className="flex items-center justify-center gap-1.5"><Brain className="w-3.5 h-3.5" /> View AI Picks</span>
-          </Link>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <button onClick={() => setShowAIModal(true)} className="btn-secondary text-xs py-2 px-4 flex-shrink-0">
+              <span className="flex items-center justify-center gap-1.5"><Sparkles className="w-3.5 h-3.5" /> AI Analysis</span>
+            </button>
+            <Link href="/investor/dashboard/recommendations" className="btn-primary text-xs py-2 px-4 flex-shrink-0">
+              <span className="flex items-center justify-center gap-1.5"><Brain className="w-3.5 h-3.5" /> View AI Picks</span>
+            </Link>
+          </div>
         </motion.div>
 
         {/* Main content area */}
@@ -358,6 +365,8 @@ export default function InvestorDashboard() {
           </div>
         </div>
       </div>
+
+      <AIMatchmakingModal isOpen={showAIModal} onClose={() => setShowAIModal(false)} />
     </InvestorLayout>
   );
 }

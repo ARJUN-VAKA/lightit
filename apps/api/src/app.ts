@@ -18,6 +18,7 @@ import adRoutes from './routes/advertisements';
 import adminRoutes from './routes/admin';
 import notificationRoutes from './routes/notifications';
 import uploadRoutes from './routes/upload';
+import aiMatchmakingRoutes from './routes/aiMatchmaking';
 
 export const app = express();
 
@@ -70,6 +71,7 @@ app.use('/api/ads', adRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/ai-matchmaking', aiMatchmakingRoutes);
 
 // ─── 404 Handler ─────────────────────────────────────────────
 app.use((_req, res) => {
