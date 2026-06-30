@@ -55,8 +55,8 @@ export default function EventsPage() {
   };
 
   const getEventColor = (type: string) => {
-    const colors: Record<string, string> = { PITCH_COMPETITION: '#0ea5e9', NETWORKING: '#8b5cf6', WORKSHOP: '#10b981', CONFERENCE: '#ec4899', HACKATHON: '#f59e0b' };
-    return colors[type] || '#3b82f6';
+    const colors: Record<string, string> = { PITCH_COMPETITION: '#e5383b', NETWORKING: '#a4161a', WORKSHOP: '#b1a7a6', CONFERENCE: '#660708', HACKATHON: '#f59e0b' };
+    return colors[type] || '#e5383b';
   };
 
   return (
@@ -65,7 +65,7 @@ export default function EventsPage() {
       <div className="flex gap-2 flex-wrap mb-6">
         {types.map(t => (
           <button key={t} onClick={() => setFilter(t)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${filter === t ? 'bg-blue-500/20 text-blue-400 border border-blue-500/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${filter === t ? 'bg-red-600/20 text-red-400 border border-red-600/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
             {t.replace('_', ' ')}
           </button>
         ))}
@@ -127,7 +127,7 @@ export default function EventsPage() {
 
                     <div className="flex flex-col gap-2 flex-shrink-0">
                       <button onClick={() => handleRegister(ev.id, ev.title)}
-                        className={isReg ? 'flex items-center justify-center gap-2 text-emerald-400 border border-emerald-500/30 px-5 py-2.5 rounded-xl text-sm font-semibold w-full' : 'btn-primary text-sm py-2.5 px-5 w-full'}>
+                        className={isReg ? 'flex items-center justify-center gap-2 text-red-400 border border-red-600/30 px-5 py-2.5 rounded-xl text-sm font-semibold w-full' : 'btn-primary text-sm py-2.5 px-5 w-full'}>
                         {isReg ? <><CheckCircle className="w-4 h-4" /> Registered</> : <span>Register Now</span>}
                       </button>
                       <button onClick={() => toast('Event details opening…')} className="btn-secondary text-xs py-2 px-4 flex items-center justify-center gap-1">

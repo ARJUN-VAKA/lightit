@@ -38,13 +38,13 @@ export function MobileNav({ role }: MobileNavProps) {
               key={item.href}
               onClick={() => router.push(item.href)}
               className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all min-w-0 ${
-                isActive ? 'text-blue-400' : 'text-gray-500 hover:text-gray-300'
+                isActive ? 'text-red-400' : 'text-gray-500 hover:text-gray-300'
               }`}
             >
               <item.icon className="w-5 h-5" />
               <span className="text-[10px] font-medium truncate max-w-full">{item.label}</span>
               {isActive && (
-                <div className="w-1 h-1 rounded-full bg-blue-500 mt-0.5" />
+                <div className="w-1 h-1 rounded-full bg-red-600 mt-0.5" />
               )}
             </button>
           );

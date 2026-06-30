@@ -12,7 +12,7 @@ const PLANS = [
     notIncluded: ['Unlimited deal flow', 'Priority matching', 'Direct messaging', 'Analytics dashboard', 'Event access'],
   },
   {
-    id: 'pro', name: 'Pro', price: 299, period: '/month', color: '#0ea5e9', icon: Zap, popular: true,
+    id: 'pro', name: 'Pro', price: 299, period: '/month', color: '#e5383b', icon: Zap, popular: true,
     features: ['Unlimited startup views', '20 connection requests/month', 'Advanced AI picks', 'Full analytics', 'Message founders', '5 events/year'],
     notIncluded: ['White-glove sourcing', 'Dedicated manager', 'LP-level reports'],
   },
@@ -53,7 +53,7 @@ export default function SubscriptionPage() {
       <div className="flex items-center justify-center gap-4 mb-8">
         <span className={`text-sm font-medium ${billing === 'monthly' ? 'text-white' : 'text-gray-500'}`}>Monthly</span>
         <button onClick={() => setBilling(b => b === 'monthly' ? 'annual' : 'monthly')}
-          className={`w-12 h-6 rounded-full relative transition-all ${billing === 'annual' ? 'bg-blue-500' : 'bg-gray-700'}`}>
+          className={`w-12 h-6 rounded-full relative transition-all ${billing === 'annual' ? 'bg-red-600' : 'bg-gray-700'}`}>
           <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all ${billing === 'annual' ? 'left-6' : 'left-0.5'}`} />
         </button>
         <span className={`text-sm font-medium ${billing === 'annual' ? 'text-white' : 'text-gray-500'}`}>
@@ -68,14 +68,14 @@ export default function SubscriptionPage() {
           const price = billing === 'annual' && plan.price > 0 ? Math.round(plan.price * 0.8) : plan.price;
           return (
             <motion.div key={plan.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-              className={`glass-card p-6 relative ${plan.popular ? 'ring-2 ring-blue-500/50' : ''}`}>
+              className={`glass-card p-6 relative ${plan.popular ? 'ring-2 ring-red-600/50' : ''}`}>
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
                   Most Popular
                 </div>
               )}
               {isCurrent && (
-                <div className="absolute -top-3 right-4 px-3 py-1 rounded-full text-xs font-bold text-emerald-400 border border-emerald-500/40" style={{ background: 'rgba(16,185,129,0.1)' }}>
+                <div className="absolute -top-3 right-4 px-3 py-1 rounded-full text-xs font-bold text-red-400 border border-red-600/40" style={{ background: 'rgba(16,185,129,0.1)' }}>
                   Current Plan
                 </div>
               )}
@@ -97,7 +97,7 @@ export default function SubscriptionPage() {
               <div className="space-y-2 mb-6">
                 {plan.features.map(f => (
                   <div key={f} className="flex items-start gap-2 text-sm">
-                    <Check className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-300">{f}</span>
                   </div>
                 ))}
@@ -111,7 +111,7 @@ export default function SubscriptionPage() {
 
               <button onClick={() => upgrade(plan.id)}
                 className={`w-full py-3 rounded-xl text-sm font-semibold transition-all ${
-                  isCurrent ? 'text-emerald-400 border border-emerald-500/30 cursor-default' :
+                  isCurrent ? 'text-red-400 border border-red-600/30 cursor-default' :
                   plan.id === 'premium' ? 'text-white' : 'btn-secondary'
                 }`}
                 style={plan.id === 'premium' && !isCurrent ? { background: 'linear-gradient(135deg, #f59e0b, #ef4444)' } : {}}>

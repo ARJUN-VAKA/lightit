@@ -4,20 +4,20 @@ import { InvestorLayout } from '@/components/dashboard/InvestorLayout';
 import { Send, Search, Circle, ArrowLeft } from 'lucide-react';
 
 const CONVERSATIONS = [
-  { id: 1, name: 'NeuroSync AI', role: 'Founder — Sarah Chen', avatar: 'NS', color: '#8b5cf6', online: true,
+  { id: 1, name: 'NeuroSync AI', role: 'Founder — Sarah Chen', avatar: 'NS', color: '#a4161a', online: true,
     messages: [
       { from: 'them', text: 'Hi Marcus! Thank you for expressing interest in NeuroSync. Our MRR just crossed $45K.', time: '11:00 AM' },
       { from: 'me',   text: 'Impressive traction! Our AI flagged you as a 96% match. Can you walk me through your go-to-market strategy?', time: '11:05 AM' },
       { from: 'them', text: 'Absolutely! We\'re going PLG-first targeting therapists, then expanding to enterprise hospitals in Q3.', time: '11:08 AM' },
     ]},
-  { id: 2, name: 'GreenLedger', role: 'Founder — Priya Nair', avatar: 'GL', color: '#10b981', online: true,
+  { id: 2, name: 'GreenLedger', role: 'Founder — Priya Nair', avatar: 'GL', color: '#b1a7a6', online: true,
     messages: [
       { from: 'them', text: 'Hi! We just closed 3 Fortune 500 pilots. Would love to discuss Series A terms.', time: '9:30 AM' },
       { from: 'me',   text: 'That\'s great! What are the pilot sizes and expected conversion timelines?', time: '9:45 AM' },
     ]},
-  { id: 3, name: 'TechVault', role: 'Founder — Arjun Mehta', avatar: 'TV', color: '#0ea5e9', online: false,
+  { id: 3, name: 'TechVault', role: 'Founder — Arjun Mehta', avatar: 'TV', color: '#e5383b', online: false,
     messages: [{ from: 'them', text: 'We saw your portfolio — Apex Ventures would be a perfect fit. Open to a call?', time: 'Yesterday' }]},
-  { id: 4, name: 'MedFlow AI', role: 'Founder — Dr. Amara Osei', avatar: 'MF', color: '#ec4899', online: false,
+  { id: 4, name: 'MedFlow AI', role: 'Founder — Dr. Amara Osei', avatar: 'MF', color: '#660708', online: false,
     messages: [{ from: 'them', text: 'FDA clearance expected in 8 weeks. Would love your support for our seed round.', time: 'Mon' }]},
 ];
 
@@ -58,7 +58,7 @@ export default function InvestorMessagesPage() {
                 style={{ borderColor: 'var(--border)' }}>
                 <div className="relative flex-shrink-0">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold text-white" style={{ background: c.color, border: `1px solid ${c.color}40` }}>{c.avatar}</div>
-                  {c.online && <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-gray-900" />}
+                  {c.online && <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-red-400 border-2 border-gray-900" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between"><p className="text-foreground text-sm font-semibold truncate">{c.name}</p><p className="text-muted-foreground text-xs">{c.messages.at(-1)?.time}</p></div>
@@ -79,7 +79,7 @@ export default function InvestorMessagesPage() {
                 <div>
                   <p className="text-foreground font-semibold text-sm">{active.name}</p>
                   <p className="text-muted-foreground text-xs flex items-center gap-1">
-                    {active.online && <Circle className="w-2 h-2 fill-emerald-400 text-emerald-400" />}
+                    {active.online && <Circle className="w-2 h-2 fill-red-400 text-red-400" />}
                     {active.online ? 'Online' : 'Offline'} · {active.role}
                   </p>
                 </div>

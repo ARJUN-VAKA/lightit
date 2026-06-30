@@ -19,10 +19,10 @@ import AIMatchmakingModal from '@/components/dashboard/AIMatchmakingModal';
 
 function StatsGrid({ statsData }: { statsData: any }) {
   const stats = [
-    { label: 'Investor Matches', value: statsData?.totalMatches || 0, change: '+3 this week', icon: Target, color: '#0ea5e9' },
-    { label: 'Profile Views', value: statsData?.profileViews || 1284, change: '+18% vs last month', icon: Eye, color: '#8b5cf6' },
-    { label: 'Messages', value: 7, change: '3 unread', icon: MessageSquare, color: '#06b6d4' },
-    { label: 'Funding Progress', value: 35, suffix: '%', change: 'Milestone: Pitch Ready', icon: TrendingUp, color: '#10b981' },
+    { label: 'Investor Matches', value: statsData?.totalMatches || 0, change: '+3 this week', icon: Target, color: '#e5383b' },
+    { label: 'Profile Views', value: statsData?.profileViews || 1284, change: '+18% vs last month', icon: Eye, color: '#a4161a' },
+    { label: 'Messages', value: 7, change: '3 unread', icon: MessageSquare, color: '#ba181b' },
+    { label: 'Funding Progress', value: 35, suffix: '%', change: 'Milestone: Pitch Ready', icon: TrendingUp, color: '#660708' },
   ];
 
   return (
@@ -40,7 +40,7 @@ function StatsGrid({ statsData }: { statsData: any }) {
               style={{ background: `${stat.color}15`, border: `1px solid ${stat.color}25` }}>
               <stat.icon className="w-4.5 h-4.5" style={{ color: stat.color, width: 18, height: 18 }} />
             </div>
-            <span className="text-emerald-400 text-xs font-medium">{stat.change}</span>
+            <span className="text-xs font-medium" style={{ color: '#b1a7a6' }}>{stat.change}</span>
           </div>
           <div className="stat-number text-2xl md:text-3xl">
             <AnimatedCounter
@@ -57,13 +57,13 @@ function StatsGrid({ statsData }: { statsData: any }) {
 
 function RecentMatches({ matches }: { matches: any[] }) {
   const formatAmount = (num: number) => `$${(num / 1000000).toFixed(1)}M`;
-  const getColor = (i: number) => ['#0ea5e9', '#8b5cf6', '#06b6d4', '#f59e0b'][i % 4];
+  const getColor = (i: number) => ['#e5383b', '#a4161a', '#ba181b', '#660708'][i % 4];
 
   return (
     <div className="glass-card p-4 md:p-6">
       <div className="flex items-center justify-between mb-4 md:mb-6">
         <h3 className="font-display font-bold text-lg text-white">Top Investor Matches</h3>
-        <Link href="/founder/dashboard/matches" className="text-blue-400 text-sm hover:text-blue-300 flex items-center gap-1">
+        <Link href="/founder/dashboard/matches" className="text-sm hover:opacity-80 flex items-center gap-1" style={{ color: '#e5383b' }}>
           View all <ChevronRight className="w-3.5 h-3.5" />
         </Link>
       </div>
@@ -84,7 +84,7 @@ function RecentMatches({ matches }: { matches: any[] }) {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <p className="text-white font-semibold text-sm truncate">{m.investor.name}</p>
-                {m.investor.isVerified && <span className="badge badge-blue text-xs py-0.5 hidden sm:inline">Verified</span>}
+                {m.investor.isVerified && <span className="badge badge-red text-xs py-0.5 hidden sm:inline">Verified</span>}
               </div>
               <p className="text-gray-500 text-xs truncate">
                 {m.investor.company || m.investor.designation || 'Angel Investor'}
@@ -117,10 +117,10 @@ function RecentMatches({ matches }: { matches: any[] }) {
 function QuickActions({ onOpenAI }: { onOpenAI?: () => void }) {
   const router = useRouter();
   const actions = [
-    { icon: Upload, label: 'Update Pitch Deck', desc: 'Keep your deck fresh', path: '/founder/dashboard/pitch', variant: 'brutalist-purple' },
-    { icon: Brain, label: 'AI Matchmaking', desc: 'Deep analysis & insights', action: onOpenAI, variant: 'brutalist-cyan' },
-    { icon: Plus, label: 'Register for Event', desc: '3 upcoming events', path: '/founder/dashboard/events', variant: 'brutalist-blue' },
-    { icon: Star, label: 'View Trust Score', desc: 'Score: 78/100', action: () => toast('Trust score coming soon!'), variant: 'brutalist-amber' },
+    { icon: Upload, label: 'Update Pitch Deck', desc: 'Keep your deck fresh', path: '/founder/dashboard/pitch', variant: 'brutalist-red' },
+    { icon: Brain, label: 'AI Matchmaking', desc: 'Deep analysis & insights', action: onOpenAI, variant: 'brutalist-red' },
+    { icon: Plus, label: 'Register for Event', desc: '3 upcoming events', path: '/founder/dashboard/events', variant: 'brutalist-red' },
+    { icon: Star, label: 'View Trust Score', desc: 'Score: 78/100', action: () => toast('Trust score coming soon!'), variant: 'brutalist-red' },
   ];
 
   return (
@@ -147,8 +147,8 @@ function QuickActions({ onOpenAI }: { onOpenAI?: () => void }) {
 function SmartInsights() {
   const insights = [
     { icon: Lightbulb, label: 'Complete your team section', desc: 'Startups with complete teams get 2.4x more views', color: '#f59e0b' },
-    { icon: Target, label: 'AI Match Tip', desc: 'Add more sectors to expand matching range', color: '#0ea5e9' },
-    { icon: Award, label: 'Funding Milestone', desc: 'Update your funding status for better visibility', color: '#8b5cf6' },
+    { icon: Target, label: 'AI Match Tip', desc: 'Add more sectors to expand matching range', color: '#e5383b' },
+    { icon: Award, label: 'Funding Milestone', desc: 'Update your funding status for better visibility', color: '#a4161a' },
   ];
 
   return (
@@ -188,9 +188,9 @@ function MatchQualityWidget() {
       <h3 className="font-display font-bold text-lg text-white mb-3">Match Network</h3>
       <NetworkGraph className="mb-3" />
       <div className="flex items-center justify-between text-xs text-gray-500">
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500" /> Investors</span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-purple-500" /> Startups</span>
-        <span className="text-blue-400">Live</span>
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full" style={{ background: '#e5383b' }} /> Investors</span>
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full" style={{ background: '#a4161a' }} /> Startups</span>
+        <span style={{ color: '#e5383b' }}>Live</span>
       </div>
     </div>
   );
@@ -248,7 +248,7 @@ export default function FounderDashboard() {
 
   if (!user) return (
     <div className="min-h-screen bg-deep-black flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(164,22,26,0.3)', borderTopColor: '#e5383b' }} />
     </div>
   );
 
@@ -266,10 +266,10 @@ export default function FounderDashboard() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 rounded-2xl"
-              style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(14,165,233,0.08))', border: '1px solid rgba(16,185,129,0.25)' }}
+              style={{ background: 'linear-gradient(135deg, rgba(164,22,26,0.12), rgba(102,7,8,0.08))', border: '1px solid rgba(229,56,59,0.25)' }}
             >
               <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, #10b981, #0ea5e9)' }}>
+                style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
                 <Rocket className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">

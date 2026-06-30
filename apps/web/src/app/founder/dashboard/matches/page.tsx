@@ -58,7 +58,7 @@ export default function MatchesPage() {
         <div className="flex gap-2 flex-wrap">
           {['All', 'VC Fund', 'Angel', 'Micro VC', 'Corporate VC'].map(f => (
             <button key={f} onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${filter === f ? 'bg-blue-500/20 text-blue-400 border border-blue-500/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${filter === f ? 'bg-red-600/20 text-red-400 border border-red-600/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
               {f}
             </button>
           ))}
@@ -72,7 +72,7 @@ export default function MatchesPage() {
         {filtered.map((match, i) => {
           const inv = match.investor;
           const invType = inv.type || 'VC Fund';
-          const color = match.score > 90 ? '#10b981' : match.score > 80 ? '#0ea5e9' : '#f59e0b';
+          const color = match.score > 90 ? '#b1a7a6' : match.score > 80 ? '#e5383b' : '#f59e0b';
 
           return (
           <motion.div key={match.id}
@@ -86,7 +86,7 @@ export default function MatchesPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-display font-bold text-white text-base">{inv.name}</h3>
-                  {inv.isVerified && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                  {inv.isVerified && <Check className="w-3.5 h-3.5 text-red-400" />}
                   <span className="badge badge-blue text-xs">{invType}</span>
                 </div>
                 <p className="text-gray-500 text-xs mt-0.5">{inv.location || 'Global'}</p>

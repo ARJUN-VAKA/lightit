@@ -7,12 +7,12 @@ import toast from 'react-hot-toast';
 import api from '@/lib/axios';
 
 const TIPS = [
-  { icon: CheckCircle, color: '#10b981', title: 'Problem & Solution', done: true,  desc: 'Clearly define the problem you solve' },
-  { icon: TrendingUp,  color: '#0ea5e9', title: 'Market Size (TAM/SAM/SOM)', done: true,  desc: 'Show addressable market with data' },
-  { icon: CheckCircle, color: '#10b981', title: 'Business Model',       done: true,  desc: 'Revenue streams and unit economics' },
+  { icon: CheckCircle, color: '#b1a7a6', title: 'Problem & Solution', done: true,  desc: 'Clearly define the problem you solve' },
+  { icon: TrendingUp,  color: '#e5383b', title: 'Market Size (TAM/SAM/SOM)', done: true,  desc: 'Show addressable market with data' },
+  { icon: CheckCircle, color: '#b1a7a6', title: 'Business Model',       done: true,  desc: 'Revenue streams and unit economics' },
   { icon: AlertCircle, color: '#f59e0b', title: 'Traction & Metrics',   done: false, desc: 'MRR, ARR, growth rate, retention' },
   { icon: AlertCircle, color: '#f59e0b', title: 'Team Slide',           done: false, desc: 'Founder backgrounds and advisors' },
-  { icon: AlertCircle, color: '#ec4899', title: 'Financial Projections', done: false, desc: '3-year P&L and funding use of proceeds' },
+  { icon: AlertCircle, color: '#a4161a', title: 'Financial Projections', done: false, desc: '3-year P&L and funding use of proceeds' },
 ];
 
 export default function PitchDeckPage() {
@@ -90,11 +90,11 @@ export default function PitchDeckPage() {
             onDrop={e => { e.preventDefault(); setDragging(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f); }}
             onClick={() => inputRef.current?.click()}
             className="glass-card p-10 flex flex-col items-center justify-center cursor-pointer transition-all duration-300"
-            style={{ border: dragging ? '2px dashed #0ea5e9' : '2px dashed rgba(255,255,255,0.1)', minHeight: 220 }}
+            style={{ border: dragging ? '2px dashed #e5383b' : '2px dashed rgba(164,22,26,0.25)', minHeight: 220 }}
           >
             <input ref={inputRef} type="file" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)' }}>
-              <Upload className="w-7 h-7 text-blue-400" />
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(164,22,26,0.12)', border: '1px solid rgba(229,56,59,0.20)' }}>
+              <Upload className="w-7 h-7" style={{ color: '#e5383b' }} />
             </div>
             <p className="text-white font-semibold text-lg">Drop your documents here</p>
             <p className="text-gray-500 text-sm mt-1">PDF, PPTX, XLSX · Max 50MB</p>
@@ -110,8 +110,8 @@ export default function PitchDeckPage() {
                 {startup.documents?.map((doc: any) => (
                   <div key={doc.id} className="flex items-center justify-between p-4 rounded-xl bg-black/30 border border-white/5">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-blue-400" />
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(164,22,26,0.10)' }}>
+                        <FileText className="w-5 h-5" style={{ color: '#e5383b' }} />
                       </div>
                       <div>
                         <p className="text-white font-medium text-sm">{doc.name}</p>
@@ -144,7 +144,7 @@ export default function PitchDeckPage() {
                   strokeDasharray={`${2 * Math.PI * 50 * 68 / 100} ${2 * Math.PI * 50 * (1 - 68 / 100)}`}
                   strokeLinecap="round" />
                 <defs>
-                  <linearGradient id="scoreGrad" x1="0%" y1="0%"><stop offset="0%" stopColor="#0ea5e9" /><stop offset="100%" stopColor="#8b5cf6" /></linearGradient>
+                  <linearGradient id="scoreGrad" x1="0%" y1="0%"><stop offset="0%" stopColor="#660708" /><stop offset="100%" stopColor="#e5383b" /></linearGradient>
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -157,7 +157,7 @@ export default function PitchDeckPage() {
           </div>
 
           <div className="glass-card p-6">
-            <h4 className="text-white font-semibold mb-4 flex items-center gap-2"><Eye className="w-4 h-4 text-blue-400" /> Visibility</h4>
+            <h4 className="text-white font-semibold mb-4 flex items-center gap-2"><Eye className="w-4 h-4" style={{ color: '#e5383b' }} /> Visibility</h4>
             <div className="space-y-3">
               {[{ label: 'Profile Views', val: startup.viewCount || 0, sub: 'total' }, { label: 'Deck Views', val: '0', sub: 'by investors' }, { label: 'Saved by', val: '0', sub: 'investors' }].map(s => (
                 <div key={s.label} className="flex items-center justify-between">

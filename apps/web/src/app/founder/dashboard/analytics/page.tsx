@@ -7,7 +7,7 @@ const WEEKLY = [32, 48, 41, 67, 85, 72, 91];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun'];
 const VIEWS =  [120, 198, 165, 310, 425, 618];
 
-function MiniBar({ values, color = '#0ea5e9' }: { values: number[]; color?: string }) {
+function MiniBar({ values, color = '#e5383b' }: { values: number[]; color?: string }) {
   const max = Math.max(...values);
   return (
     <div className="flex items-end gap-1 h-20">
@@ -27,11 +27,11 @@ function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-28">
         <defs>
           <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
+            <stop offset="0%" stopColor="#e5383b" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#e5383b" stopOpacity="0" />
           </linearGradient>
         </defs>
-        <polyline points={pts} fill="none" stroke="#0ea5e9" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+        <polyline points={pts} fill="none" stroke="#e5383b" strokeWidth="2" vectorEffect="non-scaling-stroke" />
         <polygon points={`0,100 ${pts} 100,100`} fill="url(#lineGrad)" />
       </svg>
       <div className="flex justify-between mt-1">
@@ -42,16 +42,16 @@ function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
 }
 
 const STATS = [
-  { label: 'Profile Views', value: '1,284', change: '+23%', icon: Eye, color: '#0ea5e9' },
-  { label: 'Investor Matches', value: '24', change: '+8', icon: Target, color: '#8b5cf6' },
-  { label: 'Messages', value: '12', change: '3 unread', icon: MessageSquare, color: '#06b6d4' },
+  { label: 'Profile Views', value: '1,284', change: '+23%', icon: Eye, color: '#e5383b' },
+  { label: 'Investor Matches', value: '24', change: '+8', icon: Target, color: '#a4161a' },
+  { label: 'Messages', value: '12', change: '3 unread', icon: MessageSquare, color: '#ba181b' },
   { label: 'Trust Score', value: '78', change: '+5 pts', icon: Star, color: '#f59e0b' },
 ];
 
 const SECTORS = [
-  { name: 'AI/ML', pct: 42, color: '#0ea5e9' },
-  { name: 'HealthTech', pct: 28, color: '#8b5cf6' },
-  { name: 'SaaS', pct: 20, color: '#06b6d4' },
+  { name: 'AI/ML', pct: 42, color: '#e5383b' },
+  { name: 'HealthTech', pct: 28, color: '#a4161a' },
+  { name: 'SaaS', pct: 20, color: '#ba181b' },
   { name: 'Other', pct: 10, color: '#374151' },
 ];
 
@@ -66,7 +66,7 @@ export default function AnalyticsPage() {
               <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${s.color}15`, border: `1px solid ${s.color}25` }}>
                 <s.icon style={{ width: 18, height: 18, color: s.color }} />
               </div>
-              <span className="text-emerald-400 text-xs font-medium">{s.change}</span>
+              <span className="text-red-400 text-xs font-medium">{s.change}</span>
             </div>
             <div className="stat-number text-2xl">{s.value}</div>
             <p className="text-gray-500 text-xs mt-1">{s.label}</p>
@@ -117,11 +117,11 @@ export default function AnalyticsPage() {
           <h3 className="font-display font-bold text-white mb-4">Recent Activity</h3>
           <div className="space-y-3">
             {[
-              { text: 'Apex Ventures viewed your pitch deck', time: '2h ago', color: '#0ea5e9' },
-              { text: 'New match: Sarah Mitchell (91% match)', time: '5h ago', color: '#8b5cf6' },
-              { text: 'Your profile appeared in 47 investor searches', time: 'Yesterday', color: '#06b6d4' },
+              { text: 'Apex Ventures viewed your pitch deck', time: '2h ago', color: '#e5383b' },
+              { text: 'New match: Sarah Mitchell (91% match)', time: '5h ago', color: '#a4161a' },
+              { text: 'Your profile appeared in 47 investor searches', time: 'Yesterday', color: '#ba181b' },
               { text: 'Trust score increased by 5 points', time: '2 days ago', color: '#f59e0b' },
-              { text: 'Horizon Capital saved your startup', time: '3 days ago', color: '#10b981' },
+              { text: 'Horizon Capital saved your startup', time: '3 days ago', color: '#b1a7a6' },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: item.color }} />

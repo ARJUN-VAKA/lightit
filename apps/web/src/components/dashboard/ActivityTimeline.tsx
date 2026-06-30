@@ -13,12 +13,12 @@ const ICON_MAP: Record<string, any> = {
 };
 
 const COLOR_MAP: Record<string, string> = {
-  match: '#8b5cf6',
-  view: '#0ea5e9',
-  message: '#06b6d4',
-  connection: '#10b981',
+  match: '#a4161a',
+  view: '#e5383b',
+  message: '#ba181b',
+  connection: '#b1a7a6',
   event: '#f59e0b',
-  upgrade: '#ec4899',
+  upgrade: '#660708',
 };
 
 interface Activity {
@@ -53,7 +53,7 @@ export function ActivityTimeline({ activities }: ActivityTimelineProps) {
       <div className="space-y-0">
         {activities.slice(0, 10).map((activity, i) => {
           const Icon = ICON_MAP[activity.type] || Star;
-          const color = COLOR_MAP[activity.type] || '#0ea5e9';
+          const color = COLOR_MAP[activity.type] || '#e5383b';
           return (
             <motion.div
               key={activity.id}

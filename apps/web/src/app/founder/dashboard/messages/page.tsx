@@ -5,7 +5,7 @@ import { Send, Search, Circle, ArrowLeft } from 'lucide-react';
 
 const CONVERSATIONS = [
   {
-    id: 1, name: 'Marcus Rivera', role: 'Apex Ventures', avatar: 'MR', color: '#0ea5e9', online: true,
+    id: 1, name: 'Marcus Rivera', role: 'Apex Ventures', avatar: 'MR', color: '#e5383b', online: true,
     messages: [
       { from: 'them', text: 'Hi! I reviewed your pitch deck — very impressive traction. What\'s your current MRR?', time: '10:30 AM' },
       { from: 'me',   text: 'Thanks Marcus! We\'re at $45K MRR, growing 18% month-over-month.', time: '10:32 AM' },
@@ -13,14 +13,14 @@ const CONVERSATIONS = [
     ],
   },
   {
-    id: 2, name: 'Sarah Mitchell', role: 'Angel Investor', avatar: 'SM', color: '#8b5cf6', online: true,
+    id: 2, name: 'Sarah Mitchell', role: 'Angel Investor', avatar: 'SM', color: '#a4161a', online: true,
     messages: [
       { from: 'them', text: 'I saw your profile on LightIt. The HealthTech angle is really compelling.', time: '9:15 AM' },
       { from: 'me',   text: 'Thank you! We\'re solving a real problem — mental health is severely underfunded.', time: '9:18 AM' },
     ],
   },
   {
-    id: 3, name: 'Horizon Capital', role: 'VC Fund', avatar: 'HC', color: '#06b6d4', online: false,
+    id: 3, name: 'Horizon Capital', role: 'VC Fund', avatar: 'HC', color: '#ba181b', online: false,
     messages: [
       { from: 'them', text: 'Your AI matching score with our portfolio thesis is 87%. Let\'s chat?', time: 'Yesterday' },
     ],
@@ -92,7 +92,7 @@ export default function MessagesPage() {
                     style={{ background: c.color, border: `1px solid ${c.color}40` }}>
                     {c.avatar}
                   </div>
-                  {c.online && <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-gray-900" />}
+                  {c.online && <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-red-400 border-2 border-gray-900" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-center">
@@ -122,7 +122,7 @@ export default function MessagesPage() {
                 <div>
                   <p className="text-foreground font-semibold text-sm">{active.name}</p>
                   <p className="text-muted-foreground text-xs flex items-center gap-1">
-                    {active.online && <Circle className="w-2 h-2 fill-emerald-400 text-emerald-400" />}
+                    {active.online && <Circle className="w-2 h-2 fill-red-400 text-red-400" />}
                     {active.online ? 'Online' : 'Offline'} · {active.role}
                   </p>
                 </div>

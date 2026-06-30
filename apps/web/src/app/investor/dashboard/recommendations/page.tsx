@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import api from '@/lib/axios';
 
 const CONFIDENCE_COLORS: Record<string, string> = {
-  'Very High': '#10b981', 'High': '#0ea5e9', 'Medium-High': '#f59e0b', 'Medium': '#f59e0b'
+  'Very High': '#b1a7a6', 'High': '#e5383b', 'Medium-High': '#f59e0b', 'Medium': '#f59e0b'
 };
 
 export default function RecommendationsPage() {
@@ -44,7 +44,7 @@ export default function RecommendationsPage() {
       {/* Header banner */}
       <div className="flex items-center gap-4 p-5 rounded-2xl mb-6"
         style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.12), rgba(14,165,233,0.08))', border: '1px solid rgba(139,92,246,0.25)' }}>
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}>
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #a4161a, #e5383b)' }}>
           <Brain className="w-6 h-6 text-white" />
         </div>
         <div className="flex-1">
@@ -64,7 +64,7 @@ export default function RecommendationsPage() {
       <div className="space-y-5">
         {visible.map((pick, i) => {
           const confidence = pick.score > 90 ? 'Very High' : pick.score > 80 ? 'High' : 'Medium';
-          const color = confidence === 'Very High' ? '#10b981' : confidence === 'High' ? '#0ea5e9' : '#f59e0b';
+          const color = confidence === 'Very High' ? '#b1a7a6' : confidence === 'High' ? '#e5383b' : '#f59e0b';
           
           return (
           <motion.div key={pick.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
@@ -95,7 +95,7 @@ export default function RecommendationsPage() {
                   </div>
                   <div className="flex gap-2 flex-shrink-0">
                     <button onClick={() => { setSaved(p => p.includes(pick.id) ? p.filter(x => x !== pick.id) : [...p, pick.id]); toast(saved.includes(pick.id) ? 'Removed from watchlist' : `${pick.startup?.name} saved!`); }}
-                      className={`p-2 rounded-xl transition-all ${saved.includes(pick.id) ? 'text-blue-400 bg-blue-500/15' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}>
+                      className={`p-2 rounded-xl transition-all ${saved.includes(pick.id) ? 'text-red-400 bg-red-600/15' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}>
                       <Bookmark className={`w-4 h-4 ${saved.includes(pick.id) ? 'fill-current' : ''}`} />
                     </button>
                     <button onClick={() => setHidden(p => [...p, pick.id])} className="p-2 rounded-xl text-gray-600 hover:text-gray-400 hover:bg-white/5">✕</button>
@@ -105,8 +105,8 @@ export default function RecommendationsPage() {
                 {/* AI Reason */}
                 {pick.reason && (
                 <div className="mt-4 p-3 rounded-xl flex items-start gap-2" style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.15)' }}>
-                  <Zap className="w-3.5 h-3.5 text-purple-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-purple-300 text-xs">{pick.reason}</p>
+                  <Zap className="w-3.5 h-3.5 text-red-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-red-400 text-xs">{pick.reason}</p>
                 </div>
                 )}
 
@@ -134,7 +134,7 @@ export default function RecommendationsPage() {
 
       {!loading && visible.length === 0 && (
         <div className="text-center py-20">
-          <Brain className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+          <Brain className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <p className="text-white font-semibold text-lg">All caught up!</p>
           <p className="text-gray-500 text-sm mt-2 mb-6">You've reviewed all AI picks. Refresh to load new recommendations.</p>
           <button onClick={refresh} className="btn-primary text-sm py-3 px-6"><span>Refresh AI Picks</span></button>

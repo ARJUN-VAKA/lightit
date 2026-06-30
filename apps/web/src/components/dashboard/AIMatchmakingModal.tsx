@@ -155,9 +155,9 @@ interface AnalysisData {
 }
 
 const CONFIDENCE_COLORS: Record<string, string> = {
-  Exceptional: '#10b981',
-  'Very High': '#0ea5e9',
-  High: '#8b5cf6',
+  Exceptional: '#b1a7a6',
+  'Very High': '#e5383b',
+  High: '#a4161a',
   'Medium-High': '#f59e0b',
   Medium: '#f59e0b',
   Low: '#ef4444',
@@ -165,7 +165,7 @@ const CONFIDENCE_COLORS: Record<string, string> = {
 };
 
 function ScoreBar({ label, score, color, weight }: { label: string; score: number; color?: string; weight?: number }) {
-  const barColor = color || (score >= 80 ? '#10b981' : score >= 60 ? '#0ea5e9' : score >= 40 ? '#f59e0b' : '#ef4444');
+  const barColor = color || (score >= 80 ? '#b1a7a6' : score >= 60 ? '#e5383b' : score >= 40 ? '#f59e0b' : '#ef4444');
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between text-xs">
@@ -196,7 +196,7 @@ function GlowingButton({ onClick, loading }: { onClick: () => void; loading: boo
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className="relative group px-6 py-3 rounded-xl font-semibold text-sm text-white overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}
+      style={{ background: 'linear-gradient(135deg, #a4161a, #e5383b)' }}
     >
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15), transparent)' }} />
@@ -281,7 +281,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
             <div className="sticky top-0 z-10 flex items-center justify-between p-5 border-b border-white/5 bg-card-bg/90 backdrop-blur-md">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}>
+                  style={{ background: 'linear-gradient(135deg, #a4161a, #e5383b)' }}>
                   <Brain className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -355,7 +355,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                       transition={{ delay: 0.1 }}
                       className="glass-card p-4 text-center"
                     >
-                      <div className="text-2xl md:text-3xl font-bold font-display" style={{ color: data.averageScore >= 60 ? '#10b981' : data.averageScore >= 40 ? '#f59e0b' : '#ef4444' }}>
+                      <div className="text-2xl md:text-3xl font-bold font-display" style={{ color: data.averageScore >= 60 ? '#b1a7a6' : data.averageScore >= 40 ? '#f59e0b' : '#ef4444' }}>
                         {data.averageScore}%
                       </div>
                       <p className="text-gray-500 text-xs mt-1">Avg Match Score</p>
@@ -366,7 +366,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                       transition={{ delay: 0.15 }}
                       className="glass-card p-4 text-center"
                     >
-                      <div className="text-2xl md:text-3xl font-bold font-display text-emerald-400">{data.confidenceDistribution.exceptional + data.confidenceDistribution.veryHigh}</div>
+                      <div className="text-2xl md:text-3xl font-bold font-display text-red-400">{data.confidenceDistribution.exceptional + data.confidenceDistribution.veryHigh}</div>
                       <p className="text-gray-500 text-xs mt-1">High Confidence</p>
                     </motion.div>
                     <motion.div
@@ -375,7 +375,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                       transition={{ delay: 0.2 }}
                       className="glass-card p-4 text-center"
                     >
-                      <div className="text-2xl md:text-3xl font-bold font-display text-blue-400">{data.topMatch?.score || 0}%</div>
+                      <div className="text-2xl md:text-3xl font-bold font-display text-red-400">{data.topMatch?.score || 0}%</div>
                       <p className="text-gray-500 text-xs mt-1">Top Match</p>
                     </motion.div>
                   </div>
@@ -392,7 +392,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                       <div className="flex items-start gap-4">
                         <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
                           style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(14,165,233,0.2))', border: '1px solid rgba(16,185,129,0.3)' }}>
-                          <Award className="w-7 h-7 text-emerald-400" />
+                          <Award className="w-7 h-7 text-red-400" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
@@ -402,8 +402,8 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                             )}
                             <span className="px-2 py-0.5 rounded-full text-xs font-semibold"
                               style={{
-                                background: `${CONFIDENCE_COLORS[data.topMatch.confidence] || '#0ea5e9'}20`,
-                                color: CONFIDENCE_COLORS[data.topMatch.confidence] || '#0ea5e9',
+                                background: `${CONFIDENCE_COLORS[data.topMatch.confidence] || '#e5383b'}20`,
+                                color: CONFIDENCE_COLORS[data.topMatch.confidence] || '#e5383b',
                               }}>
                               {data.topMatch.confidence}
                             </span>
@@ -412,7 +412,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                           <div className="space-y-1">
                             {data.topMatch.matchReasons.slice(0, 3).map((reason, i) => (
                               <div key={i} className="flex items-start gap-2 text-sm text-gray-400">
-                                <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                                <CheckCircle className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" />
                                 {reason}
                               </div>
                             ))}
@@ -431,7 +431,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                       className="glass-card p-5"
                     >
                       <h3 className="font-display font-bold text-white text-sm mb-4 flex items-center gap-2">
-                        <PieChart className="w-4 h-4 text-blue-400" />
+                        <PieChart className="w-4 h-4 text-red-400" />
                         Match Confidence Distribution
                       </h3>
                       <div className="space-y-2.5">
@@ -440,7 +440,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                           const total = Object.values(data.confidenceDistribution).reduce((a, b) => a + b, 0);
                           const pct = total > 0 ? (value / total) * 100 : 0;
                           const colors: Record<string, string> = {
-                            exceptional: '#10b981', veryHigh: '#0ea5e9', high: '#8b5cf6',
+                            exceptional: '#b1a7a6', veryHigh: '#e5383b', high: '#a4161a',
                             mediumHigh: '#f59e0b', medium: '#f97316', low: '#ef4444',
                           };
                           const labels: Record<string, string> = {
@@ -459,7 +459,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                                   animate={{ width: `${pct}%` }}
                                   transition={{ duration: 0.8, delay: 0.4 }}
                                   className="progress-bar-fill h-1.5"
-                                  style={{ background: colors[key] || '#0ea5e9' }}
+                                  style={{ background: colors[key] || '#e5383b' }}
                                 />
                               </div>
                             </div>
@@ -479,18 +479,18 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                       className="glass-card p-5"
                     >
                       <h3 className="font-display font-bold text-white text-sm mb-4 flex items-center gap-2">
-                        <BarChart3 className="w-4 h-4 text-purple-400" />
+                        <BarChart3 className="w-4 h-4 text-red-500" />
                         Scoring Factors Analyzed
                       </h3>
                       <div className="space-y-3">
-                        <ScoreBar label="Sector Alignment" score={data.averageScore} color="#0ea5e9" />
-                        <ScoreBar label="Funding Fit" score={Math.min(100, data.averageScore + 5)} color="#10b981" />
-                        <ScoreBar label="Stage Match" score={Math.min(100, data.averageScore - 2)} color="#8b5cf6" />
-                        <ScoreBar label="Location" score={Math.min(100, data.averageScore + 10)} color="#06b6d4" />
+                        <ScoreBar label="Sector Alignment" score={data.averageScore} color="#e5383b" />
+                        <ScoreBar label="Funding Fit" score={Math.min(100, data.averageScore + 5)} color="#b1a7a6" />
+                        <ScoreBar label="Stage Match" score={Math.min(100, data.averageScore - 2)} color="#a4161a" />
+                        <ScoreBar label="Location" score={Math.min(100, data.averageScore + 10)} color="#ba181b" />
                         <ScoreBar label="Risk Compatibility" score={Math.min(100, data.averageScore + 3)} color="#f59e0b" />
                         <ScoreBar label="Traction & Metrics" score={Math.min(100, data.averageScore - 5)} color="#f97316" />
-                        <ScoreBar label="Founder Quality" score={Math.min(100, data.averageScore + 8)} color="#10b981" />
-                        <ScoreBar label="Market Potential" score={Math.min(100, data.averageScore + 2)} color="#0ea5e9" />
+                        <ScoreBar label="Founder Quality" score={Math.min(100, data.averageScore + 8)} color="#b1a7a6" />
+                        <ScoreBar label="Market Potential" score={Math.min(100, data.averageScore + 2)} color="#e5383b" />
                       </div>
                     </motion.div>
                   </div>
@@ -504,7 +504,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                       className="glass-card p-5"
                     >
                       <h3 className="font-display font-bold text-white text-sm mb-4 flex items-center gap-2">
-                        <Target className="w-4 h-4 text-emerald-400" />
+                        <Target className="w-4 h-4 text-red-400" />
                         Sector Performance
                       </h3>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -516,7 +516,7 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                               className="p-3 rounded-xl text-center"
                               style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
                             >
-                              <div className={`text-lg font-bold font-display ${info.avgScore >= 70 ? 'text-emerald-400' : info.avgScore >= 50 ? 'text-blue-400' : 'text-gray-400'}`}>
+                              <div className={`text-lg font-bold font-display ${info.avgScore >= 70 ? 'text-red-400' : info.avgScore >= 50 ? 'text-red-400' : 'text-gray-400'}`}>
                                 {info.avgScore}%
                               </div>
                               <p className="text-white text-sm font-medium mt-0.5">{sector}</p>
@@ -538,13 +538,13 @@ export default function AIMatchmakingModal({ isOpen, onClose }: { isOpen: boolea
                         style={{ border: '1px solid rgba(16,185,129,0.15)' }}
                       >
                         <h3 className="font-display font-bold text-white text-sm mb-3 flex items-center gap-2">
-                          <Star className="w-4 h-4 text-emerald-400" />
+                          <Star className="w-4 h-4 text-red-400" />
                           Your Strengths
                         </h3>
                         <div className="space-y-2">
                           {data.startupStrengths.map((s, i) => (
                             <div key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                              <Sparkles className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                              <Sparkles className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" />
                               {s}
                             </div>
                           ))}

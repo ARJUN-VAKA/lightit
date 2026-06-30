@@ -24,9 +24,9 @@ const STAGES = ['All', 'Idea', 'Pre-Seed', 'Seed', 'Series A', 'Series B'];
 
 function KPIRow() {
   const kpis = [
-    { label: 'Startups Reviewed', value: 248, change: '+61 this month', icon: Target, color: '#0ea5e9' },
-    { label: 'Active Connections', value: 14, change: '3 in diligence', icon: MessageSquare, color: '#8b5cf6' },
-    { label: 'Watchlist', value: 31, change: '+8 this week', icon: Bookmark, color: '#06b6d4' },
+    { label: 'Startups Reviewed', value: 248, change: '+61 this month', icon: Target, color: '#e5383b' },
+    { label: 'Active Connections', value: 14, change: '3 in diligence', icon: MessageSquare, color: '#a4161a' },
+    { label: 'Watchlist', value: 31, change: '+8 this week', icon: Bookmark, color: '#ba181b' },
     { label: 'AI Matches', value: 12, change: 'new this week', icon: Brain, color: '#f59e0b' },
   ];
 
@@ -45,7 +45,7 @@ function KPIRow() {
               style={{ background: `${s.color}15`, border: `1px solid ${s.color}25` }}>
               <s.icon style={{ width: 18, height: 18, color: s.color }} />
             </div>
-            <span className="text-emerald-400 text-xs font-medium">{s.change}</span>
+            <span className="text-red-400 text-xs font-medium">{s.change}</span>
           </div>
           <div className="stat-number text-2xl">
             <AnimatedCounter end={s.value} />
@@ -75,7 +75,7 @@ function StartupCard({ startup }: { startup: any }) {
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-display font-bold text-base text-white">{startup.name}</h3>
-              {startup.verified && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+              {startup.verified && <Check className="w-3.5 h-3.5 text-red-400" />}
             </div>
             <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
               {(() => {
@@ -97,7 +97,7 @@ function StartupCard({ startup }: { startup: any }) {
           </div>
           <button
             onClick={() => setSaved(!saved)}
-            className={`p-2 rounded-xl transition-all ${saved ? 'text-blue-400 bg-blue-500/10' : 'text-gray-500 hover:text-white'}`}
+            className={`p-2 rounded-xl transition-all ${saved ? 'text-red-400 bg-red-600/10' : 'text-gray-500 hover:text-white'}`}
           >
             <Bookmark className={`w-4 h-4 ${saved ? 'fill-current' : ''}`} />
           </button>
@@ -155,9 +155,9 @@ function StartupCard({ startup }: { startup: any }) {
 
 function MarketTrends() {
   const trends = [
-    { sector: 'AI/ML', deals: 142, growth: '+34%', color: '#0ea5e9' },
-    { sector: 'HealthTech', deals: 98, growth: '+28%', color: '#10b981' },
-    { sector: 'CleanTech', deals: 76, growth: '+42%', color: '#06b6d4' },
+    { sector: 'AI/ML', deals: 142, growth: '+34%', color: '#e5383b' },
+    { sector: 'HealthTech', deals: 98, growth: '+28%', color: '#b1a7a6' },
+    { sector: 'CleanTech', deals: 76, growth: '+42%', color: '#ba181b' },
     { sector: 'FinTech', deals: 65, growth: '+12%', color: '#f59e0b' },
   ];
 
@@ -180,7 +180,7 @@ function MarketTrends() {
             </div>
             <div className="text-right">
               <span className="text-white text-sm font-semibold">{t.deals} deals</span>
-              <span className="text-emerald-400 text-xs ml-2">{t.growth}</span>
+              <span className="text-red-400 text-xs ml-2">{t.growth}</span>
             </div>
           </motion.div>
         ))}
@@ -252,7 +252,7 @@ export default function InvestorDashboard() {
 
   if (!user) return (
     <div className="min-h-screen bg-deep-black flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 border-red-600/30 border-t-red-600 rounded-full animate-spin" />
     </div>
   );
 
@@ -270,7 +270,7 @@ export default function InvestorDashboard() {
           style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.12), rgba(14,165,233,0.08))', border: '1px solid rgba(139,92,246,0.25)' }}
         >
           <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}>
+            style={{ background: 'linear-gradient(135deg, #a4161a, #e5383b)' }}>
             <Brain className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
@@ -304,7 +304,7 @@ export default function InvestorDashboard() {
                   <button key={sector} onClick={() => setActiveSector(sector)}
                     className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
                       activeSector === sector
-                        ? 'bg-blue-500/20 text-blue-400 border border-blue-500/40'
+                        ? 'bg-red-600/20 text-red-400 border border-red-600/40'
                         : 'text-gray-500 border border-white/8 hover:text-white hover:border-white/20'
                     }`}>
                     {sector}
@@ -317,7 +317,7 @@ export default function InvestorDashboard() {
                   <button key={stage} onClick={() => setActiveStage(stage)}
                     className={`flex-shrink-0 px-3 py-1 rounded-full text-xs transition-all ${
                       activeStage === stage
-                        ? 'bg-purple-500/20 text-purple-400 border border-purple-500/40'
+                        ? 'bg-red-600/20 text-red-500 border border-red-600/40'
                         : 'text-gray-600 border border-white/5 hover:text-gray-400'
                     }`}>
                     {stage}
@@ -331,7 +331,7 @@ export default function InvestorDashboard() {
                     <StartupCard key={startup.id || startup.name} startup={{
                       ...startup,
                       avatar: startup.name?.substring(0, 2)?.toUpperCase() || 'ST',
-                      color: '#8b5cf6',
+                      color: '#a4161a',
                     }} />
                   ))}
                 </div>
@@ -343,7 +343,7 @@ export default function InvestorDashboard() {
                 </div>
               ) : (
                 <div className="text-center py-16">
-                  <div className="w-10 h-10 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto" />
+                  <div className="w-10 h-10 border-2 border-red-600/30 border-t-red-600 rounded-full animate-spin mx-auto" />
                   <p className="text-gray-500 text-sm mt-4">Loading startups...</p>
                 </div>
               )}
@@ -358,8 +358,8 @@ export default function InvestorDashboard() {
               <h3 className="font-display font-bold text-lg text-white mb-3">Portfolio Overview</h3>
               <NetworkGraph />
               <div className="flex items-center justify-between text-xs text-gray-500 mt-3">
-                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-purple-500" /> Startups</span>
-                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500" /> Your picks</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-600" /> Startups</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-600" /> Your picks</span>
               </div>
             </div>
           </div>

@@ -29,7 +29,7 @@ export function NetworkGraph({ className = '' }: NetworkGraphProps) {
     const centerY = h / 2;
     const nodeCount = 12;
     const nodes: { x: number; y: number; r: number; color: string; vx: number; vy: number }[] = [];
-    const colors = ['#0ea5e9', '#8b5cf6', '#06b6d4', '#10b981'];
+    const colors = ['#e5383b', '#a4161a', '#ba181b', '#b1a7a6'];
 
     for (let i = 0; i < nodeCount; i++) {
       const angle = (i / nodeCount) * Math.PI * 2;

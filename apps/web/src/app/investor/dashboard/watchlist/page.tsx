@@ -6,10 +6,10 @@ import { Bookmark, MapPin, TrendingUp, Target, MessageSquare, Check, Trash2, Eye
 import toast from 'react-hot-toast';
 
 const INITIAL = [
-  { id: 1, name: 'NeuroSync AI', tagline: 'Personalized mental health AI assistant', sector: ['AI/ML', 'HealthTech'], stage: 'Seed', funding: '$3M', avatar: 'NS', color: '#8b5cf6', readiness: 88, verified: true, mrr: '$45K', growth: '+18%', savedOn: '2 days ago' },
-  { id: 2, name: 'GreenLedger', tagline: 'Carbon accounting platform for enterprises', sector: ['CleanTech', 'SaaS'], stage: 'Series A', funding: '$8M', avatar: 'GL', color: '#10b981', readiness: 92, verified: true, mrr: '$120K', growth: '+24%', savedOn: '5 days ago' },
-  { id: 3, name: 'MedFlow AI', tagline: 'AI-powered diagnostics for rural healthcare', sector: ['HealthTech', 'AI/ML'], stage: 'Seed', funding: '$4M', avatar: 'MF', color: '#ec4899', readiness: 85, verified: true, mrr: '$30K', growth: '+22%', savedOn: '1 week ago' },
-  { id: 4, name: 'TechVault', tagline: 'AI-powered cybersecurity for SMBs', sector: ['AI/ML', 'SaaS'], stage: 'Pre-Seed', funding: '$1.5M', avatar: 'TV', color: '#0ea5e9', readiness: 75, verified: false, mrr: '$8K', growth: '+31%', savedOn: '2 weeks ago' },
+  { id: 1, name: 'NeuroSync AI', tagline: 'Personalized mental health AI assistant', sector: ['AI/ML', 'HealthTech'], stage: 'Seed', funding: '$3M', avatar: 'NS', color: '#a4161a', readiness: 88, verified: true, mrr: '$45K', growth: '+18%', savedOn: '2 days ago' },
+  { id: 2, name: 'GreenLedger', tagline: 'Carbon accounting platform for enterprises', sector: ['CleanTech', 'SaaS'], stage: 'Series A', funding: '$8M', avatar: 'GL', color: '#b1a7a6', readiness: 92, verified: true, mrr: '$120K', growth: '+24%', savedOn: '5 days ago' },
+  { id: 3, name: 'MedFlow AI', tagline: 'AI-powered diagnostics for rural healthcare', sector: ['HealthTech', 'AI/ML'], stage: 'Seed', funding: '$4M', avatar: 'MF', color: '#660708', readiness: 85, verified: true, mrr: '$30K', growth: '+22%', savedOn: '1 week ago' },
+  { id: 4, name: 'TechVault', tagline: 'AI-powered cybersecurity for SMBs', sector: ['AI/ML', 'SaaS'], stage: 'Pre-Seed', funding: '$1.5M', avatar: 'TV', color: '#e5383b', readiness: 75, verified: false, mrr: '$8K', growth: '+31%', savedOn: '2 weeks ago' },
 ];
 
 export default function WatchlistPage() {
@@ -43,7 +43,7 @@ export default function WatchlistPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <h3 className="font-display font-bold text-white">{s.name}</h3>
-                    {s.verified && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                    {s.verified && <Check className="w-3.5 h-3.5 text-red-400" />}
                     <span className="badge badge-blue text-xs">{s.stage}</span>
                   </div>
                   <p className="text-gray-400 text-sm mb-2">{s.tagline}</p>
@@ -53,7 +53,7 @@ export default function WatchlistPage() {
                 </div>
                 <div className="hidden md:flex gap-4 text-xs text-gray-500 flex-shrink-0 text-right">
                   <div><p className="text-white font-semibold">{s.mrr}</p><p>MRR</p></div>
-                  <div><p className="text-emerald-400 font-semibold">{s.growth}</p><p>Growth</p></div>
+                  <div><p className="text-red-400 font-semibold">{s.growth}</p><p>Growth</p></div>
                   <div><p className="text-white font-semibold">{s.readiness}%</p><p>Readiness</p></div>
                   <div><p className="text-white font-semibold">{s.funding}</p><p>Seeking</p></div>
                 </div>

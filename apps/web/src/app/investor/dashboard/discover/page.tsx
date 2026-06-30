@@ -6,12 +6,12 @@ import { Search, Filter, MapPin, Eye, TrendingUp, Target, MessageSquare, Bookmar
 import toast from 'react-hot-toast';
 
 const STARTUPS = [
-  { id: 1, name: 'NeuroSync AI', tagline: 'Personalized mental health AI assistant', sector: ['AI/ML', 'HealthTech'], stage: 'Seed', funding: '$3M', score: 96, views: 2840, location: 'San Francisco, CA', avatar: 'NS', color: '#8b5cf6', readiness: 88, verified: true, mrr: '$45K', growth: '+18%', team: 4 },
-  { id: 2, name: 'GreenLedger', tagline: 'Carbon accounting platform for enterprises', sector: ['CleanTech', 'SaaS'], stage: 'Series A', funding: '$8M', score: 89, views: 1923, location: 'London, UK', avatar: 'GL', color: '#10b981', readiness: 92, verified: true, mrr: '$120K', growth: '+24%', team: 12 },
-  { id: 3, name: 'TechVault', tagline: 'AI-powered cybersecurity for SMBs', sector: ['AI/ML', 'SaaS'], stage: 'Pre-Seed', funding: '$1.5M', score: 83, views: 1102, location: 'Bangalore, IN', avatar: 'TV', color: '#0ea5e9', readiness: 75, verified: false, mrr: '$8K', growth: '+31%', team: 3 },
+  { id: 1, name: 'NeuroSync AI', tagline: 'Personalized mental health AI assistant', sector: ['AI/ML', 'HealthTech'], stage: 'Seed', funding: '$3M', score: 96, views: 2840, location: 'San Francisco, CA', avatar: 'NS', color: '#a4161a', readiness: 88, verified: true, mrr: '$45K', growth: '+18%', team: 4 },
+  { id: 2, name: 'GreenLedger', tagline: 'Carbon accounting platform for enterprises', sector: ['CleanTech', 'SaaS'], stage: 'Series A', funding: '$8M', score: 89, views: 1923, location: 'London, UK', avatar: 'GL', color: '#b1a7a6', readiness: 92, verified: true, mrr: '$120K', growth: '+24%', team: 12 },
+  { id: 3, name: 'TechVault', tagline: 'AI-powered cybersecurity for SMBs', sector: ['AI/ML', 'SaaS'], stage: 'Pre-Seed', funding: '$1.5M', score: 83, views: 1102, location: 'Bangalore, IN', avatar: 'TV', color: '#e5383b', readiness: 75, verified: false, mrr: '$8K', growth: '+31%', team: 3 },
   { id: 4, name: 'EduBridge', tagline: 'Adaptive learning platform for K-12', sector: ['EdTech', 'SaaS'], stage: 'Seed', funding: '$2M', score: 79, views: 890, location: 'Austin, TX', avatar: 'EB', color: '#f59e0b', readiness: 71, verified: true, mrr: '$22K', growth: '+15%', team: 7 },
-  { id: 5, name: 'ClimateTech Hub', tagline: 'Marketplace for carbon credit trading', sector: ['CleanTech', 'FinTech'], stage: 'Pre-Seed', funding: '$1M', score: 75, views: 654, location: 'Berlin, DE', avatar: 'CT', color: '#06b6d4', readiness: 65, verified: false, mrr: '$3K', growth: '+42%', team: 2 },
-  { id: 6, name: 'MedFlow', tagline: 'AI diagnostic tool for rural healthcare', sector: ['HealthTech', 'AI/ML'], stage: 'Seed', funding: '$4M', score: 91, views: 2100, location: 'Nairobi, KE', avatar: 'MF', color: '#ec4899', readiness: 85, verified: true, mrr: '$30K', growth: '+22%', team: 6 },
+  { id: 5, name: 'ClimateTech Hub', tagline: 'Marketplace for carbon credit trading', sector: ['CleanTech', 'FinTech'], stage: 'Pre-Seed', funding: '$1M', score: 75, views: 654, location: 'Berlin, DE', avatar: 'CT', color: '#ba181b', readiness: 65, verified: false, mrr: '$3K', growth: '+42%', team: 2 },
+  { id: 6, name: 'MedFlow', tagline: 'AI diagnostic tool for rural healthcare', sector: ['HealthTech', 'AI/ML'], stage: 'Seed', funding: '$4M', score: 91, views: 2100, location: 'Nairobi, KE', avatar: 'MF', color: '#660708', readiness: 85, verified: true, mrr: '$30K', growth: '+22%', team: 6 },
 ];
 
 const SECTORS = ['All', 'AI/ML', 'SaaS', 'HealthTech', 'CleanTech', 'FinTech', 'EdTech'];
@@ -43,14 +43,14 @@ export default function DiscoverPage() {
         <div className="flex gap-2 flex-wrap">
           {SECTORS.map(s => (
             <button key={s} onClick={() => setSector(s)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${sector === s ? 'bg-blue-500/20 text-blue-400 border border-blue-500/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${sector === s ? 'bg-red-600/20 text-red-400 border border-red-600/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
               {s}
             </button>
           ))}
           <span className="text-gray-700 mx-1">|</span>
           {STAGES.map(s => (
             <button key={s} onClick={() => setStage(s)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${stage === s ? 'bg-purple-500/20 text-purple-400 border border-purple-500/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${stage === s ? 'bg-red-600/20 text-red-500 border border-red-600/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
               {s}
             </button>
           ))}
@@ -70,7 +70,7 @@ export default function DiscoverPage() {
                 <div>
                   <div className="flex items-center gap-1.5">
                     <h3 className="font-display font-bold text-white text-sm">{s.name}</h3>
-                    {s.verified && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                    {s.verified && <Check className="w-3.5 h-3.5 text-red-400" />}
                   </div>
                   <div className="flex gap-1 mt-0.5">
                     {s.sector.slice(0, 2).map(sec => <span key={sec} className="badge badge-blue text-xs py-0.5">{sec}</span>)}
@@ -78,7 +78,7 @@ export default function DiscoverPage() {
                 </div>
               </div>
               <button onClick={() => { setSaved(p => p.includes(s.id) ? p.filter(x => x !== s.id) : [...p, s.id]); toast(saved.includes(s.id) ? 'Removed from watchlist' : `${s.name} added to watchlist! 🔖`); }}
-                className={`p-2 rounded-xl transition-all ${saved.includes(s.id) ? 'text-blue-400 bg-blue-500/15' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}>
+                className={`p-2 rounded-xl transition-all ${saved.includes(s.id) ? 'text-red-400 bg-red-600/15' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}>
                 <Bookmark className={`w-4 h-4 ${saved.includes(s.id) ? 'fill-current' : ''}`} />
               </button>
             </div>

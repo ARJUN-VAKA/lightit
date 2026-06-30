@@ -74,19 +74,19 @@ function StatCard({ icon: Icon, label, value, color, sub }: any) {
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
-    ACTIVE: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
+    ACTIVE: 'bg-red-600/15 text-red-400 border-red-600/20',
     PENDING: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
     SUSPENDED: 'bg-red-500/15 text-red-400 border-red-500/20',
     INACTIVE: 'bg-gray-500/15 text-gray-400 border-gray-500/20',
-    DRAFT: 'bg-blue-500/15 text-blue-400 border-blue-500/20',
+    DRAFT: 'bg-red-600/15 text-red-400 border-red-600/20',
     PAUSED: 'bg-orange-500/15 text-orange-400 border-orange-500/20',
     EXPIRED: 'bg-gray-500/15 text-gray-400 border-gray-500/20',
-    UPCOMING: 'bg-purple-500/15 text-purple-400 border-purple-500/20',
-    LIVE: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
+    UPCOMING: 'bg-red-600/15 text-red-500 border-red-600/20',
+    LIVE: 'bg-red-600/15 text-red-400 border-red-600/20',
     ENDED: 'bg-gray-500/15 text-gray-400 border-gray-500/20',
-    UNREAD: 'bg-blue-500/15 text-blue-400 border-blue-500/20',
+    UNREAD: 'bg-red-600/15 text-red-400 border-red-600/20',
     READ: 'bg-gray-500/15 text-gray-400 border-gray-500/20',
-    REPLIED: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
+    REPLIED: 'bg-red-600/15 text-red-400 border-red-600/20',
   };
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border ${map[status] || 'bg-gray-500/15 text-gray-400 border-gray-500/20'}`}>
@@ -136,7 +136,7 @@ function OverviewPanel() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;
+  if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-red-600/30 border-t-red-600 rounded-full animate-spin" /></div>;
   if (!data) return null;
 
   const { stats, monthlyRevenue, recentActivity } = data;
@@ -144,13 +144,13 @@ function OverviewPanel() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Users}       label="Total Users"        value={stats.totalUsers}      color="#0ea5e9" />
-        <StatCard icon={Building2}   label="Total Startups"     value={stats.totalStartups}   color="#8b5cf6" sub={`${stats.pendingStartups} pending`} />
-        <StatCard icon={UserCheck}   label="Investors"          value={stats.totalInvestors}  color="#06b6d4" />
-        <StatCard icon={DollarSign}  label="Total Revenue"      value={`$${(stats.totalRevenue||0).toLocaleString()}`} color="#10b981" />
+        <StatCard icon={Users}       label="Total Users"        value={stats.totalUsers}      color="#e5383b" />
+        <StatCard icon={Building2}   label="Total Startups"     value={stats.totalStartups}   color="#a4161a" sub={`${stats.pendingStartups} pending`} />
+        <StatCard icon={UserCheck}   label="Investors"          value={stats.totalInvestors}  color="#ba181b" />
+        <StatCard icon={DollarSign}  label="Total Revenue"      value={`$${(stats.totalRevenue||0).toLocaleString()}`} color="#b1a7a6" />
         <StatCard icon={BarChart2}   label="Total Matches"      value={stats.totalMatches}    color="#f59e0b" />
         <StatCard icon={Megaphone}   label="Pending Ads"        value={stats.pendingAds||0}   color="#f97316" />
-        <StatCard icon={Mail}        label="Unread Messages"    value={stats.unreadContacts||0} color="#ec4899" />
+        <StatCard icon={Mail}        label="Unread Messages"    value={stats.unreadContacts||0} color="#660708" />
         <StatCard icon={Activity}    label="Founders"           value={stats.totalFounders}   color="#a78bfa" />
       </div>
 
@@ -161,15 +161,15 @@ function OverviewPanel() {
             <AreaChart data={monthlyRevenue}>
               <defs>
                 <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#e5383b" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#e5383b" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
               <XAxis dataKey="month" stroke="#4b5563" tick={{ fontSize: 11 }} />
               <YAxis stroke="#4b5563" tick={{ fontSize: 11 }} tickFormatter={v => `$${v}`} />
               <Tooltip contentStyle={{ background: '#0a0a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8 }} />
-              <Area type="monotone" dataKey="revenue" stroke="#0ea5e9" fill="url(#rev)" strokeWidth={2} />
+              <Area type="monotone" dataKey="revenue" stroke="#e5383b" fill="url(#rev)" strokeWidth={2} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -181,7 +181,7 @@ function OverviewPanel() {
           <div className="space-y-2">
             {recentActivity.slice(0, 10).map((log: any) => (
               <div key={log.id} className="flex items-center gap-3 py-2 border-b border-white/3 last:border-0">
-                <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-red-600 flex-shrink-0" />
                 <span className="text-sm text-gray-300 flex-1">{log.action} — {log.resource}</span>
                 <span className="text-xs text-gray-600">{new Date(log.createdAt).toLocaleString()}</span>
               </div>
@@ -195,10 +195,10 @@ function OverviewPanel() {
         <h3 className="font-display font-bold text-lg text-white mb-4">System Health</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'API Status', value: 'Operational', status: 'bg-emerald-500', sub: '99.9% uptime' },
-            { label: 'Database', value: 'Connected', status: 'bg-emerald-500', sub: '20ms latency' },
-            { label: 'Redis Cache', value: 'Online', status: 'bg-emerald-500', sub: '45% memory' },
-            { label: 'Socket.IO', value: 'Active', status: 'bg-emerald-500', sub: '127 connected' },
+            { label: 'API Status', value: 'Operational', status: 'bg-red-600', sub: '99.9% uptime' },
+            { label: 'Database', value: 'Connected', status: 'bg-red-600', sub: '20ms latency' },
+            { label: 'Redis Cache', value: 'Online', status: 'bg-red-600', sub: '45% memory' },
+            { label: 'Socket.IO', value: 'Active', status: 'bg-red-600', sub: '127 connected' },
           ].map(h => (
             <div key={h.label} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
               <div className="flex items-center gap-2 mb-2">
@@ -303,17 +303,17 @@ function UsersPanel() {
                     <p className="text-xs text-gray-500">{u.email}</p>
                   </div>
                 </td>
-                <td className="px-4 py-3"><span className="text-xs font-medium text-blue-400">{u.role}</span></td>
+                <td className="px-4 py-3"><span className="text-xs font-medium text-red-400">{u.role}</span></td>
                 <td className="px-4 py-3"><StatusBadge status={u.status} /></td>
                 <td className="px-4 py-3 text-xs text-gray-500">{new Date(u.createdAt).toLocaleDateString()}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <button onClick={() => openDeepDive(u.id)} className="text-xs px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 transition-colors">
+                    <button onClick={() => openDeepDive(u.id)} className="text-xs px-2.5 py-1 rounded-lg bg-red-600/10 text-red-400 hover:bg-red-600/20 border border-red-600/20 transition-colors">
                       <Eye className="w-3.5 h-3.5" />
                     </button>
                     {u.status === 'ACTIVE'
                       ? <button onClick={() => updateStatus(u.id, 'SUSPENDED')} className="text-xs px-2.5 py-1 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 transition-colors">Suspend</button>
-                      : <button onClick={() => updateStatus(u.id, 'ACTIVE')} className="text-xs px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 transition-colors">Activate</button>
+                      : <button onClick={() => updateStatus(u.id, 'ACTIVE')} className="text-xs px-2.5 py-1 rounded-lg bg-red-600/10 text-red-400 hover:bg-red-600/20 border border-red-600/20 transition-colors">Activate</button>
                     }
                     <button onClick={() => deleteUser(u.id)} className="text-xs px-2.5 py-1 rounded-lg bg-gray-500/10 text-gray-400 hover:bg-red-500/20 hover:text-red-400 border border-gray-500/20 transition-colors">
                       <Trash2 className="w-3.5 h-3.5" />
@@ -339,7 +339,7 @@ function UsersPanel() {
 
             {deepDiveData.founder && (
               <div className="bg-white/5 p-4 rounded-xl space-y-3">
-                <h4 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Startup & Documents</h4>
+                <h4 className="text-sm font-semibold text-red-400 uppercase tracking-wider">Startup & Documents</h4>
                 {!deepDiveData.founder.startup ? <p className="text-xs text-gray-500">No startup profile.</p> :
                   (
                     <div className="bg-black/30 p-3 rounded-lg border border-white/5">
@@ -348,7 +348,7 @@ function UsersPanel() {
                       {deepDiveData.founder.startup.documents?.length > 0 && (
                         <div className="mt-2 space-y-1">
                           {deepDiveData.founder.startup.documents.map((d: any) => (
-                            <a key={d.id} href={d.url} target="_blank" rel="noreferrer" className="text-xs text-blue-400 hover:underline block">• {d.name} ({d.type})</a>
+                            <a key={d.id} href={d.url} target="_blank" rel="noreferrer" className="text-xs text-red-400 hover:underline block">• {d.name} ({d.type})</a>
                           ))}
                         </div>
                       )}
@@ -360,7 +360,7 @@ function UsersPanel() {
 
             {deepDiveData.investor && (
               <div className="bg-white/5 p-4 rounded-xl space-y-3">
-                <h4 className="text-sm font-semibold text-purple-400 uppercase tracking-wider">Investor Details & Matches</h4>
+                <h4 className="text-sm font-semibold text-red-500 uppercase tracking-wider">Investor Details & Matches</h4>
                 <p className="text-xs text-gray-400">Total Invested: ${deepDiveData.investor.totalInvested} • Count: {deepDiveData.investor.investmentCount}</p>
                 {deepDiveData.investor.matches.length > 0 && (
                   <div className="space-y-2 mt-2">
@@ -368,7 +368,7 @@ function UsersPanel() {
                     {deepDiveData.investor.matches.map((m: any) => (
                       <div key={m.id} className="text-xs bg-black/30 p-2 rounded border border-white/5 flex justify-between">
                         <span className="text-gray-300">{m.startup?.name}</span>
-                        <span className="text-blue-400">{Math.round(m.score)}% Match</span>
+                        <span className="text-red-400">{Math.round(m.score)}% Match</span>
                       </div>
                     ))}
                   </div>
@@ -432,7 +432,7 @@ function StartupsPanel() {
       <div className="flex items-center gap-2">
         {(['all', 'pending', 'approved'] as const).map(f => (
           <button key={f} onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors capitalize ${filter === f ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'text-gray-500 hover:text-white'}`}>
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors capitalize ${filter === f ? 'bg-red-600/20 text-red-400 border border-red-600/30' : 'text-gray-500 hover:text-white'}`}>
             {f}
           </button>
         ))}
@@ -466,14 +466,14 @@ function StartupsPanel() {
                 <td className="px-4 py-3 text-xs text-gray-400">{s.sector} · {s.stage}</td>
                 <td className="px-4 py-3 text-sm text-gray-300">${(s.fundingRequired / 1000000).toFixed(1)}M</td>
                 <td className="px-4 py-3">
-                  <span className={`text-xs px-2 py-0.5 rounded-md border ${s.isApproved ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/15 text-amber-400 border-amber-500/20'}`}>
+                  <span className={`text-xs px-2 py-0.5 rounded-md border ${s.isApproved ? 'bg-red-600/15 text-red-400 border-red-600/20' : 'bg-amber-500/15 text-amber-400 border-amber-500/20'}`}>
                     {s.isApproved ? 'Approved' : 'Pending'}
                   </span>
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
                     {!s.isApproved && (
-                      <button onClick={() => approve(s.id, true)} className="text-xs px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 transition-colors flex items-center gap-1">
+                      <button onClick={() => approve(s.id, true)} className="text-xs px-2.5 py-1 rounded-lg bg-red-600/10 text-red-400 hover:bg-red-600/20 border border-red-600/20 transition-colors flex items-center gap-1">
                         <Check className="w-3 h-3" /> Approve
                       </button>
                     )}
@@ -553,9 +553,9 @@ function InvestorsPanel() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="text-white font-semibold">{inv.name}</p>
-                  {inv.isVerified && <BadgeCheck className="w-4 h-4 text-blue-400" />}
+                  {inv.isVerified && <BadgeCheck className="w-4 h-4 text-red-400" />}
                   {inv.badges?.map((b: any) => (
-                    <span key={b.id} className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/20">
+                    <span key={b.id} className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-red-600/15 text-red-500 border border-red-600/20">
                       <Star className="w-3 h-3" /> {b.badgeType.replace(/_/g, ' ')}
                       <button onClick={() => removeBadge(inv.id, b.badgeType)} className="ml-1 hover:text-red-400"><X className="w-3 h-3" /></button>
                     </span>
@@ -566,11 +566,11 @@ function InvestorsPanel() {
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={() => setBadgeModal(inv)}
-                  className="text-xs px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 border border-purple-500/20 transition-colors flex items-center gap-1">
+                  className="text-xs px-3 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600/20 border border-red-600/20 transition-colors flex items-center gap-1">
                   <Award className="w-3.5 h-3.5" /> Badges
                 </button>
                 <button onClick={() => toggleVerify(inv)}
-                  className={`text-xs px-3 py-1.5 rounded-lg border transition-colors flex items-center gap-1 ${inv.isVerified ? 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20'}`}>
+                  className={`text-xs px-3 py-1.5 rounded-lg border transition-colors flex items-center gap-1 ${inv.isVerified ? 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20' : 'bg-red-600/10 text-red-400 border-red-600/20 hover:bg-red-600/20'}`}>
                   {inv.isVerified ? <><X className="w-3.5 h-3.5" /> Unverify</> : <><Check className="w-3.5 h-3.5" /> Verify</>}
                 </button>
               </div>
@@ -586,7 +586,7 @@ function InvestorsPanel() {
             const has = badgeModal?.badges?.some((b: any) => b.badgeType === bt);
             return (
               <button key={bt} onClick={() => has ? removeBadge(badgeModal.id, bt) : assignBadge(badgeModal.id, bt)}
-                className={`p-3 rounded-xl text-sm font-medium text-left transition-all border ${has ? 'bg-purple-500/20 text-purple-300 border-purple-500/30' : 'bg-white/3 text-gray-400 border-white/8 hover:border-purple-500/30 hover:text-purple-300'}`}>
+                className={`p-3 rounded-xl text-sm font-medium text-left transition-all border ${has ? 'bg-red-600/20 text-red-400 border-red-600/30' : 'bg-white/3 text-gray-400 border-white/8 hover:border-red-600/30 hover:text-red-400'}`}>
                 <Award className="w-4 h-4 mb-1" />
                 {bt.replace(/_/g, ' ')}
                 {has && <span className="ml-2 text-xs">(remove)</span>}
@@ -680,7 +680,7 @@ function AdsPanel() {
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <p className="text-white font-semibold">{ad.title}</p>
                   <StatusBadge status={ad.status} />
-                  <span className="text-xs px-2 py-0.5 rounded bg-blue-500/10 text-blue-400">{ad.adType}</span>
+                  <span className="text-xs px-2 py-0.5 rounded bg-red-600/10 text-red-400">{ad.adType}</span>
                 </div>
                 <p className="text-xs text-gray-500 mb-2">{ad.description}</p>
                 <div className="flex items-center gap-4 text-xs text-gray-600 flex-wrap">
@@ -703,7 +703,7 @@ function AdsPanel() {
                   {AD_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
                 <div className="flex gap-2">
-                  <button onClick={() => setEditAd(ad)} className="flex-1 text-xs py-1.5 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 transition-colors">
+                  <button onClick={() => setEditAd(ad)} className="flex-1 text-xs py-1.5 rounded-lg bg-red-600/10 text-red-400 hover:bg-red-600/20 border border-red-600/20 transition-colors">
                     <Edit2 className="w-3.5 h-3.5 mx-auto" />
                   </button>
                   <button onClick={() => deleteAd(ad.id)} className="flex-1 text-xs py-1.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 transition-colors">
@@ -910,7 +910,7 @@ function EventsPanel() {
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <p className="text-white font-semibold">{ev.title}</p>
                   <StatusBadge status={ev.status} />
-                  <span className="text-xs px-2 py-0.5 rounded bg-purple-500/10 text-purple-400">{ev.eventType?.replace(/_/g, ' ')}</span>
+                  <span className="text-xs px-2 py-0.5 rounded bg-red-600/10 text-red-500">{ev.eventType?.replace(/_/g, ' ')}</span>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-gray-500 flex-wrap mt-1">
                   <span>📅 {new Date(ev.startDate).toLocaleDateString()} → {new Date(ev.endDate).toLocaleDateString()}</span>
@@ -927,13 +927,13 @@ function EventsPanel() {
                 </select>
                 <div className="flex gap-2 mt-2">
                   <button onClick={() => setNotifyEventId(ev.id)}
-                    className="flex-1 text-xs py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 transition-colors flex items-center justify-center gap-1">
+                    className="flex-1 text-xs py-1.5 rounded-lg bg-red-600/10 text-red-400 hover:bg-red-600/20 border border-red-600/20 transition-colors flex items-center justify-center gap-1">
                     <Bell className="w-3.5 h-3.5" /> Notify
                   </button>
                 </div>
                 <div className="flex gap-2 mt-2">
                   <button onClick={() => setEditEvent({ ...ev, startDate: ev.startDate?.slice(0,16), endDate: ev.endDate?.slice(0,16), registrationDeadline: ev.registrationDeadline?.slice(0,16) })}
-                    className="flex-1 text-xs py-1.5 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 transition-colors flex items-center justify-center gap-1">
+                    className="flex-1 text-xs py-1.5 rounded-lg bg-red-600/10 text-red-400 hover:bg-red-600/20 border border-red-600/20 transition-colors flex items-center justify-center gap-1">
                     <Edit2 className="w-3.5 h-3.5" /> Edit
                   </button>
                   <button onClick={() => deleteEvent(ev.id)} className="text-xs py-1.5 px-2.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 transition-colors">
@@ -1045,11 +1045,11 @@ function PricingPanel() {
                 </div>
                 <div className="relative">
                   <input
-                    className={`input-field py-2 text-sm w-36 text-right ${isChanged ? 'border-blue-500/50 bg-blue-500/5' : ''}`}
+                    className={`input-field py-2 text-sm w-36 text-right ${isChanged ? 'border-red-600/50 bg-red-600/5' : ''}`}
                     value={getValue(key)}
                     onChange={e => setEdited(p => ({ ...p, [key]: e.target.value }))}
                   />
-                  {isChanged && <span className="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full bg-blue-500 border-2 border-deep-black" />}
+                  {isChanged && <span className="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full bg-red-600 border-2 border-deep-black" />}
                 </div>
               </div>
             );
@@ -1059,7 +1059,7 @@ function PricingPanel() {
 
       <div className="flex items-center justify-between">
         {Object.keys(edited).length > 0 && (
-          <p className="text-sm text-blue-400">{Object.keys(edited).length} unsaved change{Object.keys(edited).length > 1 ? 's' : ''}</p>
+          <p className="text-sm text-red-400">{Object.keys(edited).length} unsaved change{Object.keys(edited).length > 1 ? 's' : ''}</p>
         )}
         <button onClick={save} disabled={saving} className="btn-primary ml-auto flex items-center gap-2">
           {saving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
@@ -1139,10 +1139,10 @@ function InboxPanel() {
             <p className="text-gray-500">Inbox is empty</p>
           </div>
         ) : messages.map(msg => (
-          <div key={msg.id} className={`glass-card overflow-hidden transition-all ${msg.status === 'UNREAD' ? 'border-blue-500/20' : ''}`}
+          <div key={msg.id} className={`glass-card overflow-hidden transition-all ${msg.status === 'UNREAD' ? 'border-red-600/20' : ''}`}
             style={msg.status === 'UNREAD' ? { borderColor: 'rgba(59,130,246,0.2)' } : {}}>
             <div className="flex items-center gap-3 p-4 cursor-pointer" onClick={() => setExpanded(expanded === msg.id ? null : msg.id)}>
-              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${msg.status === 'UNREAD' ? 'bg-blue-500' : 'bg-gray-600'}`} />
+              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${msg.status === 'UNREAD' ? 'bg-red-600' : 'bg-gray-600'}`} />
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <p className={`text-sm font-semibold ${msg.status === 'UNREAD' ? 'text-white' : 'text-gray-400'}`}>{msg.subject}</p>
@@ -1161,13 +1161,13 @@ function InboxPanel() {
                     <p className="text-sm text-gray-300 whitespace-pre-wrap mb-4">{msg.message}</p>
                     <div className="flex gap-2">
                       {msg.status === 'UNREAD' && (
-                        <button onClick={() => markStatus(msg.id, 'READ')} className="text-xs px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 transition-colors">Mark Read</button>
+                        <button onClick={() => markStatus(msg.id, 'READ')} className="text-xs px-3 py-1.5 rounded-lg bg-red-600/10 text-red-400 hover:bg-red-600/20 border border-red-600/20 transition-colors">Mark Read</button>
                       )}
                       {msg.status !== 'REPLIED' && (
-                        <button onClick={() => markStatus(msg.id, 'REPLIED')} className="text-xs px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 transition-colors">Mark Replied</button>
+                        <button onClick={() => markStatus(msg.id, 'REPLIED')} className="text-xs px-3 py-1.5 rounded-lg bg-red-600/10 text-red-400 hover:bg-red-600/20 border border-red-600/20 transition-colors">Mark Replied</button>
                       )}
                       <button onClick={() => markStatus(msg.id, 'CLOSED')} className="text-xs px-3 py-1.5 rounded-lg bg-gray-500/10 text-gray-400 hover:bg-red-500/10 hover:text-red-400 border border-gray-500/20 transition-colors">Close</button>
-                      <a href={`mailto:${msg.email}?subject=Re: ${msg.subject}`} className="text-xs px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 border border-purple-500/20 transition-colors flex items-center gap-1">
+                      <a href={`mailto:${msg.email}?subject=Re: ${msg.subject}`} className="text-xs px-3 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600/20 border border-red-600/20 transition-colors flex items-center gap-1">
                         <Mail className="w-3.5 h-3.5" /> Reply via Email
                       </a>
                     </div>
@@ -1188,7 +1188,7 @@ function InboxPanel() {
             <div className="flex gap-3">
               {['FOUNDER', 'INVESTOR'].map(role => (
                 <button key={role} onClick={() => toggleRole(role)}
-                  className={`px-4 py-2 rounded-xl text-sm border transition-colors ${broadcast.roles.includes(role) ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-white/3 text-gray-400 border-white/8'}`}>
+                  className={`px-4 py-2 rounded-xl text-sm border transition-colors ${broadcast.roles.includes(role) ? 'bg-red-600/20 text-red-400 border-red-600/30' : 'bg-white/3 text-gray-400 border-white/8'}`}>
                   {role}
                 </button>
               ))}
@@ -1232,7 +1232,7 @@ function SecurityPanel() {
           logs.map(log => (
             <div key={log.id} className="px-4 py-3 hover:bg-white/2 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-blue-500/60 flex-shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-red-600/60 flex-shrink-0" />
                 <div className="flex-1">
                   <span className="text-sm text-gray-300 font-medium">{log.action}</span>
                   <span className="text-gray-600 mx-2">·</span>
@@ -1301,7 +1301,7 @@ export default function AdminDashboard() {
 
   if (!adminUser) return (
     <div className="min-h-screen bg-deep-black flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 border-red-600/30 border-t-red-600 rounded-full animate-spin" />
     </div>
   );
 
@@ -1325,7 +1325,7 @@ export default function AdminDashboard() {
               <item.icon style={{ width: 16, height: 16 }} />
               <span className="text-sm">{item.label}</span>
               {item.id === 'inbox' && unreadCount > 0 && (
-                <span className="ml-auto w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] flex items-center justify-center font-bold">
+                <span className="ml-auto w-5 h-5 rounded-full bg-red-600 text-white text-[10px] flex items-center justify-center font-bold">
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}
@@ -1360,7 +1360,7 @@ export default function AdminDashboard() {
             <ThemeToggle />
             <button className="relative p-2 text-gray-400 hover:text-white transition-colors rounded-xl hover:bg-white/5" onClick={() => setNotifOpen(true)}>
               <Bell className="w-4.5 h-4.5" style={{ width: 18, height: 18 }} />
-              {unreadCount > 0 && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-500" />}
+              {unreadCount > 0 && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-600" />}
             </button>
           </div>
         </div>
@@ -1374,10 +1374,10 @@ export default function AdminDashboard() {
             const isActive = activeNav === item.id;
             return (
               <button key={item.id} onClick={() => setActiveNav(item.id)}
-                className={'flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-all min-w-0 ' + (isActive ? 'text-blue-400' : 'text-gray-500 hover:text-gray-300')}>
+                className={'flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-all min-w-0 ' + (isActive ? 'text-red-400' : 'text-gray-500 hover:text-gray-300')}>
                 <item.icon className="w-5 h-5" />
                 <span className="text-[10px] font-medium truncate max-w-full">{item.label}</span>
-                {isActive && <div className="w-1 h-1 rounded-full bg-blue-500 mt-0.5" />}
+                {isActive && <div className="w-1 h-1 rounded-full bg-red-600 mt-0.5" />}
               </button>
             );
           })}

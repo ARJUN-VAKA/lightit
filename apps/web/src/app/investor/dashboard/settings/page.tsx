@@ -58,7 +58,7 @@ export default function InvestorSettingsPage() {
                 <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold text-white" style={{ background: 'linear-gradient(135deg, #a4161a, #e5383b)' }}>
                   {profile.name.charAt(0)}
                 </div>
-                <button onClick={() => toast('Photo upload coming soon!')} className="absolute -bottom-1 -right-1 w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: '#0ea5e9' }}>
+                <button onClick={() => toast('Photo upload coming soon!')} className="absolute -bottom-1 -right-1 w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: '#e5383b' }}>
                   <Camera className="w-3.5 h-3.5 text-white" />
                 </button>
               </div>
@@ -70,7 +70,7 @@ export default function InvestorSettingsPage() {
             </div>
 
             <div className="glass-card p-6 space-y-4">
-              <h3 className="text-white font-semibold flex items-center gap-2"><User className="w-4 h-4 text-blue-400" />Personal Info</h3>
+              <h3 className="text-white font-semibold flex items-center gap-2"><User className="w-4 h-4 text-red-400" />Personal Info</h3>
               {[{ label: 'Full Name', key: 'name', icon: User }, { label: 'Email', key: 'email', icon: Mail }, { label: 'Phone', key: 'phone', icon: User }, { label: 'Company / Fund', key: 'company', icon: Building2 }, { label: 'Website', key: 'website', icon: Globe }].map(f => (
                 <div key={f.key}>
                   <label className="text-xs text-gray-400 mb-1.5 block">{f.label}</label>
@@ -94,7 +94,7 @@ export default function InvestorSettingsPage() {
         {/* Investment Thesis */}
         {tab === 'investment' && (
           <div className="glass-card p-6 space-y-5">
-            <h3 className="text-white font-semibold flex items-center gap-2"><DollarSign className="w-4 h-4 text-green-400" />Investment Thesis</h3>
+            <h3 className="text-white font-semibold flex items-center gap-2"><DollarSign className="w-4 h-4 text-stone-400" />Investment Thesis</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-xs text-gray-400 mb-1.5 block">Min Ticket Size (USD)</label>
@@ -114,7 +114,7 @@ export default function InvestorSettingsPage() {
               <div className="flex flex-wrap gap-2">
                 {SECTORS.map(s => (
                   <button key={s} onClick={() => setSelectedSectors(p => p.includes(s) ? p.filter(x => x !== s) : [...p, s])}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${selectedSectors.includes(s) ? 'bg-blue-500/20 text-blue-400 border-blue-500/40' : 'text-gray-500 border-white/8 hover:text-white'}`}>
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${selectedSectors.includes(s) ? 'bg-red-600/20 text-red-400 border-red-600/40' : 'text-gray-500 border-white/8 hover:text-white'}`}>
                     {s}
                   </button>
                 ))}
@@ -125,7 +125,7 @@ export default function InvestorSettingsPage() {
               <div className="flex flex-wrap gap-2">
                 {STAGES.map(s => (
                   <button key={s} onClick={() => setSelectedStages(p => p.includes(s) ? p.filter(x => x !== s) : [...p, s])}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${selectedStages.includes(s) ? 'bg-purple-500/20 text-purple-400 border-purple-500/40' : 'text-gray-500 border-white/8 hover:text-white'}`}>
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${selectedStages.includes(s) ? 'bg-red-600/20 text-red-500 border-red-600/40' : 'text-gray-500 border-white/8 hover:text-white'}`}>
                     {s}
                   </button>
                 ))}
@@ -140,7 +140,7 @@ export default function InvestorSettingsPage() {
         {/* Security */}
         {tab === 'security' && (
           <div className="glass-card p-6 space-y-4">
-            <h3 className="text-white font-semibold flex items-center gap-2"><Lock className="w-4 h-4 text-blue-400" />Change Password</h3>
+            <h3 className="text-white font-semibold flex items-center gap-2"><Lock className="w-4 h-4 text-red-400" />Change Password</h3>
             {[{ label: 'Current Password', key: 'current' }, { label: 'New Password', key: 'newp' }, { label: 'Confirm New Password', key: 'confirm' }].map(f => (
               <div key={f.key}>
                 <label className="text-xs text-gray-400 mb-1.5 block">{f.label}</label>
@@ -158,12 +158,12 @@ export default function InvestorSettingsPage() {
         {/* Notifications */}
         {tab === 'notifications' && (
           <div className="glass-card p-6 space-y-4">
-            <h3 className="text-white font-semibold flex items-center gap-2"><Bell className="w-4 h-4 text-blue-400" />Notifications</h3>
+            <h3 className="text-white font-semibold flex items-center gap-2"><Bell className="w-4 h-4 text-red-400" />Notifications</h3>
             {([{ key: 'matches', label: 'New Startup Matches', desc: 'When AI finds new matches for your thesis' }, { key: 'messages', label: 'Message Alerts', desc: 'Notifications for founder messages' }, { key: 'events', label: 'Event Reminders', desc: 'Reminders for registered events' }, { key: 'newsletter', label: 'Weekly Deal Flow', desc: 'Weekly curated startup digest' }] as const).map(n => (
               <div key={n.key} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
                 <div><p className="text-white text-sm font-medium">{n.label}</p><p className="text-gray-500 text-xs">{n.desc}</p></div>
                 <button onClick={() => setNotifs(p => ({ ...p, [n.key]: !p[n.key] }))}
-                  className={`w-11 h-6 rounded-full transition-all relative ${notifs[n.key] ? 'bg-blue-500' : 'bg-gray-700'}`}>
+                  className={`w-11 h-6 rounded-full transition-all relative ${notifs[n.key] ? 'bg-red-600' : 'bg-gray-700'}`}>
                   <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all ${notifs[n.key] ? 'left-5' : 'left-0.5'}`} />
                 </button>
               </div>

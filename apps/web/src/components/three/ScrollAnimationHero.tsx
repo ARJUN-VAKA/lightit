@@ -193,8 +193,8 @@ function SceneOverlay({ progress }: { progress: number }) {
               <div
                 className="w-16 h-16 rounded-2xl flex items-center justify-center"
                 style={{
-                  background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)',
-                  boxShadow: '0 0 40px rgba(139,92,246,0.5), 0 0 80px rgba(14,165,233,0.3)',
+                  background: 'linear-gradient(135deg, #660708, #a4161a)',
+                  boxShadow: '0 0 40px rgba(164,22,26,0.55), 0 0 80px rgba(229,56,59,0.30)',
                 }}
               >
                 <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-white" stroke="currentColor" strokeWidth={2}>
@@ -210,7 +210,7 @@ function SceneOverlay({ progress }: { progress: number }) {
               <div
                 className="font-display font-bold text-5xl sm:text-6xl md:text-7xl tracking-tight mb-3"
                 style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #0ea5e9 50%, #8b5cf6 100%)',
+                  background: 'linear-gradient(135deg, #f5f3f4 0%, #e5383b 50%, #a4161a 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',

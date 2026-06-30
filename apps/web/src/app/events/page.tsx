@@ -6,14 +6,14 @@ import { Calendar, MapPin, Users, Clock, CheckCircle, Rocket, Zap, Search } from
 import toast from 'react-hot-toast';
 
 const ALL_EVENTS = [
-  { id: 1, title: 'LightIt Demo Day — Summer 2025', date: 'Jul 15, 2025', time: '10:00 AM PST', location: 'San Francisco, CA + Virtual', type: 'Demo Day', audience: 'Founders', capacity: 200, registered: 147, color: '#0ea5e9', tag: 'Featured', desc: 'Present your startup live to 50+ top-tier investors. Apply to pitch or attend as an investor.' },
-  { id: 2, title: 'AI & SaaS Founders Meetup', date: 'Jun 28, 2025', time: '6:00 PM EST', location: 'New York, NY', type: 'Networking', audience: 'Both', capacity: 80, registered: 74, color: '#8b5cf6', tag: 'Almost Full', desc: 'Intimate dinner event connecting AI/SaaS founders with Series A investors.' },
-  { id: 3, title: 'Fundraising Masterclass: Seed to Series A', date: 'Jul 3, 2025', time: '2:00 PM EST', location: 'Virtual (Zoom)', type: 'Workshop', audience: 'Founders', capacity: 500, registered: 312, color: '#10b981', tag: 'Virtual', desc: 'Deep-dive workshop on term sheets, investor relations, and closing your round.' },
-  { id: 4, title: 'Investor Summit 2025', date: 'Jul 10, 2025', time: '9:00 AM PST', location: 'San Francisco, CA', type: 'Summit', audience: 'Investors', capacity: 150, registered: 112, color: '#06b6d4', tag: 'Exclusive', desc: 'Exclusive summit for Premium investors. Meet 30+ curated founders and co-investors.' },
-  { id: 5, title: 'HealthTech Innovation Summit', date: 'Jul 22, 2025', time: '9:00 AM EST', location: 'Boston, MA', type: 'Conference', audience: 'Both', capacity: 300, registered: 189, color: '#ec4899', tag: 'New', desc: 'Two-day summit for health startups, hospital systems, and health-focused VCs.' },
+  { id: 1, title: 'LightIt Demo Day — Summer 2025', date: 'Jul 15, 2025', time: '10:00 AM PST', location: 'San Francisco, CA + Virtual', type: 'Demo Day', audience: 'Founders', capacity: 200, registered: 147, color: '#e5383b', tag: 'Featured', desc: 'Present your startup live to 50+ top-tier investors. Apply to pitch or attend as an investor.' },
+  { id: 2, title: 'AI & SaaS Founders Meetup', date: 'Jun 28, 2025', time: '6:00 PM EST', location: 'New York, NY', type: 'Networking', audience: 'Both', capacity: 80, registered: 74, color: '#a4161a', tag: 'Almost Full', desc: 'Intimate dinner event connecting AI/SaaS founders with Series A investors.' },
+  { id: 3, title: 'Fundraising Masterclass: Seed to Series A', date: 'Jul 3, 2025', time: '2:00 PM EST', location: 'Virtual (Zoom)', type: 'Workshop', audience: 'Founders', capacity: 500, registered: 312, color: '#b1a7a6', tag: 'Virtual', desc: 'Deep-dive workshop on term sheets, investor relations, and closing your round.' },
+  { id: 4, title: 'Investor Summit 2025', date: 'Jul 10, 2025', time: '9:00 AM PST', location: 'San Francisco, CA', type: 'Summit', audience: 'Investors', capacity: 150, registered: 112, color: '#ba181b', tag: 'Exclusive', desc: 'Exclusive summit for Premium investors. Meet 30+ curated founders and co-investors.' },
+  { id: 5, title: 'HealthTech Innovation Summit', date: 'Jul 22, 2025', time: '9:00 AM EST', location: 'Boston, MA', type: 'Conference', audience: 'Both', capacity: 300, registered: 189, color: '#660708', tag: 'New', desc: 'Two-day summit for health startups, hospital systems, and health-focused VCs.' },
   { id: 6, title: 'Pitch Competition — $50K Prize', date: 'Aug 5, 2025', time: '11:00 AM PST', location: 'Los Angeles, CA', type: 'Competition', audience: 'Founders', capacity: 100, registered: 63, color: '#f59e0b', tag: 'Prize $50K', desc: 'Top 3 startups split a $50,000 cash prize. Apply to compete before Aug 1.' },
-  { id: 7, title: 'CleanTech Deal Flow Forum', date: 'Aug 12, 2025', time: '9:00 AM PST', location: 'Seattle, WA', type: 'Conference', audience: 'Investors', capacity: 200, registered: 88, color: '#10b981', tag: 'New', desc: 'Deep-dive on ESG investing, carbon markets and CleanTech deal sourcing.' },
-  { id: 8, title: 'Founder Office Hours with Top VCs', date: 'Jul 8, 2025', time: '3:00 PM EST', location: 'Virtual (Zoom)', type: 'Workshop', audience: 'Founders', capacity: 60, registered: 41, color: '#8b5cf6', tag: 'Virtual', desc: 'Direct 1-on-1 sessions with VC partners from top funds. Limited slots.' },
+  { id: 7, title: 'CleanTech Deal Flow Forum', date: 'Aug 12, 2025', time: '9:00 AM PST', location: 'Seattle, WA', type: 'Conference', audience: 'Investors', capacity: 200, registered: 88, color: '#b1a7a6', tag: 'New', desc: 'Deep-dive on ESG investing, carbon markets and CleanTech deal sourcing.' },
+  { id: 8, title: 'Founder Office Hours with Top VCs', date: 'Jul 8, 2025', time: '3:00 PM EST', location: 'Virtual (Zoom)', type: 'Workshop', audience: 'Founders', capacity: 60, registered: 41, color: '#a4161a', tag: 'Virtual', desc: 'Direct 1-on-1 sessions with VC partners from top funds. Limited slots.' },
 ];
 
 export default function EventsPublicPage() {
@@ -85,7 +85,7 @@ export default function EventsPublicPage() {
             <div className="flex gap-2 flex-wrap">
               {types.map(t => (
                 <button key={t} onClick={() => setFilter(t)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${filter === t ? 'bg-blue-500/20 text-blue-400 border border-blue-500/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${filter === t ? 'bg-red-600/20 text-red-400 border border-red-600/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
                   {t}
                 </button>
               ))}
@@ -93,7 +93,7 @@ export default function EventsPublicPage() {
             <span className="text-gray-700">|</span>
             {['All','Founders','Investors'].map(a => (
               <button key={a} onClick={() => setAudience(a)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${audience === a ? 'bg-purple-500/20 text-purple-400 border border-purple-500/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${audience === a ? 'bg-red-600/20 text-red-500 border border-red-600/40' : 'text-gray-500 border border-white/8 hover:text-white'}`}>
                 {a}
               </button>
             ))}
@@ -146,7 +146,7 @@ export default function EventsPublicPage() {
                         </div>
                       </div>
                       <button onClick={() => handleRegister(ev.id, ev.title)}
-                        className={`flex-shrink-0 ${isReg ? 'flex items-center gap-2 text-emerald-400 border border-emerald-500/30 px-5 py-2.5 rounded-xl text-sm font-semibold' : 'btn-primary text-sm py-2.5 px-6'}`}>
+                        className={`flex-shrink-0 ${isReg ? 'flex items-center gap-2 text-red-400 border border-red-600/30 px-5 py-2.5 rounded-xl text-sm font-semibold' : 'btn-primary text-sm py-2.5 px-6'}`}>
                         {isReg ? <><CheckCircle className="w-4 h-4" /> Registered</> : <span>Register Free</span>}
                       </button>
                     </div>

@@ -106,10 +106,10 @@ export default function FounderSettingsPage() {
             {/* Avatar */}
             <div className="glass-card p-6 flex items-center gap-5">
               <div className="relative">
-                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold text-white" style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}>
+                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold text-white" style={{ background: 'linear-gradient(135deg, #a4161a, #e5383b)' }}>
                   {profile.name.charAt(0)}
                 </div>
-                <button onClick={() => toast('Photo upload coming soon!')} className="absolute -bottom-1 -right-1 w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: '#0ea5e9' }}>
+                <button onClick={() => toast('Photo upload coming soon!')} className="absolute -bottom-1 -right-1 w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: '#e5383b' }}>
                   <Camera className="w-3.5 h-3.5 text-white" />
                 </button>
               </div>
@@ -121,7 +121,7 @@ export default function FounderSettingsPage() {
             </div>
 
             <div className="glass-card p-6 space-y-4">
-              <h3 className="text-white font-semibold mb-4 flex items-center gap-2"><User className="w-4 h-4 text-blue-400" /> Personal Info</h3>
+              <h3 className="text-white font-semibold mb-4 flex items-center gap-2"><User className="w-4 h-4 text-red-400" /> Personal Info</h3>
               {[
                 { label: 'Full Name', key: 'name', icon: User, type: 'text' },
                 { label: 'Email', key: 'email', icon: Mail, type: 'email' },
@@ -150,7 +150,7 @@ export default function FounderSettingsPage() {
         {/* Startup Tab */}
         {tab === 'startup' && (
           <div className="glass-card p-6 space-y-4">
-            <h3 className="text-white font-semibold mb-4 flex items-center gap-2"><Building2 className="w-4 h-4 text-purple-400" /> Startup Info</h3>
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2"><Building2 className="w-4 h-4 text-red-500" /> Startup Info</h3>
             {[
               { label: 'Startup Name', key: 'name', icon: Building2 },
               { label: 'Tagline', key: 'tagline', icon: Building2 },
@@ -169,7 +169,7 @@ export default function FounderSettingsPage() {
               <div className="flex flex-wrap gap-2">
                 {STAGES.map(s => (
                   <button key={s} onClick={() => setStage(s)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${stage === s ? 'bg-blue-500/20 text-blue-400 border-blue-500/40' : 'text-gray-500 border-white/8 hover:text-white'}`}>
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${stage === s ? 'bg-red-600/20 text-red-400 border-red-600/40' : 'text-gray-500 border-white/8 hover:text-white'}`}>
                     {s}
                   </button>
                 ))}
@@ -180,7 +180,7 @@ export default function FounderSettingsPage() {
               <div className="flex flex-wrap gap-2">
                 {SECTORS.map(s => (
                   <button key={s} onClick={() => setSelectedSectors(p => p.includes(s) ? p.filter(x => x !== s) : [...p, s])}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${selectedSectors.includes(s) ? 'bg-purple-500/20 text-purple-400 border-purple-500/40' : 'text-gray-500 border-white/8 hover:text-white'}`}>
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${selectedSectors.includes(s) ? 'bg-red-600/20 text-red-500 border-red-600/40' : 'text-gray-500 border-white/8 hover:text-white'}`}>
                     {s}
                   </button>
                 ))}
@@ -195,7 +195,7 @@ export default function FounderSettingsPage() {
         {/* Security Tab */}
         {tab === 'security' && (
           <div className="glass-card p-6 space-y-4">
-            <h3 className="text-white font-semibold mb-4 flex items-center gap-2"><Lock className="w-4 h-4 text-blue-400" /> Change Password</h3>
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2"><Lock className="w-4 h-4 text-red-400" /> Change Password</h3>
             {[
               { label: 'Current Password', key: 'current' },
               { label: 'New Password', key: 'newp' },
@@ -218,7 +218,7 @@ export default function FounderSettingsPage() {
         {/* Notifications Tab */}
         {tab === 'notifications' && (
           <div className="glass-card p-6 space-y-4">
-            <h3 className="text-white font-semibold mb-4 flex items-center gap-2"><Bell className="w-4 h-4 text-blue-400" /> Notification Preferences</h3>
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2"><Bell className="w-4 h-4 text-red-400" /> Notification Preferences</h3>
             {([
               { key: 'matches', label: 'New Investor Matches', desc: 'Get notified when new matches are found' },
               { key: 'messages', label: 'Message Alerts', desc: 'Notifications for new messages' },
@@ -231,7 +231,7 @@ export default function FounderSettingsPage() {
                   <p className="text-gray-500 text-xs">{n.desc}</p>
                 </div>
                 <button onClick={() => setNotifs(p => ({ ...p, [n.key]: !p[n.key] }))}
-                  className={`w-11 h-6 rounded-full transition-all relative ${notifs[n.key] ? 'bg-blue-500' : 'bg-gray-700'}`}>
+                  className={`w-11 h-6 rounded-full transition-all relative ${notifs[n.key] ? 'bg-red-600' : 'bg-gray-700'}`}>
                   <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all ${notifs[n.key] ? 'left-5' : 'left-0.5'}`} />
                 </button>
               </div>

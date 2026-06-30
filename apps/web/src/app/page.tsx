@@ -321,7 +321,7 @@ function HowItWorksSection() {
                       transition={{ delay: 0.7 + i * 0.15 }}
                       className="flex items-center gap-2 text-sm text-gray-400"
                     >
-                      <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                      <Check className="w-4 h-4 text-red-400 flex-shrink-0" />
                       {reason}
                     </motion.div>
                   ))}
@@ -394,7 +394,7 @@ function PricingSection() {
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm text-gray-400">
-                      <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                      <Check className="w-4 h-4 text-red-400 flex-shrink-0" />
                       {f}
                     </li>
                   ))}

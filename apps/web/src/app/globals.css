@@ -6,22 +6,10 @@
    CSS Custom Properties — LightIt Design System
 ───────────────────────────────────────────────────────────── */
 :root {
-  /* ── LIGHT MODE — Red/Black Palette ────────────────────────── */
-  /* palette refs:
-     --onyx:          #0b090a
-     --carbon-black:  #161a1d
-     --dark-garnet:   #660708
-     --mahogany-red:  #a4161a
-     --mahogany-red-2:#ba181b
-     --strawberry-red:#e5383b
-     --silver:        #b1a7a6
-     --dust-grey:     #d3d3d3
-     --white-smoke:   #f5f3f4
-     --white:         #ffffff
-  */
-  --color-deep-black: #f5f3f4;       /* White Smoke — page bg */
-  --color-midnight:   #ffffff;       /* White — card bg base */
-  --color-card-bg:    #ffffff;
+  /* ── LIGHT MODE — Red/Black on Grey Palette ─────────────────── */
+  --color-deep-black: #d3d3d3;       /* Dust Grey — page bg */
+  --color-midnight:   #f5f3f4;       /* White Smoke — card bg base */
+  --color-card-bg:    #f5f3f4;
 
   --color-electric-blue:  #660708;   /* Dark Garnet */
   --color-neon-blue:      #a4161a;   /* Mahogany Red */
@@ -30,43 +18,43 @@
   --color-neon-pink:      #e5383b;
 
   --color-white:     #0b090a;        /* Onyx — primary text */
-  --color-gray-400:  #b1a7a6;        /* Silver */
-  --color-gray-500:  #6b6867;        /* mid-tone silver */
+  --color-gray-400:  #6b6867;        /* dark silver — muted text on grey bg */
+  --color-gray-500:  #5a5756;        /* deeper muted */
 
   --gradient-neon:  linear-gradient(135deg, #660708, #ba181b, #e5383b);
-  --gradient-hero:  linear-gradient(135deg, #f5f3f4 0%, #d3d3d3 50%, #f5f3f4 100%);
-  --gradient-card:  linear-gradient(135deg, rgba(164,22,26,0.07) 0%, rgba(229,56,59,0.05) 100%);
+  --gradient-hero:  linear-gradient(135deg, #d3d3d3 0%, #b1a7a6 50%, #d3d3d3 100%);
+  --gradient-card:  linear-gradient(135deg, rgba(164,22,26,0.06) 0%, rgba(229,56,59,0.04) 100%);
 
-  --glow-blue:   0 0 20px rgba(164,22,26,0.25), 0 0 40px rgba(164,22,26,0.12);
-  --glow-purple: 0 0 20px rgba(186,24,27,0.25), 0 0 40px rgba(186,24,27,0.12);
-  --glow-cyan:   0 0 20px rgba(229,56,59,0.25), 0 0 40px rgba(229,56,59,0.12);
+  --glow-blue:   0 0 20px rgba(164,22,26,0.18), 0 0 40px rgba(164,22,26,0.09);
+  --glow-purple: 0 0 20px rgba(186,24,27,0.18), 0 0 40px rgba(186,24,27,0.09);
+  --glow-cyan:   0 0 20px rgba(229,56,59,0.18), 0 0 40px rgba(229,56,59,0.09);
 
-  --glass-bg:          rgba(255,255,255,0.72);
-  --glass-border:      rgba(11,9,10,0.10);
-  --glass-shadow:      0 8px 32px rgba(11,9,10,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
-  --glass-card-bg:     linear-gradient(135deg, rgba(164,22,26,0.05) 0%, rgba(229,56,59,0.04) 100%);
-  --glass-card-border: rgba(11,9,10,0.06);
+  --glass-bg:          rgba(245,243,244,0.82);
+  --glass-border:      rgba(11,9,10,0.08);
+  --glass-shadow:      0 4px 24px rgba(11,9,10,0.08), inset 0 1px 0 rgba(255,255,255,0.55);
+  --glass-card-bg:     linear-gradient(135deg, rgba(164,22,26,0.04) 0%, rgba(229,56,59,0.03) 100%);
+  --glass-card-border: rgba(11,9,10,0.07);
 
   --text-primary:         #0b090a;
-  --text-muted:           #6b6867;
-  --input-bg:             rgba(11,9,10,0.03);
-  --input-border:         rgba(11,9,10,0.12);
-  --input-placeholder:    rgba(11,9,10,0.35);
-  --input-focus-bg:       #ffffff;
+  --text-muted:           #5a5756;
+  --input-bg:             rgba(11,9,10,0.04);
+  --input-border:         rgba(11,9,10,0.10);
+  --input-placeholder:    rgba(11,9,10,0.30);
+  --input-focus-bg:       #f5f3f4;
 
   --sidebar-hover-bg:    rgba(164,22,26,0.07);
-  --sidebar-active-bg:   linear-gradient(135deg, rgba(102,7,8,0.12), rgba(186,24,27,0.10));
+  --sidebar-active-bg:   linear-gradient(135deg, rgba(102,7,8,0.10), rgba(186,24,27,0.08));
   --sidebar-active-text: #a4161a;
   --sidebar-hover-text:  #0b090a;
 
-  --btn-ghost-color:       #6b6867;
+  --btn-ghost-color:       #5a5756;
   --btn-ghost-hover-color: #0b090a;
   --btn-ghost-hover-bg:    rgba(11,9,10,0.05);
 
-  --badge-text-blue:   #a4161a;   /* Mahogany Red */
+  --badge-text-blue:   #a4161a;
   --badge-text-purple: #ba181b;
-  --badge-text-cyan:   #e5383b;   /* Strawberry Red */
-  --badge-text-green:  #5a6e3a;   /* keep a muted green for success states */
+  --badge-text-cyan:   #e5383b;
+  --badge-text-green:  #5a6e3a;
   --badge-text-gold:   #9c6f00;
 }
 
@@ -721,6 +709,27 @@ option {
     --btn-hover-border: #d3d3d3;
     --btn-text: #f5f3f4;
     --btn-icon: #d3d3d3;
+  }
+
+  /* Variant: Red (all quick actions — palette-unified) */
+  .brutalist-red {
+    --btn-bg: #f5f3f4;
+    --btn-border: #a4161a;
+    --btn-shadow: #0b090a;
+    --btn-hover-bg: #d3d3d3;
+    --btn-hover-border: #660708;
+    --btn-glow: rgba(164,22,26,0.22);
+    --btn-text: #660708;
+    --btn-icon: #a4161a;
+  }
+  .dark .brutalist-red {
+    --btn-bg: #1e0305;
+    --btn-border: #e5383b;
+    --btn-shadow: #0b090a;
+    --btn-hover-bg: #2d0406;
+    --btn-hover-border: #f5f3f4;
+    --btn-text: #f5f3f4;
+    --btn-icon: #e5383b;
   }
 
   .brutalist-button::before,

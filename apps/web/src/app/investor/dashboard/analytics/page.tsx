@@ -7,7 +7,7 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun'];
 const DEAL_FLOW = [18, 32, 28, 45, 61, 74];
 const CONNECTIONS = [4, 7, 5, 11, 9, 14];
 
-function LineChart({ values, color = '#0ea5e9', fill = 'rgba(14,165,233,0.15)' }: { values: number[]; color?: string; fill?: string }) {
+function LineChart({ values, color = '#e5383b', fill = 'rgba(14,165,233,0.15)' }: { values: number[]; color?: string; fill?: string }) {
   const max = Math.max(...values);
   const pts = values.map((v, i) => `${(i / (values.length - 1)) * 100},${100 - (v / max) * 88}`).join(' ');
   return (
@@ -21,18 +21,18 @@ function LineChart({ values, color = '#0ea5e9', fill = 'rgba(14,165,233,0.15)' }
 
 const PIPELINE = [
   { stage: 'Viewed', count: 248, color: '#374151' },
-  { stage: 'Saved',  count: 31,  color: '#0ea5e9' },
-  { stage: 'Connected', count: 14, color: '#8b5cf6' },
-  { stage: 'Meeting', count: 6,  color: '#06b6d4' },
+  { stage: 'Saved',  count: 31,  color: '#e5383b' },
+  { stage: 'Connected', count: 14, color: '#a4161a' },
+  { stage: 'Meeting', count: 6,  color: '#ba181b' },
   { stage: 'Due Diligence', count: 2, color: '#f59e0b' },
-  { stage: 'Term Sheet', count: 1, color: '#10b981' },
+  { stage: 'Term Sheet', count: 1, color: '#b1a7a6' },
 ];
 
 const SECTOR_DIST = [
-  { name: 'AI/ML', pct: 38, color: '#8b5cf6' },
-  { name: 'SaaS',  pct: 26, color: '#0ea5e9' },
-  { name: 'HealthTech', pct: 20, color: '#ec4899' },
-  { name: 'CleanTech',  pct: 10, color: '#10b981' },
+  { name: 'AI/ML', pct: 38, color: '#a4161a' },
+  { name: 'SaaS',  pct: 26, color: '#e5383b' },
+  { name: 'HealthTech', pct: 20, color: '#660708' },
+  { name: 'CleanTech',  pct: 10, color: '#b1a7a6' },
   { name: 'Other', pct: 6, color: '#374151' },
 ];
 
@@ -42,9 +42,9 @@ export default function InvestorAnalyticsPage() {
       {/* KPI Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Startups Reviewed', value: '248', change: '+61 this month', icon: Target, color: '#0ea5e9' },
-          { label: 'Active Connections', value: '14', change: '3 in diligence', icon: MessageSquare, color: '#8b5cf6' },
-          { label: 'Watchlist', value: '31', change: '+8 this week', icon: Bookmark, color: '#06b6d4' },
+          { label: 'Startups Reviewed', value: '248', change: '+61 this month', icon: Target, color: '#e5383b' },
+          { label: 'Active Connections', value: '14', change: '3 in diligence', icon: MessageSquare, color: '#a4161a' },
+          { label: 'Watchlist', value: '31', change: '+8 this week', icon: Bookmark, color: '#ba181b' },
           { label: 'AI Recommendations', value: '96', change: 'avg match score', icon: Brain, color: '#f59e0b' },
         ].map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} className="glass-card p-5">
@@ -52,7 +52,7 @@ export default function InvestorAnalyticsPage() {
               <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${s.color}15`, border: `1px solid ${s.color}25` }}>
                 <s.icon style={{ width: 18, height: 18, color: s.color }} />
               </div>
-              <span className="text-emerald-400 text-xs font-medium">{s.change}</span>
+              <span className="text-red-400 text-xs font-medium">{s.change}</span>
             </div>
             <div className="stat-number text-2xl">{s.value}</div>
             <p className="text-gray-500 text-xs mt-1">{s.label}</p>
@@ -67,7 +67,7 @@ export default function InvestorAnalyticsPage() {
             <h3 className="font-display font-bold text-white">Deal Flow Volume</h3>
             <span className="badge badge-blue text-xs">+74% YoY</span>
           </div>
-          <LineChart values={DEAL_FLOW} color="#0ea5e9" />
+          <LineChart values={DEAL_FLOW} color="#e5383b" />
           <div className="flex justify-between mt-2">{MONTHS.map(m => <span key={m} className="text-gray-600 text-xs">{m}</span>)}</div>
         </div>
 
@@ -77,7 +77,7 @@ export default function InvestorAnalyticsPage() {
             <h3 className="font-display font-bold text-white">Founder Connections</h3>
             <span className="badge badge-purple text-xs">+55% YoY</span>
           </div>
-          <LineChart values={CONNECTIONS} color="#8b5cf6" />
+          <LineChart values={CONNECTIONS} color="#a4161a" />
           <div className="flex justify-between mt-2">{MONTHS.map(m => <span key={m} className="text-gray-600 text-xs">{m}</span>)}</div>
         </div>
       </div>
@@ -129,7 +129,7 @@ export default function InvestorAnalyticsPage() {
                 { t: 'Sent connection request to GreenLedger', time: 'Yesterday' },
               ].map((a, i) => (
                 <div key={i} className="flex items-start gap-2 text-xs">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-600 mt-1.5 flex-shrink-0" />
                   <div><p className="text-gray-400">{a.t}</p><p className="text-gray-600">{a.time}</p></div>
                 </div>
               ))}

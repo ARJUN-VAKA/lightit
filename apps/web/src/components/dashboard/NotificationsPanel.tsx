@@ -16,11 +16,11 @@ const ICON_MAP: Record<string, typeof Bell> = {
 };
 
 const COLOR_MAP: Record<string, string> = {
-  MATCH: '#8b5cf6',
-  MESSAGE: '#0ea5e9',
-  EVENT: '#06b6d4',
+  MATCH: '#a4161a',
+  MESSAGE: '#e5383b',
+  EVENT: '#ba181b',
   VIEW: '#f59e0b',
-  CONNECTION: '#10b981',
+  CONNECTION: '#b1a7a6',
 };
 
 interface Notification {
@@ -88,10 +88,10 @@ export function NotificationsPanel({ open, onClose }: NotificationsPanelProps) {
           >
             <div className="flex items-center justify-between p-5 border-b border-white/5">
               <div className="flex items-center gap-2">
-                <Bell className="w-5 h-5 text-blue-400" />
+                <Bell className="w-5 h-5 text-red-400" />
                 <h2 className="font-display font-bold text-lg text-white">Notifications</h2>
                 {unread > 0 && (
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400">
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-600/20 text-red-400">
                     {unread} new
                   </span>
                 )}
@@ -105,7 +105,7 @@ export function NotificationsPanel({ open, onClose }: NotificationsPanelProps) {
               <div className="px-5 py-2 border-b border-white/5">
                 <button
                   onClick={markAllRead}
-                  className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                  className="text-xs text-red-400 hover:text-red-400 flex items-center gap-1"
                 >
                   <Check className="w-3.5 h-3.5" /> Mark all as read
                 </button>
@@ -126,7 +126,7 @@ export function NotificationsPanel({ open, onClose }: NotificationsPanelProps) {
               ) : (
                 notifications.map((n, i) => {
                   const Icon = ICON_MAP[n.type] || Bell;
-                  const color = COLOR_MAP[n.type] || '#0ea5e9';
+                  const color = COLOR_MAP[n.type] || '#e5383b';
                   return (
                     <motion.div
                       key={n.id}
@@ -154,7 +154,7 @@ export function NotificationsPanel({ open, onClose }: NotificationsPanelProps) {
                         </p>
                       </div>
                       {!n.isRead && (
-                        <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0 mt-1" />
+                        <div className="w-2 h-2 rounded-full bg-red-600 flex-shrink-0 mt-1" />
                       )}
                     </motion.div>
                   );

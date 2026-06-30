@@ -28,13 +28,13 @@ export function HeroCanvas() {
 
     // Nodes
     const NODES = [
-      { x: 0.5, y: 0.5, r: 18, color: '#8b5cf6', type: 'hub' },
-      { x: 0.2, y: 0.3, r: 10, color: '#0ea5e9', type: 'investor' },
-      { x: 0.75, y: 0.25, r: 9, color: '#0ea5e9', type: 'investor' },
+      { x: 0.5, y: 0.5, r: 18, color: '#a4161a', type: 'hub' },
+      { x: 0.2, y: 0.3, r: 10, color: '#e5383b', type: 'investor' },
+      { x: 0.75, y: 0.25, r: 9, color: '#e5383b', type: 'investor' },
       { x: 0.15, y: 0.65, r: 11, color: '#38bdf8', type: 'investor' },
-      { x: 0.8, y: 0.6, r: 9, color: '#0ea5e9', type: 'investor' },
-      { x: 0.55, y: 0.82, r: 8, color: '#06b6d4', type: 'investor' },
-      { x: 0.3, y: 0.78, r: 10, color: '#0ea5e9', type: 'investor' },
+      { x: 0.8, y: 0.6, r: 9, color: '#e5383b', type: 'investor' },
+      { x: 0.55, y: 0.82, r: 8, color: '#ba181b', type: 'investor' },
+      { x: 0.3, y: 0.78, r: 10, color: '#e5383b', type: 'investor' },
       { x: 0.85, y: 0.35, r: 9, color: '#a78bfa', type: 'founder' },
       { x: 0.22, y: 0.5, r: 8, color: '#c084fc', type: 'founder' },
       { x: 0.7, y: 0.75, r: 9, color: '#a78bfa', type: 'founder' },
@@ -53,7 +53,7 @@ export function HeroCanvas() {
         vy: -Math.random() * 0.0004 - 0.0001,
         r: Math.random() * 1.5 + 0.5,
         alpha: Math.random() * 0.5 + 0.2,
-        color: Math.random() > 0.5 ? '#3b82f6' : '#8b5cf6',
+        color: Math.random() > 0.5 ? '#e5383b' : '#a4161a',
       });
     }
 
