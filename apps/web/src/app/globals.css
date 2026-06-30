@@ -595,6 +595,8 @@ option {
   @media (max-width: 640px) {
     .btn-primary, .btn-secondary { @apply px-6 py-3 text-sm; }
     .stat-number { @apply text-2xl; }
+  }
+
   /* ── Brutalist Quick Action Buttons ────────────────────────────── */
   .brutalist-button {
     display: flex;
