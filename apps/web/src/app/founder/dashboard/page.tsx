@@ -117,10 +117,10 @@ function RecentMatches({ matches }: { matches: any[] }) {
 function QuickActions({ onOpenAI }: { onOpenAI?: () => void }) {
   const router = useRouter();
   const actions = [
-    { icon: Upload, label: 'Update Pitch Deck', desc: 'Keep your deck fresh', path: '/founder/dashboard/pitch' },
-    { icon: Brain, label: 'AI Matchmaking', desc: 'Deep analysis & insights', action: onOpenAI },
-    { icon: Plus, label: 'Register for Event', desc: '3 upcoming events', path: '/founder/dashboard/events' },
-    { icon: Star, label: 'View Trust Score', desc: 'Score: 78/100', action: () => toast('Trust score coming soon!') },
+    { icon: Upload, label: 'Update Pitch Deck', desc: 'Keep your deck fresh', path: '/founder/dashboard/pitch', variant: 'brutalist-purple' },
+    { icon: Brain, label: 'AI Matchmaking', desc: 'Deep analysis & insights', action: onOpenAI, variant: 'brutalist-cyan' },
+    { icon: Plus, label: 'Register for Event', desc: '3 upcoming events', path: '/founder/dashboard/events', variant: 'brutalist-blue' },
+    { icon: Star, label: 'View Trust Score', desc: 'Score: 78/100', action: () => toast('Trust score coming soon!'), variant: 'brutalist-amber' },
   ];
 
   return (
@@ -129,13 +129,13 @@ function QuickActions({ onOpenAI }: { onOpenAI?: () => void }) {
       <div className="grid grid-cols-2 gap-4">
         {actions.map((action) => (
           <button key={action.label} onClick={action.path ? () => router.push(action.path) : action.action}
-            className="brutalist-button">
+            className={`brutalist-button ${action.variant}`}>
             <div className="brutalist-icon-wrapper">
-              <action.icon className="brutalist-icon text-[#10A37F]" />
+              <action.icon className="brutalist-icon" style={{ color: 'var(--btn-icon)' }} />
             </div>
             <div className="brutalist-text-wrapper">
-              <span className="text-[11px] font-normal text-gray-300">{action.label}</span>
-              <span className="text-xs text-white leading-tight">{action.desc}</span>
+              <span className="text-[11px] font-normal opacity-80">{action.label}</span>
+              <span className="text-xs font-semibold leading-tight mt-0.5">{action.desc}</span>
             </div>
           </button>
         ))}

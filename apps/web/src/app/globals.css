@@ -605,24 +605,108 @@ option {
     justify-content: center;
     width: 100%;
     height: 142px;
-    color: #e5dede;
+    color: var(--btn-text, #111827);
     font-weight: bold;
     text-decoration: none;
     position: relative;
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    background-color: #063525;
-    border: 3px solid #42c498;
+    background-color: var(--btn-bg, #f3f4f6);
+    border: 3px solid var(--btn-border, #374151);
     border-radius: 12px;
-    box-shadow: 4px 4px 1px #000000;
+    box-shadow: 4px 4px 1px var(--btn-shadow, #111827);
   }
 
   .brutalist-button:hover {
-    background-color: #1a5c46;
-    border-color: #030504;
+    background-color: var(--btn-hover-bg, #e5e7eb);
+    border-color: var(--btn-hover-border, #111827);
     transform: translate(-4px, -4px) rotate(1deg);
-    box-shadow: 8px 8px 0 #000000, 15px 15px 20px rgba(64, 164, 122, 0.2);
+    box-shadow: 8px 8px 0 var(--btn-shadow, #111827), 15px 15px 20px var(--btn-glow, rgba(0, 0, 0, 0.1));
+  }
+
+  .dark .brutalist-button {
+    color: var(--btn-text, #e5dede);
+  }
+
+  /* Variant: Purple (Pitch Deck) */
+  .brutalist-purple {
+    --btn-bg: #f3e8ff;
+    --btn-border: #a855f7;
+    --btn-shadow: #111827;
+    --btn-hover-bg: #e9d5ff;
+    --btn-hover-border: #7e22ce;
+    --btn-glow: rgba(168, 85, 247, 0.2);
+    --btn-text: #4c1d95;
+    --btn-icon: #7e22ce;
+  }
+  .dark .brutalist-purple {
+    --btn-bg: #2e1065;
+    --btn-border: #c084fc;
+    --btn-hover-bg: #3b0764;
+    --btn-hover-border: #e9d5ff;
+    --btn-text: #f3e8ff;
+    --btn-icon: #d8b4fe;
+  }
+
+  /* Variant: Cyan (AI Matchmaking) */
+  .brutalist-cyan {
+    --btn-bg: #cffafe;
+    --btn-border: #06b6d4;
+    --btn-shadow: #111827;
+    --btn-hover-bg: #a5f3fc;
+    --btn-hover-border: #0891b2;
+    --btn-glow: rgba(6, 182, 212, 0.2);
+    --btn-text: #164e63;
+    --btn-icon: #0891b2;
+  }
+  .dark .brutalist-cyan {
+    --btn-bg: #164e63;
+    --btn-border: #22d3ee;
+    --btn-hover-bg: #083344;
+    --btn-hover-border: #67e8f9;
+    --btn-text: #cffafe;
+    --btn-icon: #a5f3fc;
+  }
+
+  /* Variant: Blue (Events) */
+  .brutalist-blue {
+    --btn-bg: #e0f2fe;
+    --btn-border: #0ea5e9;
+    --btn-shadow: #111827;
+    --btn-hover-bg: #bae6fd;
+    --btn-hover-border: #0284c7;
+    --btn-glow: rgba(14, 165, 233, 0.2);
+    --btn-text: #0c4a6e;
+    --btn-icon: #0284c7;
+  }
+  .dark .brutalist-blue {
+    --btn-bg: #082f49;
+    --btn-border: #38bdf8;
+    --btn-hover-bg: #0c4a6e;
+    --btn-hover-border: #7dd3fc;
+    --btn-text: #e0f2fe;
+    --btn-icon: #7dd3fc;
+  }
+
+  /* Variant: Amber (Trust Score) */
+  .brutalist-amber {
+    --btn-bg: #fef3c7;
+    --btn-border: #f59e0b;
+    --btn-shadow: #111827;
+    --btn-hover-bg: #fde68a;
+    --btn-hover-border: #d97706;
+    --btn-glow: rgba(245, 158, 11, 0.2);
+    --btn-text: #78350f;
+    --btn-icon: #d97706;
+  }
+  .dark .brutalist-amber {
+    --btn-bg: #451a03;
+    --btn-border: #fbbf24;
+    --btn-hover-bg: #78350f;
+    --btn-hover-border: #fcd34d;
+    --btn-text: #fef3c7;
+    --btn-icon: #fcd34d;
   }
 
   .brutalist-button::before,
