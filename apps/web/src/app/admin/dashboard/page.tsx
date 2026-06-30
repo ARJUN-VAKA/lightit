@@ -547,7 +547,7 @@ function InvestorsPanel() {
           <div key={inv.id} className="glass-card p-4">
             <div className="flex items-start gap-4 flex-wrap">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+                style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
                 {inv.name.substring(0, 2).toUpperCase()}
               </div>
               <div className="flex-1">
@@ -1311,7 +1311,7 @@ export default function AdminDashboard() {
       {/* Sidebar */}
       <aside className="w-56 flex-shrink-0 h-screen sticky top-0 flex-col bg-card-bg/80 backdrop-blur-xl border-r border-white/5 hidden md:flex z-10">
         <div className="flex items-center gap-2 p-5 border-b border-white/5">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
             <Zap className="w-3.5 h-3.5 text-white" />
           </div>
           <span className="font-display font-bold text-lg text-white">Admin</span>
@@ -1336,7 +1336,7 @@ export default function AdminDashboard() {
         <div className="p-3 border-t border-white/5">
           <div className="flex items-center gap-2 px-3 py-2 mb-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>A</div>
+              style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>A</div>
             <div className="min-w-0">
               <p className="text-white text-xs font-semibold truncate">Super Admin</p>
               <p className="text-gray-500 text-[10px] truncate">{adminUser?.email}</p>

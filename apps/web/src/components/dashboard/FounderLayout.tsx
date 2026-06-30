@@ -34,14 +34,14 @@ function Sidebar({ user, onLogout }: { user: any; onLogout: () => void }) {
       <div className="flex items-center justify-between p-5 border-b border-white/5 h-16">
         {!collapsed && (
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
               <Rocket className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-white">LightIt</span>
           </Link>
         )}
         {collapsed && (
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center mx-auto" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center mx-auto" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
             <Rocket className="w-3.5 h-3.5 text-white" />
           </div>
         )}
@@ -54,7 +54,7 @@ function Sidebar({ user, onLogout }: { user: any; onLogout: () => void }) {
         <div className="p-4 border-b border-white/5">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}>
+              style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
               {user?.name?.charAt(0)?.toUpperCase() || 'F'}
             </div>
             <div className="min-w-0">
@@ -81,7 +81,7 @@ function Sidebar({ user, onLogout }: { user: any; onLogout: () => void }) {
                   <item.icon style={{ width: 18, height: 18, flexShrink: 0 }} />
                   {!collapsed && <span>{item.label}</span>}
                   {!collapsed && item.label === 'Messages' && (
-                    <span className="ml-auto w-4 h-4 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center">3</span>
+                    <span className="ml-auto w-4 h-4 rounded-full bg-red-600 text-white text-xs flex items-center justify-center">3</span>
                   )}
                 </div>
               </Link>
@@ -136,7 +136,7 @@ export function FounderLayout({ children, title = 'Dashboard', subtitle }: Found
 
   if (!user) return (
     <div className="min-h-screen bg-deep-black flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 border-red-700/30 border-t-red-600 rounded-full animate-spin" />
     </div>
   );
 
@@ -162,10 +162,10 @@ export function FounderLayout({ children, title = 'Dashboard', subtitle }: Found
               className="relative p-2 text-gray-400 hover:text-white transition-colors rounded-xl hover:bg-white/5"
             >
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-500" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-600" />
             </button>
             <div className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold text-white"
-              style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}>
+              style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
               {user.name?.charAt(0)?.toUpperCase()}
             </div>
           </div>
@@ -176,7 +176,7 @@ export function FounderLayout({ children, title = 'Dashboard', subtitle }: Found
           <div className="md:hidden bg-card-bg/95 backdrop-blur-xl border-b border-white/5 px-4 py-3">
             <div className="flex items-center gap-3 mb-4 pb-3 border-b border-white/5">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold text-white"
-                style={{ background: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)' }}>
+                style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
                 {user?.name?.charAt(0)?.toUpperCase() || 'F'}
               </div>
               <div>
@@ -190,7 +190,7 @@ export function FounderLayout({ children, title = 'Dashboard', subtitle }: Found
                 return (
                   <Link key={item.href} href={item.href}
                     className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                      isActive ? 'bg-blue-500/15 text-blue-400 border border-blue-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      isActive ? 'bg-red-900/20 text-red-400 border border-red-700/25' : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}>
                     <item.icon className="w-4 h-4" />
                     {item.label}

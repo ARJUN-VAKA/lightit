@@ -39,7 +39,7 @@ export default function SubscriptionPage() {
       {/* Current plan banner */}
       <div className="flex items-center gap-4 p-5 rounded-2xl mb-8"
         style={{ background: 'linear-gradient(135deg, rgba(14,165,233,0.1), rgba(139,92,246,0.08))', border: '1px solid rgba(59,130,246,0.2)' }}>
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
           <Zap className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
@@ -70,7 +70,7 @@ export default function SubscriptionPage() {
             <motion.div key={plan.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
               className={`glass-card p-6 relative ${plan.popular ? 'ring-2 ring-blue-500/50' : ''}`}>
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
                   Most Popular
                 </div>
               )}

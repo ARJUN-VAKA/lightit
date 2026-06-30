@@ -40,7 +40,7 @@ export default function EventsPublicPage() {
       {/* Nav */}
       <nav className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 border-b border-white/5" style={{ background: 'rgba(5,5,5,0.9)', backdropFilter: 'blur(20px)' }}>
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
             <Rocket className="w-4 h-4 text-white" />
           </div>
           <span className="font-display font-bold text-xl text-white">LightIt</span>

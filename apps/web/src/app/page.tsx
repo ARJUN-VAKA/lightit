@@ -20,7 +20,7 @@ const ScrollAnimationHero = dynamic(
     loading: () => (
       <div
         className="min-h-screen"
-        style={{ background: 'linear-gradient(135deg, #050505 0%, #0a0a2e 50%, #050505 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #0b090a 0%, #1e0305 50%, #0b090a 100%)' }}
       />
     ),
   }
@@ -67,7 +67,7 @@ function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
               <Zap className="w-4 h-4 text-white" />
             </div>
             <span className="font-display font-bold text-xl text-white">LightIt</span>
@@ -136,22 +136,22 @@ const FEATURES = [
     icon: Brain,
     title: 'AI-Powered Matching',
     description: 'Our proprietary algorithm analyzes 6 key compatibility factors to deliver 94% accurate investor-founder matches.',
-    color: '#0ea5e9',
-    gradient: 'from-blue-500/20 to-cyan-500/10',
+    color: '#e5383b',
+    gradient: 'from-red-900/20 to-red-800/10',
   },
   {
     icon: MessageSquare,
     title: 'Real-time Communication',
     description: 'End-to-end encrypted messaging with typing indicators, read receipts, file sharing and meeting requests.',
-    color: '#8b5cf6',
-    gradient: 'from-purple-500/20 to-pink-500/10',
+    color: '#ba181b',
+    gradient: 'from-red-800/20 to-rose-900/10',
   },
   {
     icon: Shield,
     title: 'Bank-grade Security',
     description: 'AES-256 encryption, 2FA, NDA management, and GDPR compliance ensure your sensitive data stays protected.',
-    color: '#06b6d4',
-    gradient: 'from-cyan-500/20 to-teal-500/10',
+    color: '#a4161a',
+    gradient: 'from-red-900/20 to-red-950/10',
   },
   {
     icon: Award,
@@ -164,15 +164,15 @@ const FEATURES = [
     icon: BarChart2,
     title: 'Deep Analytics',
     description: 'Track profile views, investor interest, match statistics, and funding readiness scores in real-time.',
-    color: '#ec4899',
-    gradient: 'from-pink-500/20 to-rose-500/10',
+    color: '#d97706',
+    gradient: 'from-amber-600/20 to-yellow-600/10',
   },
   {
     icon: Globe,
     title: 'Global Network',
     description: 'Connect with investors and founders across 150+ countries with location-aware matching preferences.',
-    color: '#10b981',
-    gradient: 'from-emerald-500/20 to-green-500/10',
+    color: '#b1a7a6',
+    gradient: 'from-stone-400/20 to-stone-600/10',
   },
 ];
 
@@ -253,7 +253,7 @@ function HowItWorksSection() {
           {/* AI Match Visualization */}
           <FadeUp delay={0.3}>
             <div className="glass-card p-8 text-center relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
+              <div className="absolute inset-0 bg-gradient-to-br from-red-900/5 to-rose-900/5" />
 
               <div className="relative">
                 <p className="text-gray-500 text-sm mb-8 uppercase tracking-widest">AI Match Found</p>
@@ -263,11 +263,12 @@ function HowItWorksSection() {
                   {/* Founder */}
                   <div className="text-center">
                     <motion.div
-                      animate={{ boxShadow: ['0 0 10px rgba(139,92,246,0.4)', '0 0 30px rgba(139,92,246,0.8)', '0 0 10px rgba(139,92,246,0.4)'] }}
+                      animate={{ boxShadow: ['0 0 10px rgba(164,22,26,0.4)', '0 0 30px rgba(229,56,59,0.8)', '0 0 10px rgba(164,22,26,0.4)'] }}
                       transition={{ repeat: Infinity, duration: 2 }}
-                      className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/30 to-purple-700/30 border border-purple-500/30 flex items-center justify-center mx-auto mb-3"
+                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3"
+                      style={{ background: 'rgba(164,22,26,0.25)', border: '1px solid rgba(229,56,59,0.3)' }}
                     >
-                      <Rocket className="w-7 h-7 text-purple-400" />
+                      <Rocket className="w-7 h-7" style={{ color: '#e5383b' }} />
                     </motion.div>
                     <p className="text-xs text-gray-500">Founder</p>
                     <p className="text-sm font-semibold text-white">TechVault AI</p>
@@ -280,8 +281,8 @@ function HowItWorksSection() {
                       whileInView={{ scale: 1 }}
                       transition={{ type: 'spring', stiffness: 200, delay: 0.5 }}
                       viewport={{ once: true }}
-                      className="w-20 h-20 rounded-full border-2 border-blue-500/50 flex items-center justify-center mx-auto relative"
-                      style={{ background: 'conic-gradient(#0ea5e9 95%, rgba(255,255,255,0.08) 0)' }}
+                      className="w-20 h-20 rounded-full flex items-center justify-center mx-auto relative"
+                      style={{ border: '2px solid rgba(229,56,59,0.5)', background: 'conic-gradient(#e5383b 95%, rgba(177,167,166,0.12) 0)' }}
                     >
                       <div className="absolute inset-1 rounded-full bg-card-bg flex items-center justify-center">
                         <span className="text-xl font-bold font-display gradient-text">95%</span>
@@ -293,11 +294,12 @@ function HowItWorksSection() {
                   {/* Investor */}
                   <div className="text-center">
                     <motion.div
-                      animate={{ boxShadow: ['0 0 10px rgba(14,165,233,0.4)', '0 0 30px rgba(14,165,233,0.8)', '0 0 10px rgba(14,165,233,0.4)'] }}
+                      animate={{ boxShadow: ['0 0 10px rgba(164,22,26,0.4)', '0 0 30px rgba(229,56,59,0.8)', '0 0 10px rgba(164,22,26,0.4)'] }}
                       transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
-                      className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/30 to-cyan-600/30 border border-blue-500/30 flex items-center justify-center mx-auto mb-3"
+                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3"
+                      style={{ background: 'rgba(164,22,26,0.25)', border: '1px solid rgba(229,56,59,0.3)' }}
                     >
-                      <Building2 className="w-7 h-7 text-blue-400" />
+                      <Building2 className="w-7 h-7" style={{ color: '#e5383b' }} />
                     </motion.div>
                     <p className="text-xs text-gray-500">Investor</p>
                     <p className="text-sm font-semibold text-white">Apex Ventures</p>
@@ -378,7 +380,7 @@ function PricingSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
           {PLANS.map((plan, i) => (
             <FadeUp key={plan.name} delay={i * 0.1}>
-              <div className={`glass-card p-8 relative ${plan.popular ? 'border-blue-500/40 scale-105' : ''}`}>
+              <div className={`glass-card p-8 relative ${plan.popular ? 'border-red-900/40 scale-105' : ''}`}>
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <span className="badge badge-blue text-xs px-4">Most Popular</span>
@@ -410,7 +412,7 @@ function PricingSection() {
 
         <FadeUp delay={0.3} className="text-center mt-8">
           <p className="text-gray-500 text-sm">
-            <span className="text-emerald-400 font-medium">Founders join free.</span> Only investors pay for premium access.
+            <span className="font-medium" style={{ color: '#e5383b' }}>Founders join free.</span> Only investors pay for premium access.
           </p>
         </FadeUp>
       </div>
@@ -424,7 +426,7 @@ const TESTIMONIALS = [
     name: 'Sarah Chen',
     role: 'Founder, NeuroSync AI',
     avatar: 'SC',
-    color: '#8b5cf6',
+    color: '#a4161a',
     text: 'LightIt matched me with my Series A lead investor in under 72 hours. The AI understood exactly what kind of investor my startup needed.',
     raised: '$4.2M raised',
   },
@@ -432,7 +434,7 @@ const TESTIMONIALS = [
     name: 'Marcus Rivera',
     role: 'Partner, Apex Ventures',
     avatar: 'MR',
-    color: '#0ea5e9',
+    color: '#e5383b',
     text: "The deal flow quality is exceptional. We've invested in 12 startups we discovered on LightIt in the past year alone.",
     raised: '12 investments',
   },
@@ -440,7 +442,7 @@ const TESTIMONIALS = [
     name: 'Priya Sharma',
     role: 'Founder, GreenLedger',
     avatar: 'PS',
-    color: '#06b6d4',
+    color: '#660708',
     text: 'The pitch analyzer feature gave us a Funding Readiness Score that helped us fix our deck before approaching investors. Game-changer.',
     raised: '$1.8M raised',
   },
@@ -609,7 +611,7 @@ function CTASection() {
     <section className="py-24 sm:py-32 relative overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
-          style={{ background: 'radial-gradient(circle, #8b5cf6, #0ea5e9)' }} />
+          style={{ background: 'radial-gradient(circle, #a4161a, #660708)' }} />
       </div>
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <FadeUp>
@@ -647,7 +649,7 @@ function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
                 <Zap className="w-4 h-4 text-white" />
               </div>
               <span className="font-display font-bold text-xl text-white">LightIt</span>
@@ -716,7 +718,7 @@ export default function HomePage() {
   }, [isVideoLoaded]);
 
   return (
-    <main className="dark bg-[#050505] text-white min-h-screen">
+    <main className="dark bg-[#0b090a] text-white min-h-screen">
       <AnimatePresence>
         {!isVideoLoaded && <HeroLoader />}
       </AnimatePresence>

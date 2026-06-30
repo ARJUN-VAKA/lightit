@@ -135,7 +135,7 @@ export default function MessagesPage() {
                     <div className={`max-w-xs lg:max-w-md px-4 py-2.5 rounded-2xl text-sm ${msg.from === 'me'
                       ? 'text-white rounded-br-sm' : 'text-foreground rounded-bl-sm'}`}
                       style={msg.from === 'me'
-                        ? { background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }
+                        ? { background: 'linear-gradient(135deg, #660708, #a4161a)' }
                         : { background: 'var(--card-bg)', border: '1px solid var(--border)' }}>
                       {msg.text}
                       <p className="text-xs mt-1 opacity-60">{msg.time}</p>
@@ -157,7 +157,7 @@ export default function MessagesPage() {
                   />
                   <button onClick={send}
                     className="w-12 h-12 rounded-xl flex items-center justify-center transition-all hover:scale-105"
-                    style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+                    style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
                     <Send className="w-4 h-4 text-white" />
                   </button>
                 </div>

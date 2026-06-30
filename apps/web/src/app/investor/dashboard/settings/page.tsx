@@ -55,7 +55,7 @@ export default function InvestorSettingsPage() {
           <>
             <div className="glass-card p-6 flex items-center gap-5">
               <div className="relative">
-                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold text-white" style={{ background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' }}>
+                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold text-white" style={{ background: 'linear-gradient(135deg, #a4161a, #e5383b)' }}>
                   {profile.name.charAt(0)}
                 </div>
                 <button onClick={() => toast('Photo upload coming soon!')} className="absolute -bottom-1 -right-1 w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: '#0ea5e9' }}>

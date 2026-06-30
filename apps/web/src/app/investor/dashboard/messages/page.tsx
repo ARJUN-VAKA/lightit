@@ -88,7 +88,7 @@ export default function InvestorMessagesPage() {
                 {active.messages.map((msg, i) => (
                   <div key={i} className={`flex ${msg.from === 'me' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-xs lg:max-w-md px-4 py-2.5 rounded-2xl text-sm ${msg.from === 'me' ? 'text-white rounded-br-sm' : 'text-foreground rounded-bl-sm'}`}
-                      style={msg.from === 'me' ? { background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' } : { background: 'var(--card-bg)', border: '1px solid var(--border)' }}>
+                      style={msg.from === 'me' ? { background: 'linear-gradient(135deg, #660708, #a4161a)' } : { background: 'var(--card-bg)', border: '1px solid var(--border)' }}>
                       {msg.text}<p className="text-xs mt-1 opacity-60">{msg.time}</p>
                     </div>
                   </div>
@@ -98,7 +98,7 @@ export default function InvestorMessagesPage() {
               <div className="flex-shrink-0 p-4 border-t" style={{ borderColor: 'var(--border)' }}>
                 <div className="flex gap-3">
                   <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Type a message…" className="input-field flex-1 py-3" />
-                  <button onClick={send} className="w-12 h-12 rounded-xl flex items-center justify-center transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)' }}>
+                  <button onClick={send} className="w-12 h-12 rounded-xl flex items-center justify-center transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #660708, #a4161a)' }}>
                     <Send className="w-4 h-4 text-white" />
                   </button>
                 </div>
