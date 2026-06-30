@@ -117,23 +117,26 @@ function RecentMatches({ matches }: { matches: any[] }) {
 function QuickActions({ onOpenAI }: { onOpenAI?: () => void }) {
   const router = useRouter();
   const actions = [
-    { icon: Upload, label: 'Update Pitch Deck', desc: 'Keep your deck fresh', color: '#8b5cf6', path: '/founder/dashboard/pitch' },
-    { icon: Brain, label: 'AI Matchmaking', desc: 'Deep analysis & insights', color: '#06b6d4', action: onOpenAI },
-    { icon: Plus, label: 'Register for Event', desc: '3 upcoming events', color: '#0ea5e9', path: '/founder/dashboard/events' },
-    { icon: Star, label: 'View Trust Score', desc: 'Score: 78/100', color: '#f59e0b', action: () => toast('Trust score coming soon!') },
+    { icon: Upload, label: 'Update Pitch Deck', desc: 'Keep your deck fresh', path: '/founder/dashboard/pitch' },
+    { icon: Brain, label: 'AI Matchmaking', desc: 'Deep analysis & insights', action: onOpenAI },
+    { icon: Plus, label: 'Register for Event', desc: '3 upcoming events', path: '/founder/dashboard/events' },
+    { icon: Star, label: 'View Trust Score', desc: 'Score: 78/100', action: () => toast('Trust score coming soon!') },
   ];
 
   return (
     <div className="glass-card p-4 md:p-6">
       <h3 className="font-display font-bold text-lg text-white mb-4">Quick Actions</h3>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-4">
         {actions.map((action) => (
           <button key={action.label} onClick={action.path ? () => router.push(action.path) : action.action}
-            className="p-3 md:p-4 rounded-xl text-left transition-all duration-200 hover:scale-[1.02] active:scale-95"
-            style={{ background: `${action.color}10`, border: `1px solid ${action.color}20` }}>
-            <action.icon className="w-5 h-5 mb-2" style={{ color: action.color }} />
-            <p className="text-white text-sm font-semibold">{action.label}</p>
-            <p className="text-gray-500 text-xs mt-0.5">{action.desc}</p>
+            className="brutalist-button">
+            <div className="brutalist-icon-wrapper">
+              <action.icon className="brutalist-icon text-[#10A37F]" />
+            </div>
+            <div className="brutalist-text-wrapper">
+              <span className="text-[11px] font-normal text-gray-300">{action.label}</span>
+              <span className="text-xs text-white leading-tight">{action.desc}</span>
+            </div>
           </button>
         ))}
       </div>
