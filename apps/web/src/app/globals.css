@@ -7,7 +7,7 @@
 ───────────────────────────────────────────────────────────── */
 :root {
   /* ── LIGHT MODE — Red/Black on Grey Palette ─────────────────── */
-  --color-deep-black: #d3d3d3;       /* Dust Grey — page bg */
+  --color-deep-black: #6c757d;       /* User specified bright background */
   --color-midnight:   #f5f3f4;       /* White Smoke — card bg base */
   --color-card-bg:    #f5f3f4;
 
@@ -22,7 +22,7 @@
   --color-gray-500:  #5a5756;        /* deeper muted */
 
   --gradient-neon:  linear-gradient(135deg, #660708, #ba181b, #e5383b);
-  --gradient-hero:  linear-gradient(135deg, #d3d3d3 0%, #b1a7a6 50%, #d3d3d3 100%);
+  --gradient-hero:  linear-gradient(135deg, #6c757d 0%, #b1a7a6 50%, #6c757d 100%);
   --gradient-card:  linear-gradient(135deg, rgba(164,22,26,0.06) 0%, rgba(229,56,59,0.04) 100%);
 
   --glow-blue:   0 0 20px rgba(164,22,26,0.18), 0 0 40px rgba(164,22,26,0.09);
